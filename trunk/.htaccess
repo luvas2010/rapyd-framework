@@ -1,0 +1,12 @@
+
+#php_value short_open_tag 1
+#php_value xdebug.profiler_output_dir /tmp
+#php_value xdebug.profiler_output_name cachegrind.out.%s
+#php_value xdebug.profiler_enable 1
+
+
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^(.*)$ index.php/$1 [L]
