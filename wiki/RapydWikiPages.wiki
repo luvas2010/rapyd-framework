@@ -1,4 +1,4 @@
-#summary What we want to do.
+#summary What we want to do
 
 = Introduction =
 
