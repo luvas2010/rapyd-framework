@@ -15,4 +15,4 @@
  * apache parse .htaccess in application root then call index.php if /controller/method/ isn't a valid file or folder
  * index include framework files, then the application controller: /controllers/blog.php
  * superclass instance "Blog" class then invoke $Blog->welcome()
- * welcome method call a view (include a php file and print some data)
+ * welcome method call a view (include a php-html file and print an output)
