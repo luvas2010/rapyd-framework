@@ -7,6 +7,6 @@ Basically rapyd framework has (like most mvc framework) a "superclass":
 
 in the superclass we have the base of an mvc:
 
-* router (to detect current/requested uri)
-* controller (to instance the class that will perform actions to serve an uri request)
-* view (to provide a separation bw controller and output template, normally a simple php file with html and some echo).
+ * router (to detect current/requested uri)
+ * controller (to instance the class that will perform actions to serve an uri request)
+ * view (to provide a separation bw controller and output template, normally a simple php file with html and some echo).
