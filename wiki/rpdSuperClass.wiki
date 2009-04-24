@@ -1,4 +1,4 @@
-#summary main class
+#summary Main class
 #labels Phase-Implementation
 
 = rpd the superclass =
