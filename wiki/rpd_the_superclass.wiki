@@ -9,4 +9,4 @@ in the superclass we have the base of an mvc:
 
  * router (to detect current/requested uri)
  * controller (to instance the class that will perform actions to serve an uri request)
- * view (to provide a separation bw controller and output template, normally a simple php file with html and some echo).
+ * view (called from controller, to provide an output, normally it's a simple php file with html tags and some echo).
