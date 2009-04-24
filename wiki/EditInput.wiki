@@ -1,0 +1,30 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Parameters for an input field.
+
+
+= Details =
+
+Filling the array will tel Rapyd how to present your edit field.
+
+_Syntax_
+
+{{{
+array (
+ 'type'  => 'input',
+ 'name'  => 'name',
+ 'label' => 'Name',
+ 'attributes' => array('style'=>'width: 285px; clear: left;'),
+ 'rule'  => 'trim',
+),
+}}}
+
+*type*: the type of input:
+  * *input* normal text input
+  * *password* password text input, displayed as asterisks
+  * *checkboxgroup* a group of check boxes where multiple selections are possible
+  * *checkbox* a single check box
+  * *radiogroup* a group of radio buttons where only one selection is possible
+  * *radio* a single radio button
