@@ -7,7 +7,7 @@ Parameters for an input field.
 
 = Details =
 
-Filling the array will tel Rapyd how to present your edit field.
+Filling the array will tell Rapyd how to present your edit field.
 
 _Syntax_
 
@@ -28,3 +28,6 @@ array (
   * *checkbox* a single check box
   * *radiogroup* a group of radio buttons where only one selection is possible
   * *radio* a single radio button
+  * *dropdown* a drop down list
+  * *date* a pop-up date selector
+  * *edit* an editor box
