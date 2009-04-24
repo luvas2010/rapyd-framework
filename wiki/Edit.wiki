@@ -2,12 +2,12 @@
 
 = Introduction =
 
-Parameters for an input field.
+Parameters for an edit field.
 
 
 = Details =
 
-Filling the array will tell Rapyd how to present your edit field.
+Filling the array will tell Rapyd how to present the edit field.
 
 _Syntax_
 
