@@ -1,7 +1,7 @@
+#summary How does it work
 #labels Phase-Implementation
+
 = application flow =
-
-
 
   * an .htaccess with a simple rewrite rule send all requests to the main index.php (system gateway)
   * index.php (system gateway) include a configuration file and the rpd superclass 
