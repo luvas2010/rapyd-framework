@@ -1,0 +1,19 @@
+#summary Planning
+#labels Featured
+
+= Planning =
+
+Completed features have a strike through them.
+
+
+0.5
+
+   * core rewrite, syntax will be more oop strict, but configuration arrays 
+
+0.4
+
+  * ~~modules support~~
+  * ~~class autoloader~~
+  * ~~superclass (as ancestor of controllers)~~
+  * ~~system gateway (index.php)~~
+  
