@@ -13,3 +13,4 @@ main goals:
   * include just few (and tiny) third party libs (nicEdit,jquery,some jquery plugin)
  
  
+to be continued
