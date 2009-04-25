@@ -1,7 +1,6 @@
 #summary Planning
 #labels Featured
 
-= Planning =
 
 Completed features have a strike through them.
 
