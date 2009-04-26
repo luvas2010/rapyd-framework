@@ -50,7 +50,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
   <div id="left">
 
 
-    <div><a href="index.php">Index</a></div>
+    <div><a href="<?php echo rpd::url('demo')?>">Index</a></div>
     <div class="line"></div>
 
     <h3>Samples</h3>
@@ -88,18 +88,13 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 
   <div class="line"></div>
 
-  <pre class="code">
-SESSION
-<?php var_dump($_SESSION);?>
-  </pre>
-
+<?php if ($code!=''): ?>
   <div class="code">
 CODE <br />
     <?php echo $code?>
   </div>
-
-
   <div class="line"></div>
+<?php endif;?>
 
   <div class="footer">
     <p>
