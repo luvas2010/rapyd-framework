@@ -32,7 +32,7 @@
 </head>
 <body>
     <h1>Welcome to rapyd-framework <?=RAPYD_VERSION?></h1>
-    <p>Congradulations! Rapyd is setup and working correclty. <?=rpd::url('assets/css/');?></p>
+    <p>Congradulations! Rapyd is setup and working correclty.</p>
 
 </body>
 </html>
