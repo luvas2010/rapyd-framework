@@ -1,4 +1,4 @@
-#summary DataGrid field syntax
+#summary DataGrid syntax
 
 = Introduction =
 
