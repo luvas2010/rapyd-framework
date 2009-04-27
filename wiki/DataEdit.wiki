@@ -1,4 +1,4 @@
-#summary DataEdit field syntax
+#summary DataEdit syntax
 
 = Introduction =
 
