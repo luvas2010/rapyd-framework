@@ -1,0 +1,48 @@
+#summary DataGrid field syntax
+
+= Introduction =
+
+Parameters for a table displaying database content (DataGrid).
+
+
+= Details =
+
+Filling the array will tell Rapyd how to present the DataGrid.
+
+_Syntax_
+
+{{{
+$config = array	(
+    'label'     => 'Translations',
+    'source'    => $filter,
+    'per_page'  => 20,
+    'add_url'   => 'e_translations.php',
+    'buttons'   => array('add','delete','edit'),
+
+    'columns'   => array(
+      array(
+        'label'   => 'Company',
+        'pattern' => 'company',
+        'orderby' => true,
+        'url'     => 'e_translations.php?show={tr_id}',
+        'img'     => 'detail.gif',
+        'attributes' => array('style'=>'text-decoration: none;'),
+      ),
+    )
+  );
+}}}
+
+*label* a label to display above the search field (may contain HTML/javascript code)
+
+*source* the source of the data to display like a filter defined in DataFilter and built by $filter->build();
+
+*per_page* the number of rows to display per page. Paging and browsing back and forth is handled by the Rapyd framework.
+
+*add_url* the link to a php script to perform an add, change or remove action.
+
+*buttons* an array of buttons to display in the add_url script:
+  * _add_ add a new record
+  * _delete_ delete the current record
+  * _edit_ edit the current record
+
+*columns* an array of columns to display in the DataGrid
