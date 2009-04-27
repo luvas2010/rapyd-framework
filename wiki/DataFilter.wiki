@@ -1,4 +1,4 @@
-#summary DataFilter field syntax
+#summary DataFilter syntax
 
 = Introduction =
 
