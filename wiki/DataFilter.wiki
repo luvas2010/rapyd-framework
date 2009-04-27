@@ -1,0 +1,44 @@
+#summary DataFilter field syntax
+
+= Introduction =
+
+Parameters for an data filter field (DataFilter).
+
+
+= Details =
+
+Filling the array will tell Rapyd how to display a filtered table (DataGrid).
+
+_Syntax_
+
+{{{
+$config = array	(
+    'label'   => '<img name="min_max" src="assets/maximize.gif" align="texttop" /> Filter',
+    'fields'  => array(
+        array(
+          'type'  => 'input',
+          'name'  => 'name',
+          'label' => 'Name',
+          'style' => 'width:170px',
+        ),
+        array(
+          'type'   => 'dropdown',
+          'name'   => 'status',
+          'label'  => 'Status',
+          'option' => '',
+          'options'=> 'SELECT status_id, status FROM status',
+          'style' => 'width:174px',
+        ),
+
+    ),
+    'buttons' => array('reset','search')
+  );
+}}}
+
+*label* a label to display above the search field (may contain html/javascript code)
+
+*fields* the database field(s) to use
+
+*buttons* the buttons to display at the bottom of the form:
+  * reset: reset the form
+  * search: perform the search
