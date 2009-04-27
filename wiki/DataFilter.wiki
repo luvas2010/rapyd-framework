@@ -35,9 +35,13 @@ $config = array	(
   );
 }}}
 
-*label* a label to display above the search field (may contain html/javascript code)
+*label* a label to display above the search field (may contain HTML/javascript code)
 
-*fields* the database field(s) to use
+*fields* the database field(s) to use. These can contain references to other tables by including an SQL statement. The syntax example will produce HTML like:
+{{{
+<option value="status_id">status</option>
+}}}
+where status_id and status are derived from the database.
 
 *buttons* the buttons to display at the bottom of the form:
   * reset: reset the form
