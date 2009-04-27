@@ -1,8 +1,8 @@
-#summary Edit field syntax
+#summary DataEdit field syntax
 
 = Introduction =
 
-Parameters for an edit field.
+Parameters for an edit field (DataEdit).
 
 
 = Details =
