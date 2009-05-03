@@ -1,0 +1,14 @@
+#summary Make your own branch
+#labels Phase-Implementation
+
+= Make your own branch =
+Project members "must" make custom branch using this command:
+ 
+{{{
+svn copy https://rapyd-framework.googlecode.com/svn/trunk/ \
+https://rapyd-framework.googlecode.com/svn/branches/nickname \
+-m "Private branch for me" --username userame
+}}}
+
+you can choise "nickname" as desired, but "username" must be your google code username.
+
