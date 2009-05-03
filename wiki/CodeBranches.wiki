@@ -10,4 +10,5 @@ https://rapyd-framework.googlecode.com/svn/branches/nickname
 --username userame
 }}}
 
-You can choise "nickname" as desired, but "username" must be your google code username.
+You can choise "nikname" as desired, but "username" must be your google code username.
+You'll be promped for your google code password (you can find It from "Settings" in the header, if you're logged-in)
