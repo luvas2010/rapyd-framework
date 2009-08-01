@@ -33,6 +33,7 @@
 <body>
     <h1>Welcome to rapyd-framework <?=RAPYD_VERSION?></h1>
     <p>Congradulations! Rapyd is setup and working correclty.</p>
+	<p>See some <a href="<?php echo rpd::url('demo')?>">Demo</a></p>
 
 </body>
 </html>
