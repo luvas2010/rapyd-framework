@@ -29,6 +29,8 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 .note {padding: 10px; background-color: #FFFFCC; color:#000}
 .note hr { border: none 0; border-bottom: 1px solid #D9D900; height:1px;}
 
+#comments { width: 95%; }
+
 </style>
 
 <?php echo $head?>

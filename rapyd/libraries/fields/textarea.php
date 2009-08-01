@@ -12,7 +12,7 @@ class textarea_field extends field_field {
     $output = "";
     if(!isset($this->cols))
     {
-      $this->cols = 60;
+      $this->cols = 45;
     }
     if(!isset($this->rows)){
       $this->rows = 15;
