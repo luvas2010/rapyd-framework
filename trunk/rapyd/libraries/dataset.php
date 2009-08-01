@@ -182,6 +182,7 @@ class dataset_library extends rpd_component_library {
 				break;
 
 			case "table":
+
         //orderby
         if(isset($this->orderby))
         {

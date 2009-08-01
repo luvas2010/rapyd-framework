@@ -56,7 +56,7 @@ class datamodel_model {
 
 	protected function show_error($error_arr)
 	{
-		echo '<p>'.implode('</p><p>', ( ! is_array($message)) ? array($message) : $message).'</p>';
+		echo '<p>'.implode('</p><p>', ( ! is_array($error_arr)) ? array($error_arr) : $error_arr).'</p>';
 	}
 
 	// --------------------------------------------------------------------
@@ -125,9 +125,11 @@ class datamodel_model {
         }
       }
     } else {
+
        $keys = array_keys($this->pk);
        $key = $keys[0];
        $this->pk[$key] = $id;
+
     }
     $this->db->getwhere($this->table, $this->pk);
 
@@ -138,6 +140,7 @@ class datamodel_model {
     }
     elseif ($this->db->num_rows()==1)
     {
+
       $results = $this->db->result_array();
       $this->bind_data($results[0]);
       $this->loaded = true;
