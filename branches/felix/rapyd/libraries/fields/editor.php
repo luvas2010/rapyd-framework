@@ -24,7 +24,7 @@ class editor_field extends field_field {
 
     if(!isset($this->cols))
     {
-      $this->cols = 60;
+      $this->cols = 45;
     }
     if(!isset($this->rows)){
       $this->rows = 15;
