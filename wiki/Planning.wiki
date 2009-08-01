@@ -13,7 +13,7 @@ Completed features have a strike through them.
 
 0.5
 
-  * i choose to build a new release to fix urgent stuffs (master detail demo debug, new drivers for pdo/sqlite) 
+  * ~~new release to fix urgent stuffs (master detail demo debug, new drivers for pdo/sqlite)~~
 
 
 0.4
