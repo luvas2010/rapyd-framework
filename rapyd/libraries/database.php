@@ -18,7 +18,7 @@ class rpd_database_library {
 	public $result_array = array();
 	public $result_object = array();
 
-  public $last_query;
+	public $last_query;
 
 	public function __construct($conn_id=FALSE)
 	{
@@ -54,7 +54,7 @@ class rpd_database_library {
 			}
 		  return FALSE;
 		}
-    $this->last_query = $sql;
+		$this->last_query = $sql;
 		return $this->result_id;
 	}
 
@@ -110,21 +110,21 @@ class rpd_database_library {
 
 		$this->data_seek(0);
 		while ($row = $this->fetch_row())
-    {
-      switch(count($row))
-      {
-        case 2:
-          $data[$row[0]] = $row[1];
-        break;
-        case 3:
-          $data[$row[0]][$row[1]] = $row[2];
-        break;
-        default: return array();
-      }
-    }
-    $this->result_array = $data;
-    return $this->result_array;
-  }
+		{
+			switch(count($row))
+			{
+				case 2:
+					$data[$row[0]] = $row[1];
+				break;
+				case 3:
+					$data[$row[0]][$row[1]] = $row[2];
+				break;
+				default: return array();
+			}
+		}
+		$this->result_array = $data;
+		return $this->result_array;
+	  }
 
 	// --------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ class rpd_database_library {
 		if ($this->num_rows() == 0)
 			return '0';
 
-    $row = $this->result_object();
+		$row = $this->result_object();
 		return $row[0]->numrows;
 	}
 
@@ -236,4 +236,3 @@ class rpd_database_library {
 	}
 
 }
-
