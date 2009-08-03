@@ -391,8 +391,12 @@ class rpd
 		self::$db->password = self::$config['db']['password'];
 		self::$db->database = self::$config['db']['database'];
 		self::$db->dbprefix = self::$config['db']['dbprefix'];
-		self::$db->connect();
-		self::$db->select_db();
+		$result = self::$db->connect();
+		if ($result !==false)
+		{
+			self::$db->select_db();
+		}
+		return $result;
 
 	}
 
