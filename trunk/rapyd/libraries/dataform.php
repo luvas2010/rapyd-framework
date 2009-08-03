@@ -61,16 +61,27 @@ class dataform_library extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
-  public function set_field($field)
+	public function set_field()
 	{
-    if (isset($field['field']))
-    {
-      list($field['type'],$field['name'],$field['label']) = explode('|',$field['field']);
-    }
-    $field_name = $field["name"];
+		$field = array();
 
-    //load and instance field
-    $field_file = strtolower($field["type"]);
+		if (func_num_args()==3)
+		{
+			list($field['type'],$field['name'],$field['label']) = func_get_args();
+		}
+		if (func_num_args()==1)
+		{
+			$field = func_get_arg(0);
+		}
+
+		if (isset($field['field']))
+		{
+		  list($field['type'],$field['name'],$field['label']) = explode('|',$field['field']);
+		}
+		$field_name = $field["name"];
+
+		//load and instance field
+		$field_file = strtolower($field["type"]);
 		$field_class = $field_file.'_field';
 		$field_obj = new $field_class($field);
 
@@ -78,15 +89,15 @@ class dataform_library extends rpd_component_library {
 		{
 			$this->multipart = true;
 
-      if (!isset($this->upload))
-      {
-        //rpd::load('library','upload');
-        $this->upload = new rpd_upload_library($field);
-      }
-      $field_obj->upload = $this->upload;
+			if (!isset($this->upload))
+			{
+				//rpd::load('library','upload');
+				$this->upload = new rpd_upload_library($field);
+			}
+			$field_obj->upload = $this->upload;
 		}
 
-    //share model
+		//share model
 		if (isset($this->model))
 		{
 			$field_obj->model = $this->model;
