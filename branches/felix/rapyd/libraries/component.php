@@ -120,6 +120,7 @@ class rpd_component_library {
 				{
 					$this->$property = $arguments[0];
 				}
+				return $this;
 
 		}
 	}
@@ -323,15 +324,15 @@ class rpd_component_library {
 
     $buttons = func_get_args();
 
-		//catch buttons => 'save|delete|undo...';
-		if (is_string($buttons[0]) AND strpos($buttons[0],'|'))
-		{
-			$buttons = explode('|', $buttons[0]);
-		}
-		else
-		{
-      $buttons = $buttons[0];
-    }
+	//catch buttons => 'save|delete|undo...';
+	if (is_string($buttons[0]) AND strpos($buttons[0],'|'))
+	{
+		$buttons = explode('|', $buttons[0]);
+	}
+	elseif (func_num_args()==1)
+	{
+		$buttons = $buttons[0];
+	}
 
 
     foreach($buttons as $name=>$button)

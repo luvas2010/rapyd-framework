@@ -80,6 +80,7 @@ class field_field extends rpd_component_library {
 		{
 			$this->required = true;
 		}
+		return $this;
 	}
 
 	// --------------------------------------------------------------------
@@ -302,6 +303,7 @@ class field_field extends rpd_component_library {
 				$this->set_option($values[0], $values[1]);
 			}
 		}
+		return $this;
 	}
 
 	// --------------------------------------------------------------------
@@ -309,6 +311,7 @@ class field_field extends rpd_component_library {
 	public function set_option($value='', $description='')
 	{
 		$this->options[$value] = $description;
+		return $this;
 	}
 
 	// --------------------------------------------------------------------
