@@ -20,6 +20,7 @@ class edit_controller extends rpd {
 		$edit->field('editor','body','Description')->rule('required');
 
 		$edit->buttons('modify','save','undo','back');
+
 		$edit->build();
 
 		$data['head']	= $this->head();

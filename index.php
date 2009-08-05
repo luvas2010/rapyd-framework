@@ -19,6 +19,7 @@ define('RAPYD_VERSION', '0.6');
 define('RAPYD_BUILD_DATE', '2009-08-09');
 
 
+
 /**
  * core class
  */
