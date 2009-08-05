@@ -96,6 +96,9 @@ class rpd_component_library {
 	{
 		$prefix = strtolower(substr($method, 0, 4));
 		$property = strtolower(substr($method, 4));
+		if (method_exists($this,  'set_'.$method)) {
+			return call_user_func_array(array($this, 'set_'.$method), $arguments);
+		}
 
 		if (empty($prefix) || empty($property)) {
 				return;
