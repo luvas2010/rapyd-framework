@@ -1,13 +1,5 @@
 <?php if (!defined('RAPYD_PATH')) exit('No direct script access allowed');
 
-/*
-rpd::load('helper','form');
-rpd::load('library','validation');
-rpd::load('model','datamodel');
-
-rpd::load('component','component');
-rpd::load('component','fields/dataform_field');
-*/
 
 class dataform_library extends rpd_component_library {
 
@@ -16,42 +8,40 @@ class dataform_library extends rpd_component_library {
 
 	protected $source;
 	public $fields	= array();
-  protected $errors = array();
+	protected $errors = array();
 
-  //form action, enctype, scripts
-  protected $process_url = "";
+	//form action, enctype, scripts
+	protected $process_url = "";
 
-  protected $multipart = false;
+	protected $multipart = false;
 	protected $default_group;
-  protected $attributes = array('class'=>'form');
+	protected $attributes = array('class'=>'form');
 	protected $error_string;
 	protected $form_scripts;
 
 
 	public function __construct($config = array())
 	{
-    parent::__construct($config);
-    $this->cid = parent::get_identifier();
+		parent::__construct($config);
+		$this->cid = parent::get_identifier();
 
-    $this->validation = new rpd_validation_library();
-    $this->process_url = rpd_url_helper::append('process', 1);
+		$this->validation = new rpd_validation_library();
+		$this->process_url = rpd_url_helper::append('process', 1);
 
 		if (isset($this->model))
 		{
-      //die('qui');
-      $this->status = "create";
-		if (isset($this->model))
-		{
-      //die('qui');
-      $this->status = "create";
-      $this->validation->model = $this->model;
+			$this->status = "create";
+			if (isset($this->model))
+			{
+				$this->status = "create";
+				$this->validation->model = $this->model;
+			}
 		}
-		}
-  }
+	}
 
-  // --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
-  protected function set_fields($fields)
+	protected function set_fields($fields)
 	{
 		foreach ($fields as $field)
 		{
@@ -109,20 +99,20 @@ class dataform_library extends rpd_component_library {
 			$field_obj->group = $this->default_group;
 		}
 
-    $this->fields[$field_name] = $field_obj;
+		$this->fields[$field_name] = $field_obj;
 		return $field_obj; //method chaining
-  }
+	}
 
 	// --------------------------------------------------------------------
 
-  protected function set_style($style)
+	protected function set_style($style)
 	{
 		$this->set_attributes(array('style'=>$style));
 	}
 
 	// --------------------------------------------------------------------
 
-  public function set_source($source)
+	public function set_source($source)
 	{
 		//instance or reuse a model
 		if (is_object($source) and (get_class($source)=='datamodel' OR is_subclass_of($source, "datamodel")))
@@ -134,10 +124,10 @@ class dataform_library extends rpd_component_library {
 			$this->model = new datamodel_model($source);
 		}
 		else
-    {
-      $this->show_error('datamodel non valido');
-			die();
-    }
+		{
+			$this->show_error('datamodel non valido');
+				die();
+		}
 
 		if (count($this->fields))
 		{
@@ -150,13 +140,13 @@ class dataform_library extends rpd_component_library {
 			}
 		}
 		return $this->model; //method chaining
-  }
+	}
 
-  // --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
-  public function load($id)
+	public function load($id)
 	{
-    if (isset($this->model))
+		if (isset($this->model))
 		{
 			$this->model->load($id);
 		}
@@ -164,37 +154,37 @@ class dataform_library extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
-  public function build_fields()
+	public function build_fields()
 	{
 
 		foreach ($this->fields as $field)
 		{
 			//share status
-		  $field->status = $this->status;
-      $field->build();
+			$field->status = $this->status;
+			$field->build();
 
 		}
 	}
 
 	// --------------------------------------------------------------------
 
-  function pre_process($action,$function,$arr_values=array())
-  {
-    $this->model->pre_process($action,$function,$arr_values);
-  }
+	function pre_process($action,$function,$arr_values=array())
+	{
+		$this->model->pre_process($action,$function,$arr_values);
+	}
 
-  function post_process($action,$function,$arr_values=array())
-  {
-    $this->model->post_process($action,$function,$arr_values);
-  }
+	function post_process($action,$function,$arr_values=array())
+	{
+		$this->model->post_process($action,$function,$arr_values);
+	}
 
 	// --------------------------------------------------------------------
 
-  protected function build_form()
+	protected function build_form()
 	{
 		rpd_html_helper::css('dataform.css');
 
-    $data = get_object_vars($this);
+		$data = get_object_vars($this);
 		$data['container'] = $this->button_containers();
 
 		$form_type = 'open';
@@ -210,21 +200,21 @@ class dataform_library extends rpd_component_library {
 
 		// Set the form open and close
 
-    if ($this->status_is('show'))
-    {
-      $data['form_begin'] = '<div class="form">';
-      $data['form_end'] = '</div>';
-    }
-    else
-    {
-      $data['form_begin'] = rpd_form_helper::$form_type($this->process_url, $this->attributes);
-      $data['form_end'] = rpd_form_helper::close();
-    }
+		if ($this->status_is('show'))
+		{
+		  $data['form_begin'] = '<div class="form">';
+		  $data['form_end'] = '</div>';
+		}
+		else
+		{
+		  $data['form_begin'] = rpd_form_helper::$form_type($this->process_url, $this->attributes);
+		  $data['form_end'] = rpd_form_helper::close();
+		}
 
-		$data['fields'] = $this->fields;
+			$data['fields'] = $this->fields;
 
-    return rpd::view('dataform', $data);
-  }
+		return rpd::view('dataform', $data);
+	}
 
   // --------------------------------------------------------------------
 
