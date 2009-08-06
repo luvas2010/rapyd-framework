@@ -36,6 +36,7 @@ class field_field extends rpd_component_library {
 	public $update_value = null; //default value for update
 	public $options = array(); //associative&multidim. array ($value => $description)
 	public $mask = null;
+	public $group;
 
 	public $value = null;
 	public $values = array();
@@ -71,6 +72,14 @@ class field_field extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
+	public function set_group($group)
+	{
+
+		$this->group = $group;
+		return $this;
+	}
+	// --------------------------------------------------------------------
+
 	public function set_rule($rule)
 	{
 		//keep CI/kohana serialization
@@ -80,6 +89,34 @@ class field_field extends rpd_component_library {
 		{
 			$this->required = true;
 		}
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+
+	public function set_mask($mask)
+	{
+
+		$this->mask = $mask;
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+
+	public function set_in($in)
+	{
+		$this->in = $in;
+		return $this;
+	}
+
+
+
+	// --------------------------------------------------------------------
+
+	public function set_attributes($attributes)
+	{
+
+		$this->attributes = $attributes;
 		return $this;
 	}
 

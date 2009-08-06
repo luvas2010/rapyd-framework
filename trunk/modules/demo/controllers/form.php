@@ -8,40 +8,27 @@ class form_controller extends rpd {
 	{
 
 		//form
-		$config = array	(
-			'label'  => 'Simple Form',
-			'fields' => array (
-					array (
-						//serialized way to assign 'type|name|label'
-						'field' => 'input|name|Name',
-						'rule'  => 'trim|required',
-						'group' => 'personal data',
-						//improvement, no more 'attributes' => array('styles'..
-						'style' => 'width:100px',
-					),
-					array (
-						//normal way type,name,label assigned one-by-one
-						'type'  => 'input',
-						'name'  => 'lastname',
-						'label' => 'Lastname',
-						'rule'  => 'trim|required',
-						'group' => 'personal data',
-						'in'    => 'name',
-					),
-					array (
-						'type'  => 'input',
-						'name'  => 'cod_fiscale',
-						'label' => 'vat code',
-						'rule'  => 'required|exact_length[16]',
-						'mask'  => 'aaaaaa99a99a999a',
-						'group' => 'fiscal data',
-					),
-			),
-			'buttons'	=> array (
-										'save'    =>'save|Next Step',
-			),
-		);
-		$form = new dataform_library($config);
+
+		$form = new dataform_library();
+
+		$form->field('input','name','Name')
+			->rule('trim','required')
+			->group('personal data')
+			->attributes(array('style'=>'width: 100px'));
+
+		$form->field('input','lastname','Lastname')
+			->rule('trim','required')
+			->group('fiscal data')
+			->in('name');
+
+		$form->field('input','cod_fiscale','vat code')
+			->rule('required','exact_length[16]')
+			->mask('aaaaaa99a99a999a')
+			->group('fiscal data')
+			->rule('required');
+
+		//$form->buttons(array ('save' => 'save|Next Step'));
+		$form->buttons('save');
 		$form->build();
 
 		//flow control
@@ -55,10 +42,10 @@ class form_controller extends rpd {
 			var_dump($_POST);
 		}
 
-		$data['head']			= $this->head();
-		$data['title'] 		= 'DataForm';
-		$data['content']	= $form.'<br />';
-		$data['code'] 		= highlight_string(file_get_contents(__FILE__), TRUE);
+		$data['head']	= $this->head();
+		$data['title']	= 'DataForm';
+		$data['content']= $form.'<br />';
+		$data['code']	= highlight_string(file_get_contents(__FILE__), TRUE);
 
 		//output
 		echo $this->view('demo', $data);

@@ -332,11 +332,6 @@ class rpd_component_library {
 	{
 		$buttons = explode('|', $buttons[0]);
 	}
-	elseif (func_num_args()==1)
-	{
-		$buttons = $buttons[0];
-	}
-
 
     foreach($buttons as $name=>$button)
     {
