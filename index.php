@@ -16,7 +16,8 @@ define('DOC_ROOT', substr(__FILE__, 0, strrpos(__FILE__, $_SERVER['SCRIPT_NAME']
 define('RAPYD_ROOT', getcwd().'/');
 define('RAPYD_PATH', str_replace(DOC_ROOT,'',RAPYD_ROOT));
 define('RAPYD_VERSION', '0.6');
-define('RAPYD_BUILD_DATE', '2009-08-01');
+define('RAPYD_BUILD_DATE', '2009-08-09');
+
 
 
 /**
