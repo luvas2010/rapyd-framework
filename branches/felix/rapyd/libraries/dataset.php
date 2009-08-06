@@ -178,6 +178,7 @@ class dataset_library extends rpd_component_library {
 			}
 		}
 
+
 		//limit-offset
 		if (isset($this->limit))
 		{
@@ -185,6 +186,7 @@ class dataset_library extends rpd_component_library {
 		}
 		$data = $this->source;
 		break;
+
 
 		case "table":
 

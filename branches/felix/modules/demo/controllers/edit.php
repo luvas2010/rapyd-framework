@@ -6,7 +6,6 @@ class edit_controller extends rpd {
 
 	function index()
 	{
-
 		//edit
 		$edit = new dataedit_library();
 		$edit->label = 'Manage Article';
@@ -23,7 +22,6 @@ class edit_controller extends rpd {
 		$edit->buttons('modify','save','undo','back');
 
 		$edit->build();
-
 
 		$data['head']	= $this->head();
 		$data['title'] 	= 'DataEdit';
