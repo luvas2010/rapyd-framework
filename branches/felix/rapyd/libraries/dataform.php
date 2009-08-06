@@ -235,7 +235,7 @@ class dataform_library extends rpd_component_library {
     $this->build_fields();
 
     //process only if instance is a dataform
-    if (get_class($this)=='dataform')
+    if (is_a($this, 'dataform_library'))
     {
       //build buttons
       $this->build_buttons();
