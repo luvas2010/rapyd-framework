@@ -333,6 +333,11 @@ class rpd_component_library {
 		$buttons = explode('|', $buttons[0]);
 	}
 
+	if (func_num_args()==1 AND is_array($buttons[0]))
+	{
+		$buttons = $buttons[0];
+	}
+
     foreach($buttons as $name=>$button)
     {
       if (is_numeric($name) and is_string($button))
