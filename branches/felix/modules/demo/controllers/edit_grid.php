@@ -57,6 +57,7 @@ class edit_grid_controller extends rpd {
 		//comments datagrid configuration
 
 		$comments_grid = new datagrid_library();
+		$comments_grid->label = 'Comments';
 		$comments_grid->source('comments');
 		$comments_grid->db->where('article_id',$this->qs->value('create|show|modify|update'));
 		$comments_grid->db->orderby('comment_id','desc');
