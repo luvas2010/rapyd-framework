@@ -78,6 +78,7 @@ class field_field extends rpd_component_library {
 		$this->group = $group;
 		return $this;
 	}
+
 	// --------------------------------------------------------------------
 
 	public function set_rule($rule)
@@ -109,8 +110,6 @@ class field_field extends rpd_component_library {
 		return $this;
 	}
 
-
-
 	// --------------------------------------------------------------------
 
 	public function set_attributes($attributes)
@@ -119,6 +118,24 @@ class field_field extends rpd_component_library {
 		$this->attributes = $attributes;
 		return $this;
 	}
+
+
+	// --------------------------------------------------------------------
+
+	public function set_insert_value($insert_value)
+	{
+		$this->insert_value = $insert_value;
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+
+	public function set_update_value($update_value)
+	{
+		$this->update_value = $update_value;
+		return $this;
+	}
+
 
 	// --------------------------------------------------------------------
 
