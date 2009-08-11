@@ -6,6 +6,8 @@
 
 == sample ==
 
+using source, the filter can build a where clause only on fields of "artcles" table
+
 {{{
 
   $filter = new datafilter_library();
@@ -17,6 +19,26 @@
   $filter->build();
 
 
+}}}
+
+
+== sample 2 ==
+
+using db object instead source(), the filter can build a where clause also on joined tables/fields
+
+
+{{{
+$filter = new datafilter_library();
+$filter->label = 'Article Filter';
+
+$filter->db->select("articles.*, authors.*");
+$filter->db->from("articles");
+$filter->db->join("authors","authors.author_id=articles.author_id","LEFT");
+
+$filter->field('input','title','Title')->attributes(array('style' => 'width:170px'));
+$filter->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
+$filter->buttons('reset','search');
+$filter->build();
 }}}
 
 
