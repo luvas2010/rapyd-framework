@@ -36,7 +36,7 @@
 
 == methods ==
 
-*source* the source of the data to display, may be a db-table name, a sql-query, a datafilter object, a 2dim. associative array matrix.
+*source* the source of the data to display, may be a db-table name, a sql-query, a datafilter object, an associative array matrix.
 
 *column*
 todo..
