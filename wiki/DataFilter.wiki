@@ -9,9 +9,7 @@
 
   $filter = new datafilter_library();
   $filter->label = 'Article Filter';
-  $filter->db->select("articles.*, authors.*");
-  $filter->db->from("articles");
-  $filter->db->join("authors","authors.author_id=articles.author_id","LEFT");
+  $filter->source('articles');
   $filter->field('input','title','Title')->attributes(array('style' => 'width:170px'));
   $filter->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
   $filter->buttons('reset','search');
