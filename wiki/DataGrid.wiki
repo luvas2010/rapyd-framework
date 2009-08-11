@@ -27,6 +27,8 @@
 
 == sample 2 ==
 
+using a DataFilter instance as source it's easy to build filtered-grid 
+
 {{{
 
   $grid = new datagrid_library();
