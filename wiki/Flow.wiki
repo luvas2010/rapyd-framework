@@ -1,5 +1,5 @@
 #summary How does it work
-#labels Phase-Implementation
+#labels Phase-Implementation,Featured
 
 
 [http://www.rapyd.com/assets/images/flow.gif]
