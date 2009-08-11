@@ -7,19 +7,8 @@ Parameters for an edit field (DataEdit).
 
 = Details =
 
-Filling the array will tell Rapyd how to present the edit field.
+(todo  0.6 syntax)
 
-_Syntax_
-
-{{{
-array (
- 'type'  => 'input',
- 'name'  => 'name',
- 'label' => 'Name',
- 'attributes' => array('style'=>'width: 285px; clear: left;'),
- 'rule'  => 'trim',
-),
-}}}
 
 *type* the type of input:
   * *input* normal text input
