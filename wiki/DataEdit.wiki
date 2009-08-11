@@ -52,6 +52,11 @@ $filter->field($type, $name, $label)->*attributes($attributes)*
 
 || *$attributes* || - || assoc. array || array of extra attributes to build for column ||
 
+$filter->field($type, $name, $label)->*rule($rule)*
+
+|| *$rule* || - || mixed || $rule can be 'required' or can be the name of a custom or native php function (like trim), it's possible to pass an array instead a single rule, or use a serialized sintax like 'required|trim' using a pipe as separator ||
+
+
 $filter->field($type, $name, $label)->*options($options)*
 
 || *$options* || - || array || array of options (for field types like dropdown, radiogroup etc..) ||
@@ -69,25 +74,5 @@ build filter, fill $filter->output
 
 
 
-
-
-
-
-*type* the type of input:
-  * *input* normal text input
-  * *password* password text input, displayed as asterisks
-  * *checkboxgroup* a group of check boxes where multiple selections are possible
-  * *checkbox* a single check box
-  * *radiogroup* a group of radio buttons where only one selection is possible
-  * *radio* a single radio button
-  * *dropdown* a drop down list
-  * *date* a pop-up date selector
-  * *editor* an editor box
-
-*name* the database field to use
-
-*label* the label to display
-
-*attributes* style attributes to change appearance
 
 *rule* _required_ and any PHP command like _trim, serialize, ucword, etc._ Multiple rules must be concatenated by the pipe symbol: _required|trim_
