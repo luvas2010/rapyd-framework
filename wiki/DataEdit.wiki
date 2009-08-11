@@ -1,4 +1,5 @@
 #summary DataEdit syntax
+#labels Phase-Implementation
 
 = Data Edit Syntax =
 
@@ -34,12 +35,12 @@
 
 || *Property* || *Default Value* || *Options* || *Description* ||
 || label || '' || string || label to display for the filter ||
-
+|| back_url || '' || string || url of page where to go back (when we click on back button)||
 
 == methods ==
 *$filter->source($source)*
 
-|| *$source* || - || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
+|| *$source* || - || mixed || may be a "datamodel" object or extended one, the name o a table (in this case dataedit will instance a new datamodel for us), a datafilter object, an associative array matrix ||
 
 *$filter->field($type, $name, $label)*
 
@@ -57,7 +58,7 @@ $filter->field($type, $name, $label)->*options($options)*
 
 *$filter->buttons($button1`[,$button2...]`)*
 
-|| *$button* n || - || mixed || name of buttons to build ('reset' and 'search' are the standard buttons available for datafilter) ||
+|| *$button* n || - || mixed || name of buttons to build ('modify','save','undo' and 'back' are the standard buttons available for datafilter) ||
 
 *$filter->build()*
 
