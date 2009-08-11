@@ -31,7 +31,7 @@ http://website/welcome
 }}}
 will parse the [View] 'welcome' then the result will be printed
 
-this request:
+this other request:
 {{{
 http://website/welcome/test
 }}}
