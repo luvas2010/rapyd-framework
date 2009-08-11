@@ -11,7 +11,8 @@ class welcome_controller extends rpd {
 
   function index()
   {
-    echo $this->view('welcome');
+    $vars = array('varname'=>'value');
+    echo $this->view('welcome',$vars);
   }
   
   function test()
@@ -28,6 +29,8 @@ class welcome_controller extends rpd {
 http://website/welcome
 
 will output the content of the view 'welcome'
+
+in the welcome view $varname will be filled by 'value';
 
 
 http://website/welcome/test
