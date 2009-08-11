@@ -51,7 +51,7 @@ $filter->build();
 == methods ==
 *$filter->source($source)*
 
-|| *$source* || - || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
+|| *$source* || - || mixed || may be a db-table name, or a  sql-query ||
 
 *$filter->field($type, $name, $label)*
 
