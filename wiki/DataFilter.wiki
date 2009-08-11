@@ -1,18 +1,39 @@
 #summary DataFilter syntax
 
-= Introduction =
-
-Parameters for an data filter field (DataFilter).
+= Data Filter Syntax =
 
 
-= Details =
+== sample ==
 
-(todo  0.6 syntax)
+{{{
 
-*label* a label to display above the search field (may contain HTML/javascript code)
+  $filter = new datafilter_library();
+  $filter->label = 'Article Filter';
+  $filter->db->select("articles.*, authors.*");
+  $filter->db->from("articles");
+  $filter->db->join("authors","authors.author_id=articles.author_id","LEFT");
+  $filter->field('input','title','Title')->attributes(array('style' => 'width:170px'));
+  $filter->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
+  $filter->buttons('reset','search');
+  $filter->build();
 
-*fields* the database field(s) to use. These can contain references to other tables by including an SQL statement. 
 
-*buttons* the buttons to display at the bottom of the form:
-  * reset: reset the form
-  * search: perform the search
+}}}
+
+
+== properties ==
+
+|| *Property* || *Default Value* || *Options* || *Description* ||
+|| label || '' || string || label to display for the filter ||
+
+
+== methods ==
+
+*$filter->field($type, $name, $label)*
+
+|| *$type* || '' || string || field type (input,select,radiogroup..) ||
+
+
+*$filter->build()*
+
+build filter, fill $filter->output 
