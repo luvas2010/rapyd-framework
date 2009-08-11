@@ -44,9 +44,9 @@ $filter->field($type, $name, $label)->*options($options)*
 
 || *$options* || - || array || array of options (for field types like select, radiogroup etc..) ||
 
-*$filter->buttons($button1`[,$button2]`)*
+*$filter->buttons($button1`[,$button2...]`)*
 
-|| *$button*n || - || mixed || name of buttons to build ('reset' and 'search' are the standard buttons available for datafilter) ||
+|| *$button* n || - || mixed || name of buttons to build ('reset' and 'search' are the standard buttons available for datafilter) ||
 
 *$filter->build()*
 
