@@ -1,5 +1,0 @@
-#labels Featured,Phase-Implementation
-
-==Flow==
-
-[http://www.rapyd.com/assets/images/flow.gif]
