@@ -1,7 +1,7 @@
 #summary View Sample
 #labels Phase-Implementation
 
-= Controller Sample =
+= View Sample =
 
 {{{
 
