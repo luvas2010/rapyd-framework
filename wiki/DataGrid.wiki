@@ -25,17 +25,14 @@
 }}}
 
 
-*label* a label to display above the search field (may contain HTML/javascript code)
+== properties ==
 
-*source* the source of the data to display like a filter defined in DataFilter and built by $filter->build();
+*label* a label to display for the grid
+*per_page* the number of rows to display per page. 
 
-*per_page* the number of rows to display per page. Paging and browsing back and forth is handled by the Rapyd framework.
+== methods ==
 
-*add_url* the link to a php script to perform an add, change or remove action.
+*source* the source of the data to display, may be a db-table name, a sql-query, a datafilter object, a 2dim. associative array matrix.
 
-*buttons* an array of buttons to display in the add_url script:
-  * _add_ add a new record
-  * _delete_ delete the current record
-  * _edit_ edit the current record
-
-*columns* an array of columns to display in the DataGrid
+*column*
+todo..
