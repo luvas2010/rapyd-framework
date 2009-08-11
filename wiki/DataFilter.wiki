@@ -1,4 +1,5 @@
 #summary DataFilter syntax
+#labels Phase-Implementation
 
 = Data Filter Syntax =
 
@@ -32,7 +33,7 @@
 
 *$filter->field($type, $name, $label)*
 
-|| *$type* || - || string || field type (input,select,radiogroup..) ||
+|| *$type* || - || string || field type (input,dropdown,radiogroup..) ||
 || *$name* || - || string || field name, usually the db table field to append in the where clause ||
 || *$label* || - || string || label to display for the field ||
 
@@ -42,7 +43,7 @@ $filter->field($type, $name, $label)->*attributes($attributes)*
 
 $filter->field($type, $name, $label)->*options($options)*
 
-|| *$options* || - || array || array of options (for field types like select, radiogroup etc..) ||
+|| *$options* || - || array || array of options (for field types like dropdown, radiogroup etc..) ||
 
 *$filter->buttons($button1`[,$button2...]`)*
 
