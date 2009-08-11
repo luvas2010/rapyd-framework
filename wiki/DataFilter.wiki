@@ -28,13 +28,21 @@
 == methods ==
 *$filter->source($source)*
 
-|| *$source* || '' || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
+|| *$source* || - || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
 
 *$filter->field($type, $name, $label)*
 
-|| *$type* || '' || string || field type (input,select,radiogroup..) ||
-|| *$name* || '' || string || field name, usually the db table field to append in the where clause ||
-|| *$label* || '' || string || label to display for the field ||
+|| *$type* || - || string || field type (input,select,radiogroup..) ||
+|| *$name* || - || string || field name, usually the db table field to append in the where clause ||
+|| *$label* || - || string || label to display for the field ||
+
+$filter->field($type, $name, $label)->*attributes($attributes)*
+
+|| *$attributes* || - || assoc. array || array of extra attributes to build for column ||
+
+$filter->field($type, $name, $label)->*options($options)*
+
+|| *$options* || - || array || array of options (for field types like select, radiogroup etc..) ||
 
 *$filter->build()*
 
