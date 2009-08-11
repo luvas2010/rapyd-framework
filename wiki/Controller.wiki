@@ -3,6 +3,15 @@
 
 = Controller Sample =
 
+A controller is a simple php class it must extend rpd superclass (so it can inherit $this->db, $this->url  and some other system libraries).
+
+Conventions/rules: 
+
+Class name must end with _controller
+Filename must be minuscase, with the same class name (without _controller suffix)
+File must be deployed in /application/controllers/  (or in /modules/modulename/controllers/)
+
+
 {{{
 
 <?php
