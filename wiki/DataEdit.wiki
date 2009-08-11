@@ -68,11 +68,3 @@ $filter->field($type, $name, $label)->*options($options)*
 *$filter->build()*
 
 build filter, fill $filter->output 
-
-
-
-
-
-
-
-*rule* _required_ and any PHP command like _trim, serialize, ucword, etc._ Multiple rules must be concatenated by the pipe symbol: _required|trim_
