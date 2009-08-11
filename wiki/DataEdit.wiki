@@ -1,13 +1,75 @@
 #summary DataEdit syntax
 
-= Introduction =
-
-Parameters for an edit field (DataEdit).
+= Data Edit Syntax =
 
 
-= Details =
+== sample ==
 
-(todo  0.6 syntax)
+{{{
+
+  $edit = new dataedit_library();
+  $edit->label = 'Manage Article';
+  $edit->back_url = $this->url('filtered_grid');
+  
+  $edit->source('articles');
+  $edit->field('input','title','Title')->rule('trim','required');
+  $edit->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
+  $edit->field('dropdown','author_id','Author')->options('SELECT author_id, firstname FROM authors')
+	 ->rule('required');
+  $edit->field('date','datefield','Date')->attributes(array('style'=>'width: 80px'));
+  $edit->field('editor','body','Description')->rule('required');
+  
+  $edit->buttons('modify','save','undo','back');
+
+  $edit->build();
+
+  $data['head']	= $this->head();
+  $data['content']= $edit->output;
+
+
+}}}
+
+
+== properties ==
+
+|| *Property* || *Default Value* || *Options* || *Description* ||
+|| label || '' || string || label to display for the filter ||
+
+
+== methods ==
+*$filter->source($source)*
+
+|| *$source* || - || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
+
+*$filter->field($type, $name, $label)*
+
+|| *$type* || - || string || field type (input,dropdown,radiogroup..) ||
+|| *$name* || - || string || field name, usually the db table field to append in the where clause ||
+|| *$label* || - || string || label to display for the field ||
+
+$filter->field($type, $name, $label)->*attributes($attributes)*
+
+|| *$attributes* || - || assoc. array || array of extra attributes to build for column ||
+
+$filter->field($type, $name, $label)->*options($options)*
+
+|| *$options* || - || array || array of options (for field types like dropdown, radiogroup etc..) ||
+
+*$filter->buttons($button1`[,$button2...]`)*
+
+|| *$button* n || - || mixed || name of buttons to build ('reset' and 'search' are the standard buttons available for datafilter) ||
+
+*$filter->build()*
+
+build filter, fill $filter->output 
+
+
+
+
+
+
+
+
 
 
 *type* the type of input:
