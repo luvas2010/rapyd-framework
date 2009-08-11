@@ -28,6 +28,7 @@
 == properties ==
 
 *label* a label to display for the grid
+
 *per_page* the number of rows to display per page. 
 
 == methods ==
