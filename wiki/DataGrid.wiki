@@ -7,14 +7,6 @@
 == Sample ==
 
 {{{
-<?php
-
-
-class articles_controller extends rpd {
-
-function index()
-{
-   //grid
 
   $grid = new datagrid_library();
   $grid->label = 'Article List';
@@ -28,14 +20,7 @@ function index()
   $grid->build();
 
   $data['head']   = $this->head();
-  $data['content']= $grid->output.'<br />';
-
-  echo $this->view('articles', $data);
-
- }
-
-
-}
+  $data['content']= $grid->output;
 
 }}}
 
