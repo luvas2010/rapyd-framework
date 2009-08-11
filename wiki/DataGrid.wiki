@@ -42,6 +42,6 @@
 
 *$grid->column($pattern, $label, $is_orderby)*
 
-|| *$pattern* || '' || string || label to display for the grid ||
-|| *$pattern* || '' || string || label to display for the grid ||
-|| *$pattern* || '' || string || label to display for the grid ||
+|| *$pattern* || '' || string || field pattern, field name, or content of cells ||
+|| *$label* || '' || string || column label ||
+|| *$orderby* || false || boolean || if column is sortable ||
