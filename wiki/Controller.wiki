@@ -25,12 +25,12 @@ class welcome_controller extends rpd {
 
 }}}
 
-
-!http://website/welcome!
-
+{{{
+http://website/welcome
+}}}
 will output the content of the [View] 'welcome', in the welcome [View] $varname will be filled by 'value'
 
-
-!http://website/welcome/test!
-
+{{{
+http://website/welcome/test
+}}}
 will output 'test'
