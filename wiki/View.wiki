@@ -3,6 +3,8 @@
 
 = View Sample =
 
+
+A view is a simple php file with html, php loops, echos etc..
 {{{
 
 <html>
@@ -19,8 +21,6 @@
 
 }}}
 
-you can call this view in a [Controller] simply with:
 
-{{{
-echo $this->view('welcome',array('varname'=>'value'));
-}}}
+
+to see how you can send vars from a controller see the [Controller] sample.
