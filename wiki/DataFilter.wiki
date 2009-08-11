@@ -33,7 +33,8 @@
 *$filter->field($type, $name, $label)*
 
 || *$type* || '' || string || field type (input,select,radiogroup..) ||
-
+|| *$name* || '' || string || field name, usually the db table field to append in the where clause ||
+|| *$label* || '' || string || label to display for the field ||
 
 *$filter->build()*
 
