@@ -19,7 +19,7 @@
 
 }}}
 
-you can call this view in a controller simply by call:
+you can call this view in a [Controller] simply by call:
 
 {{{
 echo $this->view('welcome',array('varname'=>'value'));
