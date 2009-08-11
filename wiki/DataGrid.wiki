@@ -1,10 +1,10 @@
 #summary DataGrid syntax
 #labels Phase-Implementation
 
-== DataGrid Syntax ==
+= Data Grid Syntax =
 
 
-=== Sample ===
+== Sample ==
 
 {{{
 <?php
