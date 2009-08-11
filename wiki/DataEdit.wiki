@@ -38,33 +38,33 @@
 || back_url || '' || string || url of page where to go back (when we click on back button)||
 
 == methods ==
-*$filter->source($source)*
+*$edit->source($source)*
 
 || *$source* || - || mixed || may be a "datamodel" object (or extended one), or the name of a db table (in this case dataedit will instance a new datamodel for us) ||
 
-*$filter->field($type, $name, $label)*
+*$edit->field($type, $name, $label)*
 
 || *$type* || - || string || field type (input, password, checkboxgroup, checkbox, radiogroup, radio, dropdown, date, editor) ||
 || *$name* || - || string || field name, usually the db table field to append in the where clause ||
 || *$label* || - || string || label to display for the field ||
 
-$filter->field($type, $name, $label)->*attributes($attributes)*
+$edit->field($type, $name, $label)->*attributes($attributes)*
 
 || *$attributes* || - || assoc. array || array of extra attributes to build for column ||
 
-$filter->field($type, $name, $label)->*rule($rule)*
+$edit->field($type, $name, $label)->*rule($rule)*
 
 || *$rule* || - || mixed || $rule can be 'required' or can be the name of a custom or native php function (like trim), it's possible to pass an array instead a single rule, or use a serialized sintax like 'required|trim' using a pipe as separator ||
 
 
-$filter->field($type, $name, $label)->*options($options)*
+$edit->field($type, $name, $label)->*options($options)*
 
 || *$options* || - || array || array of options (for field types like dropdown, radiogroup etc..) ||
 
-*$filter->buttons($button1`[,$button2...]`)*
+*$edit->buttons($button1`[,$button2...]`)*
 
-|| *$button* n || - || mixed || name of buttons to build ('modify','save','undo' and 'back' are the standard buttons available for datafilter) ||
+|| *$button* n || - || mixed || name of buttons to build ('modify','save','undo' and 'back' are the standard buttons available for dataedit) ||
 
-*$filter->build()*
+*$edit->build()*
 
-build filter, fill $filter->output 
+build dataedit, fill $edit->output 
