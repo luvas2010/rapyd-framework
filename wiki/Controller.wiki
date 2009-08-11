@@ -25,11 +25,13 @@ class welcome_controller extends rpd {
 
 }}}
 
+this request:
 {{{
 http://website/welcome
 }}}
 will output the content of the [View] 'welcome', in the welcome [View] $varname will be filled by 'value'
 
+this request:
 {{{
 http://website/welcome/test
 }}}
