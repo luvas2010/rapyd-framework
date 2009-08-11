@@ -40,7 +40,7 @@
 == methods ==
 *$filter->source($source)*
 
-|| *$source* || - || mixed || may be a "datamodel" object or extended one, the name o a table (in this case dataedit will instance a new datamodel for us), a datafilter object, an associative array matrix ||
+|| *$source* || - || mixed || may be a "datamodel" object (or extended one), or the name of a db table (in this case dataedit will instance a new datamodel for us) ||
 
 *$filter->field($type, $name, $label)*
 
