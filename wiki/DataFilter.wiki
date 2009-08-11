@@ -33,7 +33,7 @@
 
 *$filter->field($type, $name, $label)*
 
-|| *$type* || - || string || field type (input,dropdown,radiogroup..) ||
+|| *$type* || - || string || field type (input, checkboxgroup, checkbox, radiogroup, radio, dropdown, date)  ||
 || *$name* || - || string || field name, usually the db table field to append in the where clause ||
 || *$label* || - || string || label to display for the field ||
 
