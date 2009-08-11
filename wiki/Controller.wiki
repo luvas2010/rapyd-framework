@@ -28,9 +28,7 @@ class welcome_controller extends rpd {
 
 http://website/welcome
 
-will output the content of the view 'welcome'
-
-in the welcome view $varname will be filled by 'value';
+will output the content of the view 'welcome', in the welcome view $varname will be filled by 'value'
 
 
 http://website/welcome/test
