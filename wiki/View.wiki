@@ -1,0 +1,21 @@
+#summary View Sample
+#labels Phase-Implementation
+
+= Controller Sample =
+
+{{{
+
+<html>
+<head>
+    <title>Welcome !</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+
+   <p>This is a simple html file with some php var <?=$varname?> </p>
+
+</body>
+</html>
+
+}}}
+
