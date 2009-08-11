@@ -4,7 +4,7 @@
 = Data Grid Syntax =
 
 
-== Sample ==
+== sample ==
 
 {{{
 
