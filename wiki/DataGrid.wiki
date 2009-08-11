@@ -25,6 +25,19 @@
 }}}
 
 
+== sample 2 ==
+
+{{{
+
+  $grid = new datagrid_library();
+  $grid->label = 'Article List';
+  $grid->per_page = 10;
+
+  $grid->source($filter);
+  ..
+
+}}}
+
 == properties ==
 
   	   	  	
