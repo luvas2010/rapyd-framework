@@ -26,6 +26,9 @@
 
 
 == methods ==
+*$filter->source($source)*
+
+|| *$source* || '' || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
 
 *$filter->field($type, $name, $label)*
 
