@@ -45,3 +45,6 @@
 || *$pattern* || '' || string || field pattern, field name, or content of cells ||
 || *$label* || '' || string || column label ||
 || *$orderby* || false || boolean || if column is sortable ||
+
+*$grid->build()*
+build grid, fill $grid->output 
