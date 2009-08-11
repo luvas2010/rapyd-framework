@@ -6,9 +6,9 @@ Completed features have a strike through them.
 
 0.6
 
-  * core rewrite, syntax will be more oop strict, but we will do our best to keep "configuration arrays" as an alternative way to describe widgets.
+  * ~~core rewrite, syntax will be more oop strict, but we will do our best to keep "configuration arrays" as an alternative way to describe widgets.~~
 
- * documentation 
+ * ~~documentation~~
 
 
 0.5
