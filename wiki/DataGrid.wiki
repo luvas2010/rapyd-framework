@@ -7,30 +7,8 @@ Parameters for a table displaying database content (DataGrid).
 
 = Details =
 
-Filling the array will tell Rapyd how to present the DataGrid.
+(todo  0.6 syntax)
 
-_Syntax_
-
-{{{
-$config = array	(
-    'label'     => 'Translations',
-    'source'    => $filter,
-    'per_page'  => 20,
-    'add_url'   => 'e_translations.php',
-    'buttons'   => array('add','delete','edit'),
-
-    'columns'   => array(
-      array(
-        'label'   => 'Company',
-        'pattern' => 'company',
-        'orderby' => true,
-        'url'     => 'e_translations.php?show={tr_id}',
-        'img'     => 'detail.gif',
-        'attributes' => array('style'=>'text-decoration: none;'),
-      ),
-    )
-  );
-}}}
 
 *label* a label to display above the search field (may contain HTML/javascript code)
 
