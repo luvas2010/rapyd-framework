@@ -36,7 +36,12 @@
 
 == methods ==
 
-*source* the source of the data to display, may be a db-table name, a sql-query, a datafilter object, an associative array matrix.
+*$grid->source($source)*
 
-*column*
-todo..
+|| *$source* || '' || mixed || may be a db-table name, a sql-query, a datafilter object, an associative array matrix ||
+
+*$grid->column($pattern, $label, $is_orderby)*
+
+|| *$pattern* || '' || string || label to display for the grid ||
+|| *$pattern* || '' || string || label to display for the grid ||
+|| *$pattern* || '' || string || label to display for the grid ||
