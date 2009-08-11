@@ -1,14 +1,10 @@
 <?php
 
-
 class edit_grid_controller extends rpd {
-
 
 	public function article()
 	{
-
 		//article dataedit
-
 		$article_edit = new dataedit_library();
 		$article_edit->label = 'Manage Articls';
 		$article_edit->source('articles');
@@ -27,13 +23,36 @@ class edit_grid_controller extends rpd {
 				$article_edit->nest('comments',$this->comments());
 			}
 		}
-		$this->render($article_edit);
+		$data['head']	= $this->head();
+		$data['title']	= 'DataEdit + DataGrid + Dataedit (Master-Detail)';
+		$data['content']= '<em>full crud in 70 lines of code</em><br />'.$article_edit->output;
+		$data['code']	= highlight_string(file_get_contents(__FILE__), TRUE);
+
+		//output
+		echo $this->view('demo', $data);
 	}
 
+	public function comments()
+	{
+		//comments datagrid configuration
+		$comments_grid = new datagrid_library();
+		$comments_grid->label = 'Comments';
+		$comments_grid->source('comments');
+		$comments_grid->db->where('article_id',$this->qs->value('create|show|modify|update'));
+		$comments_grid->db->orderby('comment_id','desc');
+		$comments_grid->column('comment_id', 'ID', true)
+					->url('edit_grid/article?show={article_id}&modify1={comment_id}','detail.gif');
+		$comments_grid->column('comment','Comment');
+		$comments_grid->column('delete', 'delete')
+					->url('edit_grid/article?show={article_id}&do_delete1={comment_id}');
+		$comments_grid->buttons('add');
+		$comments_grid->build();
+
+		return $comments_grid->output;
+	}
 
 	public function comment()
 	{
-
 		//comments dataedit
 		$comment_edit = new dataedit_library();
 		$comment_edit->label = 'Manage Comment';
@@ -50,41 +69,5 @@ class edit_grid_controller extends rpd {
 
 		return $comment_edit->output;
 	}
-
-
-	public function comments()
-	{
-		//comments datagrid configuration
-
-		$comments_grid = new datagrid_library();
-		$comments_grid->label = 'Comments';
-		$comments_grid->source('comments');
-		$comments_grid->db->where('article_id',$this->qs->value('create|show|modify|update'));
-		$comments_grid->db->orderby('comment_id','desc');
-		$comments_grid->column('comment_id', 'ID', true)
-					->url('edit_grid/article?show={article_id}&modify1={comment_id}','detail.gif');
-		$comments_grid->column('comment','Comment');
-		$comments_grid->column('delete', 'delete')
-					->url('edit_grid/article?show={article_id}&do_delete1={comment_id}');
-		$comments_grid->buttons('add');
-		$comments_grid->build();
-
-		return $comments_grid->output;
-
-	}
-
-
-	private function render($content)
-	{
-		$data['head']		= $this->head();
-		$data['title'] 		= 'DataEdit + DataGrid + Dataedit (Master-Detail)';
-		$data['content'] 	= '<em>complex crud in 100 lines of code</em><br />';
-		$data['content'].= $content.'<br />';
-		$data['code'] 		= highlight_string(file_get_contents(__FILE__), TRUE);
-
-		//output
-		echo $this->view('demo', $data);
-	}
-
 
 }

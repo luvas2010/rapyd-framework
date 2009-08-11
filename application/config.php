@@ -17,7 +17,7 @@ $config['include_paths'][]  = 'rapyd';
 
 $config['assets_path']     = RAPYD_PATH.'rapyd/assets/';
 
-$config['locale_language'] = 'it_IT';
+$config['locale_language'] = 'en_US';
 
 
 $config['db']['hostname'] = "localhost";
