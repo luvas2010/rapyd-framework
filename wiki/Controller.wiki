@@ -1,0 +1,45 @@
+#summary Controller Sample
+
+= Controller Sample =
+
+{{{
+
+<?php
+
+class welcome_controller extends rpd {
+
+
+
+
+
+	function index()
+
+	{
+
+		echo $this->view('welcome');
+
+	}
+
+
+
+	function test()
+
+	{
+
+		echo 'test';
+
+	}
+
+
+
+}
+
+
+}}}
+
+
+http://website/welcome
+will output the content of the view 'welcome'
+
+http://website/welcome/test
+will output 'test'
