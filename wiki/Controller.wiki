@@ -29,7 +29,7 @@ this request:
 {{{
 http://website/welcome
 }}}
-will output the content of the [View] 'welcome', in the welcome [View] $varname will be filled by 'value'
+will parse the [View] 'welcome' then the result will be printed
 
 this request:
 {{{
