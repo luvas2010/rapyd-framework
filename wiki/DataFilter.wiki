@@ -3,6 +3,7 @@
 
 = Data Filter Syntax =
 
+[http://www.rapyd.com/assets/images/datafilter.gif]
 
 == sample ==
 
