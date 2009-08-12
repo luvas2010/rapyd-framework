@@ -6,6 +6,8 @@
 
 == sample ==
 
+[http://www.rapyd.com/assets/images/datagrid.gif]
+
 {{{
 
   $grid = new datagrid_library();
