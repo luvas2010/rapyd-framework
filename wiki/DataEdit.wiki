@@ -3,9 +3,10 @@
 
 = Data Edit Syntax =
 
-[http://www.rapyd.com/assets/images/dataedit.gif]
 
 == sample ==
+
+[http://www.rapyd.com/assets/images/dataedit.gif]
 
 {{{
 
