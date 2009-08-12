@@ -3,6 +3,7 @@
 
 = Data Edit Syntax =
 
+[http://www.rapyd.com/assets/images/dataedit.jpg]
 
 == sample ==
 
