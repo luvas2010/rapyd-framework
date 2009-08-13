@@ -1,4 +1,5 @@
 #summary Support
+#labels Featured
 
 
 =Donate=
@@ -13,4 +14,3 @@ Felice Ostuni
 
 
 [https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=felice.ostuni@gmail.com&item_name=rapyd_donation&no_shipping=1&no_note=1&tax=0&currency_code=EUR http://www.rapyd.com/assets/images/pp_donate.gif]
-
