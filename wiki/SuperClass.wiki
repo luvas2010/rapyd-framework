@@ -13,4 +13,4 @@ rpd class has all methods needed in a (minimalistic) mvc:
 
  * router (to detect current/requested uri)
  * controller (to instance the class that will perform actions to serve an uri request)
- * view (called by controller, it include/parse an output file, normally it's a simple php file with html tags and some echo).
+ * view (called by controller, it include/parse an output file, usually a simple php file with html tags and some loop and echo).
