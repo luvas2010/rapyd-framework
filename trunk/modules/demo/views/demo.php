@@ -63,6 +63,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
     <div class="line"></div>
     <div><img src="<?php echo rpd::asset('application_form_edit.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('edit?show=1')?>">DataEdit</a></div>
     <div><img src="<?php echo rpd::asset('table_edit.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('edit_grid/article?show=1')?>">DataEdit + DataGrid</a></div>
+    <div><img src="<?php echo rpd::asset('page_save.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('upload/show')?>">Array Driven DG + Upload</a></div>
 
     <div class="line"></div>
 
