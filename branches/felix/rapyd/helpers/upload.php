@@ -82,16 +82,16 @@ class rpd_upload_helper {
 	 * Eg: to limit the size to 1MB or less, you would use "1M".
 	 *
 	 * @param   array    $_FILES item
-	 * @param   array    maximum file size
+	 * @param   string   size string (IE: 1M, 200K, 100B)
 	 * @return  bool
 	 */
-	public static function size(array $file, array $size)
+	public static function size(array $file, $size)
 	{
 		if ((int) $file['error'] !== UPLOAD_ERR_OK)
 			return TRUE;
 
 		// Only one size is allowed
-		$size = strtoupper($size[0]);
+		$size = strtoupper($size);
 
 		if ( ! preg_match('/[0-9]++[BKMG]/', $size))
 			return FALSE;
