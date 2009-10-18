@@ -51,8 +51,7 @@ class dataform_library extends rpd_component_library {
 		if ($field_obj->type == "upload") {
 			$this->multipart = true;
 			if (!isset($this->upload)) {
-				//rpd::load('library','upload');
-				$this->upload = new rpd_upload_library($field);
+				$this->upload = new rpd_upload_helper();
 			}
 			$field_obj->upload = $this->upload;
 		}
@@ -122,7 +121,7 @@ class dataform_library extends rpd_component_library {
 		$form_type = 'open';
 		// See if we need a multipart form
 		foreach($this->fields as $field_obj) {
-			if ($field_obj instanceof dataform_upload) {
+			if ($field_obj instanceof upload_field) {
 				$form_type = 'open_multipart';
 				break;
 			}
