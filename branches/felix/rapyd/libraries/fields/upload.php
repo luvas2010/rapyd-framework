@@ -47,6 +47,12 @@ class upload_field extends field_field {
 		return $this;
 	}
 
+	// --------------------------------------------------------------------
+
+	public function set_max_size($size) {
+		$this->max_size = $size;
+		return $this;
+	}
 
 	// --------------------------------------------------------------------
 
