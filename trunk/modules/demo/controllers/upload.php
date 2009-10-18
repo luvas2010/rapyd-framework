@@ -11,11 +11,10 @@ class upload_controller extends rpd {
 		$form->label = 'Manage Files';
 		$form->back_url = $this->url('upload/show');
 
-		//
 		$form->field('upload','filename','Image')
-		->upload_path(RAPYD_ROOT.'uploads/')
-		->allowed_types('jpg|gif')
-		->max_size('2M');
+			->upload_path(RAPYD_ROOT.'uploads/')
+			->allowed_types('jpg|gif')
+			->max_size('2M');
 		$form->button('back','List','window.location=\''.$this->url('upload/show').'\'','TR');
 		$form->buttons('save');
 		$form->build();
@@ -27,8 +26,8 @@ class upload_controller extends rpd {
 
 		if ($form->on('success'))
 		{
-			$output = 'thnks'."<br />";
-			$output = '<a href="'.$this->url('upload/show').'">List</a>';
+			$output  = 'thnks'."<br />";
+			$output .= '<a href="'.$this->url('upload/show').'">List</a>';
 		}
 
 		$data['head']	= $this->head();
@@ -42,6 +41,7 @@ class upload_controller extends rpd {
 
 	public function show()
 	{
+		//list all files in uploads dir
 		$files = array();
 		$i = 0;
 		$handler = opendir(RAPYD_ROOT.'uploads');
@@ -55,7 +55,7 @@ class upload_controller extends rpd {
 		}
 		closedir($handler);
 
-		//comments datagrid configuration
+		//datagrid array driven
 		$grid = new datagrid_library();
 		$grid->label = 'Uploads';
 		$grid->per_page = 10;
