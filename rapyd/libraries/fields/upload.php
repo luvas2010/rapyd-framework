@@ -12,7 +12,7 @@ class upload_field extends field_field {
 	public $preview;
 
 	public $upload_error;
-	public $allowed_types;
+	public $allowed_types = array();
 	public $max_size;
 
 	// --------------------------------------------------------------------
@@ -35,6 +35,18 @@ class upload_field extends field_field {
 		$this->upload_root= $root;
 		return $this;
 	}
+
+	// --------------------------------------------------------------------
+
+	public function set_allowed_types($types) {
+		if (is_array($types)){
+			$this->allowed_types = $types;
+		} elseif (is_string($types) AND strpos($types, '|')) {
+			$this->allowed_types = explode('|', $types);
+		}
+		return $this;
+	}
+
 
 	// --------------------------------------------------------------------
 
@@ -71,8 +83,8 @@ class upload_field extends field_field {
 				return false;
 			}
 		}
-		if ($this->allowed_types!=''){
-			if (!rpd_upload_helper::type($_FILES[$this->name . "_user_file"], $this->max_size)){
+		if (count($this->allowed_types)){
+			if (!rpd_upload_helper::type($_FILES[$this->name . "_user_file"], $this->allowed_types)){
 				$this->save_error = $this->label . ": Allowed Types are ".implode(',',$this->allowed_types);
 				return false;
 			}
