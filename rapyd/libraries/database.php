@@ -153,7 +153,7 @@ class rpd_database_library {
 
 	public function count_all($table)
 	{
-		$this->query("SELECT COUNT(*) AS numrows FROM `".$this->dbprefix.$table."`");
+		$this->query("SELECT COUNT(*) AS numrows FROM ".$this->dbprefix.$table);
 		if ($this->num_rows() == 0)
 			return '0';
 
