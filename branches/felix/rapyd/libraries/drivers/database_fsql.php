@@ -40,10 +40,10 @@ class rpd_database_fsql_driver extends rpd_database_ar_library {
 
 		$sql = str_replace(array("\r\n", "\n", "\r"), ' ', $sql);
 		$resurce = $this->conn_id->query($sql);
-		//if (!$resurce and $this->db_debug)
-		//{
+		if (!$resurce and $this->db_debug)
+		{
 			echo '<pre>'.$sql.'</pre>';
-		//}
+		}
 		return $resurce;
 	}
 
