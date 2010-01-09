@@ -42,6 +42,17 @@ class rpd_url_helper {
 
 	// --------------------------------------------------------------------
 
+
+  public static function get_self()
+  {
+    $url = self::get_url();
+    if (strpos($url, '?') === false)  return $url;
+    return substr($url, 0, strpos($url,'?'));
+  }
+
+
+	// --------------------------------------------------------------------
+
   //l'opposto di parse_str() in php non esiste come funziona nativa
   public static function unparse_str($array)
   {
