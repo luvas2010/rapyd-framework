@@ -157,7 +157,15 @@ class rpd
 	public static function router()
 	{
 		// get segments from URL
-	 $url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
+		//$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
+		$self = self::$qs->get_self();
+
+		if (RAPYD_PATH != '/'){
+			$url = trim(substr($self, strpos($self, RAPYD_PATH) + strlen(RAPYD_PATH)), '/');
+		}
+		if(strpos($self, 'index.php')){
+			$url = trim(substr($self, strpos($self, 'index.php') + 9), '/');
+		}
 
 		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
 		{
@@ -179,6 +187,7 @@ class rpd
 				{
 					$path = implode('/', $segment_arr);
 					$arr_segments[] = array_pop($segment_arr);
+					echo $path.'<br>';
 
 					// starting from last segment.. searching for a valid controller
 					// when is found, next segment is the method and others are params
