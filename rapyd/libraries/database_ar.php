@@ -163,7 +163,14 @@ class rpd_database_ar_library extends rpd_database_library {
 
 			$v = $this->escape_str($v);
 
-			$this->ar_like[] = $prefix." $k LIKE '%{$v}%'";
+      if ($this->dbdriver == 'pgsql')
+      {
+			  $this->ar_like[] = $prefix." $k ILIKE '%{$v}%'";
+      }
+      else
+      {
+			  $this->ar_like[] = $prefix." $k LIKE '%{$v}%'";
+      }
 		}
 		return $this;
 	}
@@ -478,7 +485,8 @@ class rpd_database_ar_library extends rpd_database_library {
 		}
 		else
 		{
-			$offset .= ", ";
+			#$offset .= ", ";
+			$offset .= " OFFSET ";
 		}
 
 		return $sql."LIMIT ".$offset.$limit;
