@@ -7,6 +7,7 @@ class rpd_database_library {
 	public $hostname;
 	public $username;
 	public $password;
+	public $dbdriver;
 
 	public $dbprefix	= '';
 	public $port		= '';
@@ -153,7 +154,15 @@ class rpd_database_library {
 
 	public function count_all($table)
 	{
+    if ($this->dbdriver == 'pgsql')
+    {
+		  $this->query("SELECT COUNT(*) AS numrows FROM ".$this->dbprefix.$table);
+    } 
+    else 
+    {
 		$this->query("SELECT COUNT(*) AS numrows FROM `".$this->dbprefix.$table."`");
+    }
+
 		if ($this->num_rows() == 0)
 			return '0';
 
@@ -212,7 +221,14 @@ class rpd_database_library {
 		$this->query("SELECT * FROM ".self::escape_table($this->dbprefix.$table)." LIMIT 1");
 		while ($field = $this->fetch_field())
 		{
-			$retval[] = $field;
+      if ($this->dbdriver == 'pgsql')
+      {
+        $retval = $this->fetch_field();
+      } 
+      else
+      {
+			  $retval[] = $field;
+      }
 		}
 		return $retval;
 	}
