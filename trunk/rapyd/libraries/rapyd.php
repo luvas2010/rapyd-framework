@@ -399,6 +399,7 @@ class rpd
 		self::$db->password = self::$config['db']['password'];
 		self::$db->database = self::$config['db']['database'];
 		self::$db->dbprefix = self::$config['db']['dbprefix'];
+		self::$db->dbdriver = self::$config['db']['dbdriver'];
 		$result = self::$db->connect();
 		if ($result !==false)
 		{
