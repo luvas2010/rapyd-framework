@@ -13,6 +13,9 @@ Completed features have a strike through them.
 
   * i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.
 
+  * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
+
+
 
 0.7
 
