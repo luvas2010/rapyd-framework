@@ -195,7 +195,7 @@ class fSQLTable
 
 	function &create($path_to_db, $table_name, $columnDefs)
 	{
-		$table =& new fSQLTable;
+		$table = new fSQLTable;
 		$table->columns = $columnDefs;
 		return $table;
 	}
@@ -219,9 +219,9 @@ class fSQLTable
 	function &getCursor()
 	{
 		if($this->cursor == NULL)
-			$this->cursor =& new fSQLTableCursor;
+			$this->cursor = new fSQLTableCursor;
 
-		$this->cursor->entries =& $this->entries;
+		$this->cursor->entries = $this->entries;
 		$this->cursor->num_rows = count($this->entries);
 		$this->cursor->pos = 0;
 
@@ -289,7 +289,7 @@ class fSQLCachedTable
 
 	function &create($path_to_db, $table_name, $columnDefs)
 	{
-		$table =& new fSQLCachedTable($path_to_db, $table_name);
+		$table = new fSQLCachedTable($path_to_db, $table_name);
 		$table->columns = $columnDefs;
 
 		list($msec, $sec) = explode(' ', microtime());
@@ -402,7 +402,7 @@ class fSQLCachedTable
 		if($this->cursor == NULL)
 			$this->cursor = new fSQLTableCursor;
 
-		$this->cursor->entries =& $this->entries;
+		$this->cursor->entries = $this->entries;
 		$this->cursor->num_rows = count($this->entries);
 		$this->cursor->pos = 0;
 
@@ -645,7 +645,7 @@ class fSQLDatabase
 			$table = fSQLCachedTable::create($this->path_to_db, $table_name, $columns);
 		} else {
 			$table = fSQLTable::create($this->path_to_db, $table_name, $columns);
-			$this->loadedTables[$table_name] =& $table;
+			$this->loadedTables[$table_name] = $table;
 		}
 
 		return $table;
@@ -680,9 +680,9 @@ class fSQLDatabase
 		return $tables;
 	}
 
-	function &loadTable($table_name)
+	function loadTable($table_name)
 	{
-		$table =& $this->getTable($table_name);
+		$table = $this->getTable($table_name);
 		if(!$table->exists())
 			return NULL;
 
@@ -694,7 +694,7 @@ class fSQLDatabase
 
 	function renameTable($old_table_name, $new_table_name, &$new_db)
 	{
-		$oldTable =& $this->getTable($old_table_name);
+		$oldTable = $this->getTable($old_table_name);
 		if($oldTable->exists()) {
 			if(!$oldTable->temporary) {
 				$newTable = $new_db->createTable($new_table_name,  $oldTable->getColumns());
@@ -702,7 +702,7 @@ class fSQLDatabase
 				copy($oldTable->data_path.'.lock.cgi', $newTable->data_path.'.lock.cgi');
 				$this->dropTable($old_table_name);
 			} else {
-				$new_db->loadedTables[$new_table_name] =& $this->loadedTables[$old_table_name];
+				$new_db->loadedTables[$new_table_name] = $this->loadedTables[$old_table_name];
 				unset($this->loadedTables[$old_table_name]);
 			}
 
@@ -714,7 +714,7 @@ class fSQLDatabase
 
 	function dropTable($table_name)
 	{
-		$table =& $this->getTable($table_name);
+		$table = $this->getTable($table_name);
 		if($table->exists()) {
 			if(!$table->temporary) {
 				unlink($table->columns_path.'.cgi');
@@ -768,24 +768,29 @@ class fSQLEnvironment
 	function define_db($name, $path)
 	{
 		$path = realpath($path);
+
 		if($path === FALSE || !is_dir($path)) {
 			if(@mkdir($path, 0777))
 				$path = realpath($path);
 		} else if(!is_readable($path) || !is_writeable($path)) {
-			chmod($path, 0777);
+			@chmod($path, 0777);
 		}
 
 		if($path && substr($path, -1) != '/')
 			$path .= '/';
 
+                //var_dump($path);
 		list($usec, $sec) = explode(' ', microtime());
 		srand((float) $sec + ((float) $usec * 100000));
 
-		if(is_dir($path) && is_readable($path) && is_writeable($path)) {
+		if(is_dir($path) && is_readable($path) && is_writeable($path.$name)) {
+
+                #var_dump($name);
+                #var_dump($path);
 			$db = new fSQLDatabase;
 			$db->name = $name;
 			$db->path_to_db = $path;
-			$this->databases[$name] =& $db;
+			$this->databases[$name] = $db;
 			unset($db);
 			return true;
 		} else {
@@ -797,8 +802,9 @@ class fSQLEnvironment
 
 	function select_db($name)
 	{
+            #var_dump($this->databases);
 		if(isset($this->databases[$name])) {
-			$this->currentDB =& $this->databases[$name];
+			$this->currentDB = $this->databases[$name];
 			$this->currentDB->name = $name;
 			unset($name);
 			return true;
@@ -844,7 +850,7 @@ class fSQLEnvironment
 
 	function &_load_table(&$db, $table_name)
 	{
-		$table =& $db->loadTable($table_name);
+		$table = $db->loadTable($table_name);
 		if(!$table)
 			$this->_set_error("Unable to load table {$db->name}.{$table_name}");
 
@@ -1004,11 +1010,11 @@ class fSQLEnvironment
 			}
 
 			if(!$db_name)
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$db_name];
+				$db = $this->databases[$db_name];
 
-			$table =& $db->getTable($table_name);
+			$table = $db->getTable($table_name);
 			if($table->exists()) {
 				if(empty($ifnotexists)) {
 					$this->_set_error("Table {$db->name}.{$table_name} already exists");
@@ -1087,12 +1093,12 @@ class fSQLEnvironment
 							}
 						}
 
-						if(eregi("not null", $options))
+						if(strpos($options, "not null"))
 							$null = 0;
 						else
 							$null = 1;
 
-						if(eregi("AUTO_INCREMENT", $options))
+						if(strpos($options, "AUTO_INCREMENT"))
 							$auto = 1;
 						else
 							$auto = 0;
@@ -1155,11 +1161,11 @@ class fSQLEnvironment
 				$src_table_name = $matches[7];
 
 				if(!$src_db_name)
-					$src_db =& $this->currentDB;
+					$src_db = $this->currentDB;
 				else
-					$src_db =& $this->databases[$src_db_name];
+					$src_db = $this->databases[$src_db_name];
 
-				$src_table =& $src_db->getTable($src_table_name);
+				$src_table = $src_db->getTable($src_table_name);
 				if($src_table->exists()) {
 					$new_columns = $src_table->getColumns();
 				} else {
@@ -1202,11 +1208,11 @@ class fSQLEnvironment
 		}
 
 		if(!$db_name)
-			$db =& $this->currentDB;
+			$db = $this->currentDB;
 		else
-			$db =& $this->databases[$db_name];
+			$db = $this->databases[$db_name];
 
-		$table =& $db->getTable($table_name);
+		$table = $db->getTable($table_name);
 		if(!$table->exists()) {
 			$this->_error_table_not_exists($db->name, $table_name);
 			return NULL;
@@ -1217,7 +1223,7 @@ class fSQLEnvironment
 		}
 
 		$tableColumns = $table->getColumns();
-		$tableCursor =& $table->getCursor();
+		$tableCursor = $table->getCursor();
 
 		$check_names = 1;
 		$replace = !strcasecmp($command, 'REPLACE');
@@ -1380,7 +1386,7 @@ class fSQLEnvironment
 		if($this->auto)
 			$table->commit();
 		else if(!in_array($table, $this->updatedTables))
-			$this->updatedTables[] =& $table;
+			$this->updatedTables[] = $table;
 
 		$this->affected++;
 
@@ -1395,11 +1401,11 @@ class fSQLEnvironment
 			$table_name = $matches[2];
 
 			if(!$matches[1])
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$matches[1]];
+				$db = $this->databases[$matches[1]];
 
-			$table =& $db->getTable($table_name);
+			$table = $db->getTable($table_name);
 			if(!$table->exists()) {
 				$this->_error_table_not_exists($db->name, $table_name);
 				return NULL;
@@ -1410,7 +1416,7 @@ class fSQLEnvironment
 			}
 
 			$columns = $table->getColumns();
-			$cursor =& $table->getCursor();
+			$cursor = $table->getCursor();
 
 			if(preg_match_all("/`?((?:\S+)`?\s*=\s*(?:'(?:.*?)'|\S+))`?\s*(?:,|\Z)/is", $matches[3], $sets)) {
 				foreach($sets[1] as $set) {
@@ -1553,7 +1559,7 @@ class fSQLEnvironment
 				if($this->auto)
 					$table->commit();
 				else if(!in_array($table, $this->updatedTables))
-					$this->updatedTables[] =& $table;
+					$this->updatedTables[] = $table;
 			}
 
 			return TRUE;
@@ -1580,14 +1586,14 @@ class fSQLEnvironment
 			list( , $dest_db_name, $dest_table, $dest_alias, $src_db_name, $src_table, $src_alias, $on_clause) = $matches;
 
 			if(!$dest_db_name)
-				$dest_db =& $this->currentDB;
+				$dest_db = $this->currentDB;
 			else
-				$dest_db =& $this->databases[$dest_db_name];
+				$dest_db = $this->databases[$dest_db_name];
 
 			if(!$src_db_name)
-				$src_db =& $this->currentDB;
+				$src_db = $this->currentDB;
 			else
-				$src_db =& $this->databases[$src_db_name];
+				$src_db = $this->databases[$src_db_name];
 
 			if(!($dest = $this->_load_table($dest_db, $dest_table))) {
 				return NULL;
@@ -1712,7 +1718,7 @@ class fSQLEnvironment
 					return NULL;
 				}
 
-				$db =& $this->databases[$db_name];
+				$db = $this->databases[$db_name];
 
 				if(isset($join_where) && isset($last)) {
 					$join_where = preg_replace("/<<using>>\.(\S+)(?:\s+)?(=| ~=~ )(?:\s+)?$saveas.(\\1)/is", "$last.\\1\\2$saveas.\\1", $join_where);
@@ -1810,7 +1816,7 @@ class fSQLEnvironment
 				$table_names = array_keys($tables);
 				$alter_columns = array();
 				foreach($table_names as $tname) {
-					$table =& $tables[$tname];
+					$table = $tables[$tname];
 					if(!$table['entries']) { continue; }
 					if(!empty($this->tosort)) { usort($table['entries'], array($this, "_orderBy")); }
 					foreach($table['columns'] as $column => $columnDef) {
@@ -1828,7 +1834,7 @@ class fSQLEnvironment
 						if(!$table['entries']) { continue; }
 						foreach($table['entries'] as $entry) {
 
-							$tableColumns =& $table['columns'];
+							$tableColumns = $table['columns'];
 							foreach($alter_columns as $column) {
 								if($tableColumns[$column]['type'] == 'e') {
 									$i = $entry[$column];
@@ -1903,7 +1909,7 @@ class fSQLEnvironment
 					foreach($tables as $tname => $table) {
 						if(!$table['entries']) { continue; }
 						foreach($table['entries'] as $entry) {
-							$tableColumns =& $table['columns'];
+							$tableColumns = $table['columns'];
 							foreach($alter_columns as $column) {
 								if($tableColumns[$column]['type'] == 'e') {
 									$i = $entry[$column];
@@ -2128,11 +2134,11 @@ class fSQLEnvironment
 			list(, $db_name, $table_name) = $matches;
 
 			if(!$db_name)
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$db_name];
+				$db = $this->databases[$db_name];
 
-			$table =& $db->getTable($table_name);
+			$table = $db->getTable($table_name);
 			if(!$table->exists()) {
 				$this->_error_table_not_exists($db->name, $table_name);
 				return NULL;
@@ -2143,7 +2149,7 @@ class fSQLEnvironment
 			}
 
 			$columns = $table->getColumns();
-			$cursor =& $table->getCursor();
+			$cursor = $table->getCursor();
 
 			if($cursor->isDone())
 				return true;
@@ -2203,7 +2209,7 @@ class fSQLEnvironment
 				if($this->auto)
 					$table->commit();
 				else if(!in_array($table, $this->updatedTables))
-					$this->updatedTables[] =& $table;
+					$this->updatedTables[] = $table;
 			}
 
 			return TRUE;
@@ -2219,11 +2225,11 @@ class fSQLEnvironment
 			list(, $db_name, $table_name, $changes) = $matches;
 
 			if(!$db_name)
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$db_name];
+				$db = $this->databases[$db_name];
 
-			$tableObj =& $db->getTable($table_name);
+			$tableObj = $db->getTable($table_name);
 			if(!$tableObj->exists()) {
 				$this->_error_table_not_exists($db->name, $table_name);
 				return NULL;
@@ -2239,7 +2245,7 @@ class fSQLEnvironment
 			preg_match_all("/(?:ADD|ALTER|CHANGE|DROP|RENAME).*?(?:,|\Z)/is", trim($changes), $specs);
 			for($i = 0; $i < count($specs[0]); $i++) {
 				if(preg_match("/\AADD\s+(?:CONSTRAINT\s+`?[A-Z][A-Z0-9\_]*`?\s+)?PRIMARY\s+KEY\s*\((.+?)\)/is", $specs[0][$i], $matches)) {
-					$columnDef =& $columns[$matches[1]];
+					$columnDef = $columns[$matches[1]];
 
 					foreach($columns as $name => $column) {
 						if($column['key'] == 'p') {
@@ -2253,7 +2259,7 @@ class fSQLEnvironment
 
 					return true;
 				} else if(preg_match("/\ACHANGE(?:\s+(?:COLUMN))?\s+`?([A-Z][A-Z0-9\_]*)`?\s+(?:SET\s+DEFAULT ((?:[\+\-]\s*)?\d+(?:\.\d+)?|NULL|(\"|').*?(?<!\\\\)(?:\\3))|DROP\s+DEFAULT)(?:,|;|\Z)/is", $specs[0][$i], $matches)) {
-					$columnDef =& $columns[$matches[1]];
+					$columnDef = $columns[$matches[1]];
 					if(isset($matches[2]))
 						$default = $matches[2];
 					else
@@ -2318,11 +2324,11 @@ class fSQLEnvironment
 					list(, $new_db_name, $new_table_name) = $matches;
 
 					if(!$new_db_name)
-						$new_db =& $this->currentDB;
+						$new_db = $this->currentDB;
 					else
-						$new_db =& $this->databases[$new_db_name];
+						$new_db = $this->databases[$new_db_name];
 
-					$new_table =& $new_db->getTable($new_table_name);
+					$new_table = $new_db->getTable($new_table_name);
 					if($new_table->exists()) {
 						$this->_set_error("Destination table {$new_db_name}.{$new_table_name} already exists");
 						return NULL;
@@ -2352,9 +2358,9 @@ class fSQLEnvironment
 					list(, $old_db_name, $old_table_name) = $table_parts;
 
 					if(!$old_db_name)
-						$old_db =& $this->currentDB;
+						$old_db = $this->currentDB;
 					else
-						$old_db =& $this->databases[$old_db_name];
+						$old_db = $this->databases[$old_db_name];
 				} else {
 					$this->_set_error("Parse error in table listing");
 					return NULL;
@@ -2364,15 +2370,15 @@ class fSQLEnvironment
 					list(, $new_db_name, $new_table_name) = $table_parts;
 
 					if(!$new_db_name)
-						$new_db =& $this->currentDB;
+						$new_db = $this->currentDB;
 					else
-						$new_db =& $this->databases[$new_db_name];
+						$new_db = $this->databases[$new_db_name];
 				} else {
 					$this->_set_error("Parse error in table listing");
 					return NULL;
 				}
 
-				$old_table =& $old_db->getTable($old_table_name);
+				$old_table = $old_db->getTable($old_table_name);
 				if(!$old_table->exists()) {
 					$this->_error_table_not_exists($old_db_name, $old_table_name);
 					return NULL;
@@ -2382,7 +2388,7 @@ class fSQLEnvironment
 					return null;
 				}
 
-				$new_table =& $new_db->getTable($new_table_name);
+				$new_table = $new_db->getTable($new_table_name);
 				if($new_table->exists()) {
 					$this->_set_error("Destination table {$new_db_name}.{$new_table_name} already exists");
 					return NULL;
@@ -2409,11 +2415,11 @@ class fSQLEnvironment
 					list(, $db_name, $table_name) = $table_parts;
 
 					if(!$db_name)
-						$db =& $this->currentDB;
+						$db = $this->currentDB;
 					else
-						$db =& $this->databases[$db_name];
+						$db = $this->databases[$db_name];
 
-					$table =& $db->getTable($table_name);
+					$table = $db->getTable($table_name);
 					if($table->isReadLocked()) {
 						$this->_error_table_read_lock($db->name, $table_name);
 						return null;
@@ -2441,7 +2447,7 @@ class fSQLEnvironment
 				return true;
 			}
 
-			$db =& $this->databases[$db_name];
+			$db = $this->databases[$db_name];
 
 			$tables = $db->listTables();
 
@@ -2467,11 +2473,11 @@ class fSQLEnvironment
 					list(, $db_name, $table_name) = $matches;
 
 					if(!$db_name)
-						$db =& $this->currentDB;
+						$db = $this->currentDB;
 					else
-						$db =& $this->databases[$db_name];
+						$db = $this->databases[$db_name];
 
-					$table =& $db->getTable($table_name);
+					$table = $db->getTable($table_name);
 					if($table->exists()) {
 						if($table->isReadLocked()) {
 							$this->_error_table_read_lock($db->name, $table_name);
@@ -2508,9 +2514,9 @@ class fSQLEnvironment
 					list(, $db_name, $table_name) = $table_name_matches;
 
 					if(!$db_name)
-						$db =& $this->currentDB;
+						$db = $this->currentDB;
 					else
-						$db =& $this->databases[$db_name];
+						$db = $this->databases[$db_name];
 
 					$db->copyTable($table_name, $db->path_to_db, $matches[2]);
 				} else {
@@ -2536,9 +2542,9 @@ class fSQLEnvironment
 					list(, $db_name, $table_name) = $table_name_matches;
 
 					if(!$db_name)
-						$db =& $this->currentDB;
+						$db = $this->currentDB;
 					else
-						$db =& $this->databases[$db_name];
+						$db = $this->databases[$db_name];
 
 					$db->copyTable($table_name, $matches[2], $db->path_to_db);
 				} else {
@@ -2559,9 +2565,9 @@ class fSQLEnvironment
 			$randval = rand();
 
 			if(!$matches[1])
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$matches[1]];
+				$db = $this->databases[$matches[1]];
 
 			$tables = $db->listTables();
 			$data = array();
@@ -2603,11 +2609,11 @@ class fSQLEnvironment
 			$randval = rand();
 
 			if(!$matches[1])
-				$db =& $this->currentDB;
+				$db = $this->currentDB;
 			else
-				$db =& $this->databases[$matches[1]];
+				$db = $this->databases[$matches[1]];
 
-			$tableObj =& $db->getTable($matches[2]);
+			$tableObj = $db->getTable($matches[2]);
 			if(!$tableObj->exists()) {
 				$this->_error_table_not_exists($db->name, $matches[2]);
 				return NULL;
@@ -2660,12 +2666,12 @@ class fSQLEnvironment
 			$numRules = count($rules[0]);
 			for($r = 0; $r < $numRules; $r++) {
 				if(!$rules[1][$r])
-					$db =& $this->currentDB;
+					$db = $this->currentDB;
 				else
-					$db =& $this->databases[$rules[1][$r]];
+					$db = $this->databases[$rules[1][$r]];
 
 				$table_name = $rules[2][$r];
-				$table =& $db->getTable($table_name);
+				$table = $db->getTable($table_name);
 				if(!$table->exists()) {
 					$this->_error_table_not_exists($db->name, $table_name);
 					return NULL;
@@ -2678,7 +2684,7 @@ class fSQLEnvironment
 					$table->writeLock();
 				}
 
-				$lockedTables[] =& $table;
+				$lockedTables[] = $table;
 			}
 			return TRUE;
 		} else {
@@ -2762,7 +2768,7 @@ class fSQLEnvironment
 		if($row == NULL)
 			return NULL;
 
-		$obj =& new stdClass();
+		$obj = new stdClass();
 
 		foreach($row as $key => $value)
 			$obj->{$key} = $value;
