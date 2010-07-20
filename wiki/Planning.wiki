@@ -4,6 +4,14 @@
 
 Completed features have a strike through them.
 
+0.7
+
+  * new site, built on current svn.. i'm sorry for old forum, probably i've lost all recent backups.
+ 
+  * new release with  flatsql, better windows compatibility, and postgres driver by tannoiser (already on current trunk),
+
+  * demos driven by flatsql (so no mysql installation required to run samples)
+
 0.6
 
   * ~~core rewrite, syntax will be more oop strict, but we will do our best to keep "configuration arrays" as an alternative way to describe widgets.~~
