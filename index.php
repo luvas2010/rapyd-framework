@@ -12,14 +12,16 @@ session_start();
 /**
  * define root and version
  */
-define('DOC_ROOT', substr(__FILE__, 0, strrpos(__FILE__, $_SERVER['SCRIPT_NAME'])));
-define('RAPYD_ROOT', getcwd().'/');
-define('RAPYD_PATH', str_replace(DOC_ROOT,'',RAPYD_ROOT));
+$filepath = str_replace('\\','/',__FILE__);
+$cwd =  str_replace('\\','/',getcwd());
+define('DOC_ROOT', substr($filepath, 0, strrpos($filepath, $_SERVER['SCRIPT_NAME'])));
+
+define('RAPYD_ROOT', $cwd.DIRECTORY_SEPARATOR);
+define('RAPYD_PATH', str_replace(DOC_ROOT,'',str_replace('\\','/',RAPYD_ROOT)));
 define('RAPYD_VERSION', '0.6');
 define('RAPYD_BUILD_DATE', '2009-08-11');
 
-
-
+unset($filepath,$cwd);
 /**
  * core class
  */
