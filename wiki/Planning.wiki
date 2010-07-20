@@ -10,7 +10,7 @@ Completed features have a strike through them.
   * better and full orm (object-relational mapping) try to follow kohana
 
   * build a cache (similar to CI, but with "partials" support), my idea is to cache a parsed view, but keep a non cached placeholders/subview {subview}..
-  i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.
+  * i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.
 
 
 0.7
