@@ -13,7 +13,7 @@ Completed features have a strike through them.
  
   * new release with  flatsql, better windows compatibility, and postgres driver by tannoiser (already on current trunk),
 
-  * demos driven by flatsql (so no mysql installation required to run samples, just download, unzip and run)
+  * demos driven by flatsql (so no mysql installation, and no dump required to run samples, just download, unzip and run)
 
 0.6
 
