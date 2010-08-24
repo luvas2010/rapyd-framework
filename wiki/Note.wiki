@@ -1,0 +1,27 @@
+#note sviluppo
+
+= usare meglio i model =
+
+in crud complicati, o in datagrid con necessità con colonne da formattare, rapyd prevede le callback (nota: rinominerei per conformità in "callback" anche le pre/postprocess_functions del dataedit)
+
+Attualmente, l'uso prevede il richiamo a "funzioni" o a metodi del controller.
+Sarebbe bene mostrare negli esempi che è piu' giusto chiamare metodi di un "model".
+
+(per il datagrid come si fà? visto che per default non è associato ad un model?, sarebbe giusto eventualmente prevedere un model per operare con i filtri e con i dataset?
+per intenderci: spostare il "dataset" nel folder model? ...)
+
+
+= da $datagrid->db  a $datagrid->model->db =
+
+una soluzione "semplice" potrebbe essere quella di spostare l'accesso e l'uso del db dai componenti ai model ("dataset" o "datamodel").  
+
+In maniera tale che, quando serve fare callback, si possano estendere i model per mettere lì (e non nel controller o in funzioni sparse) le operazioni sui dati.
+
+in generale tutto cio' che è $componente->db  dovrebbe diventare $componente->model->db o meglio $componente->model->metodo_che_opera_su_db esempio..
+
+
+= todo =
+
+  * Integrare le ultime modifiche alle pre_post process function e approfittare per rinominare in callback
+  * provare a spostare il dataset nel folder model
+  * provare a estendere i model negli esempi e spostare lì la parte che opera sul db
