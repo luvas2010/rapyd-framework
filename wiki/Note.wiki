@@ -18,6 +18,7 @@ una soluzione "semplice" potrebbe essere quella di spostare l'accesso e l'uso de
 In maniera tale che, quando serve fare callback, si possano estendere i model per mettere lì (e non nel controller o in funzioni sparse) le operazioni sui dati.
 
 in generale tutto cio' che è $componente->db  dovrebbe diventare $componente->model->db o meglio $componente->model->metodo_che_opera_su_db esempio..
+questo puo' forse essere fatto a livello di "component".. (classe ancestor di tutti i componenti ma và verificato)
 
 
 == todo ==
