@@ -162,6 +162,7 @@ class datagrid_library extends dataset_library {
 class datagrid_column extends rpd_component_library {
 	public $url = "";
 	public $link = "";
+        public $onclick = "";
 	public $label = "";
 	public $attributes = array();
 	public $column_type = "normal"; //orderby, detail, ation
@@ -218,17 +219,24 @@ class datagrid_column extends rpd_component_library {
 		$this->rpattern = $this->pattern;
 	}
 	// --------------------------------------------------------------------
-	protected function set_url($url, $img = '') {
+	protected function set_url($url, $img = '', $onclick='') {
 		$uri = rpd::uri($url);
 		$this->url = rpd::url($uri);
+		//$this->url = $url;
 		$this->img = $img;
+                $this->onclick = $onclick;
 		return $this;
 	}
-	function set_callback($callback) {
-		$this->callback = $callback;
-	}
+
 	// --------------------------------------------------------------------
-	function set_row($data_row) {
+	public function set_callback($callback, $object = null) {
+		$this->callback = $callback;
+                $this->callback_object = $object;
+	}
+
+
+	// --------------------------------------------------------------------
+	public function set_row($data_row) {
 		switch ($this->pattern_type) {
 			case "field_object":
 				if (isset($data_row[$this->field->name])) {
@@ -248,7 +256,10 @@ class datagrid_column extends rpd_component_library {
 				}
 			break;
 		}
-		if (isset($this->callback)) {
+
+		if (isset($this->callback_object)) {
+			$this->rpattern = call_user_func(array($this->callback_object, $this->callback), $data_row);
+		} elseif (isset($this->callback)) {
 			$this->rpattern = call_user_func($this->callback, $data_row);
 		}
 		if ($this->url) {
@@ -272,6 +283,7 @@ class datagrid_column extends rpd_component_library {
 				return $this->field->output;
 			break;
 			case "pattern":
+
 				if ($this->rpattern == "") {
 					$this->rpattern = "&nbsp;";
 				}

@@ -33,7 +33,8 @@ class rpd_database_mysql_driver extends rpd_database_ar_library {
 		$this->result_id	 = FALSE;
 		$this->result_array = array();
 		$this->result_object = array();
-
+                @mysql_query("SET CHARACTER SET utf8", $this->conn_id);
+                @mysql_query("SET NAMES utf8", $this->conn_id);
 		return @mysql_query($sql, $this->conn_id);
 		if (!$resurce and $this->db_debug)
 		{

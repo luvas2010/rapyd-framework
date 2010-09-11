@@ -83,7 +83,7 @@ class dataset_library extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
-	protected function orderby($field, $direction)
+	public function orderby($field, $direction)
 	{
 		$this->orderby = array($field, $direction);
 	}

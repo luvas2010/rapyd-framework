@@ -12,7 +12,7 @@ div.serie div.field {margin: .3em 0 .3em 1em; padding: 0;	display: block;}
 
 .input, .textarea, .select { margin:0; border-top: 1px solid #555; border-left: 1px solid #555; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 1px; color: #333; font-size:1.2em;}
 
-.textarea_disabled {font-size:9px; width: 500px; height:100px; overflow: auto; padding:0}
+.textarea_disabled {font-size:9px; overflow: auto; padding:0}
 .textarea_html {font-size:9px;font: 11px courier new,tahoma; color: #111;}
 .textarea_html_disabled {font: 11px courier new,tahoma; color: #111; width: 100%; overflow: auto}
 
