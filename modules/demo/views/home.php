@@ -2,10 +2,8 @@ Hi, this is Rapyd Demo Module
 
 Server Requirements:
 
-- php 5.1+, mysql 4.1+ (but you can add your own db-wrapper)
+- php 5.1+
 
-Demo Requirements:
-
-- To run samples you need to config rapyd in /application/config.php ad setup database connection
-- Then dump this sql:
+This demo use sqlite db (so it require php5-sqlite)
+But rapyd has also drivers for mysql, mysqli, postgres.
 

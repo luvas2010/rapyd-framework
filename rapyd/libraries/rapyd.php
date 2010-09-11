@@ -167,7 +167,7 @@ class rpd
 			$url = trim(substr($self, strpos($self, 'index.php') + 9), '/');
 		}
 
-		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
+		if(empty($url) || !preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url))
 		{
 			$segment_arr = (!empty($url)) ? explode('/', $url) : array();
 
@@ -390,9 +390,11 @@ class rpd
 
 	public static function connect()
 	{
+
 		if (isset(self::$db)) return;
 
 		$db_class = 'rpd_database_'.self::$config['db']['dbdriver'].'_driver';
+                                                           
 		self::$db = new $db_class();
 		self::$db->hostname = self::$config['db']['hostname'];
 		self::$db->username = self::$config['db']['username'];

@@ -7,7 +7,8 @@ class rpd_database_sqlite_driver extends rpd_database_ar_library {
 
 	public function connect()
 	{
-		$this->conn_id = @sqlite_open($this->database, 0666);
+                echo $this->database;
+		$this->conn_id = sqlite_open($this->database, 0666);
 		return $this->conn_id;
 	}
 

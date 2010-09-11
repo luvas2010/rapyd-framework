@@ -278,6 +278,63 @@ class rpd_database_ar_library extends rpd_database_library {
 
 	// --------------------------------------------------------------------
 
+  	public function count()
+	{
+                $this->_save_vars();
+
+		$sql = 'SELECT COUNT(*) AS rows';
+
+		if (count($this->ar_from) > 0)
+		{
+			$sql .= "\nFROM ";
+			$sql .= implode(', ', $this->ar_from);
+		}
+
+		if (count($this->ar_join) > 0)
+		{
+			$sql .= "\n";
+			$sql .= implode("\n", $this->ar_join);
+		}
+
+		if (count($this->ar_where) > 0 OR count($this->ar_like) > 0)
+		{
+			$sql .= "\nWHERE ";
+		}
+
+		$sql .= implode("\n", $this->ar_where);
+
+		if (count($this->ar_like) > 0)
+		{
+			if (count($this->ar_where) > 0)
+			{
+				$sql .= " AND ";
+			}
+
+			$sql .= implode("\n", $this->ar_like);
+		}
+
+		if (count($this->ar_groupby) > 0)
+		{
+			$sql .= "\nGROUP BY ";
+			$sql .= implode(', ', $this->ar_groupby);
+		}
+
+		if (count($this->ar_having) > 0)
+		{
+			$sql .= "\nHAVING ";
+			$sql .= implode("\n", $this->ar_having);
+		}
+		$sql .= "\n";
+                $sql = $this->_limit($sql, 1, 0);
+                
+		$result = $this->query($sql);
+
+		$this->_reset_select();
+		return @$this->row_object()->rows;
+	}
+
+	// --------------------------------------------------------------------
+
 	public function get($table = '', $limit = null, $offset = null)
 	{
 		if ($table != '')
@@ -501,7 +558,7 @@ class rpd_database_ar_library extends rpd_database_library {
 
 	public function _compile_select()
 	{
-    $this->_save_vars();
+                $this->_save_vars();
 
 		$sql = ( ! $this->ar_distinct) ? 'SELECT ' : 'SELECT DISTINCT ';
 
@@ -611,11 +668,11 @@ class rpd_database_ar_library extends rpd_database_library {
 
 	public function refill_query()
 	{
-    foreach($this->last_vars as $clause => $value)
-    {
-      if (substr($clause,0,3) == 'ar_')
-        $this->$clause = $value;
-    }
+            foreach($this->last_vars as $clause => $value)
+            {
+              if (substr($clause,0,3) == 'ar_')
+                $this->$clause = $value;
+            }
 	}
 
 	// --------------------------------------------------------------------

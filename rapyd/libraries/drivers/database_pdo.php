@@ -10,6 +10,7 @@ class rpd_database_pdo_driver extends rpd_database_ar_library {
 
 	public function connect()
 	{
+
 		$this->conn_id = new PDO ($this->database, $this->username, $this->password, array(PDO::ATTR_PERSISTENT => false));
 		return $this->conn_id;
 	}
@@ -39,7 +40,7 @@ class rpd_database_pdo_driver extends rpd_database_ar_library {
 		$this->result_array = array();
 		$this->result_object = array();
 
-		return @$this->conn_id->query($sql);
+		return $this->conn_id->query($sql);
 
 	}
 
@@ -172,10 +173,10 @@ class rpd_database_pdo_driver extends rpd_database_ar_library {
 
 	public function num_rows()
 	{
-        if (!$this->pdo_results)
-        {
-            $this->pdo_results = $this->result_id->fetchAll(PDO::FETCH_ASSOC);
-        }
+            if (!$this->pdo_results)
+            {
+                $this->pdo_results = $this->result_id->fetchAll(PDO::FETCH_ASSOC);
+            }
 
         return sizeof($this->pdo_results);
 	}

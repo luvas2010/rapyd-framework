@@ -20,11 +20,11 @@ $config['assets_path']     = RAPYD_PATH.'rapyd/assets/';
 $config['locale_language'] = 'en_US';
 
 
-$config['db']['hostname'] = "localhost";
-$config['db']['username'] = "root";
+$config['db']['hostname'] = "";
+$config['db']['username'] = "";
 $config['db']['password'] = "";
-$config['db']['database'] = "rapyd";
-$config['db']['dbdriver'] = "mysql";
+$config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/assets/demo.db';
+$config['db']['dbdriver'] = "pdo";
 $config['db']['dbprefix'] = "";
 
 /**
