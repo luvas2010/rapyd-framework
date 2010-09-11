@@ -44,6 +44,7 @@ include_once(RAPYD_ROOT.'application/config.php');
 /**
  * bootstrap
  */
+
 rpd::init($config);
 rpd::connect();
 rpd::run();

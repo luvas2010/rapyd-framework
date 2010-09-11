@@ -126,9 +126,8 @@ class dataset_library extends rpd_component_library {
 		elseif(is_object($this->source) OR !isset($this->source))
 		{
 			$this->type  = "sqlbuilder";
-			$this->db->get();
-
-			$this->total_rows = $this->db->num_rows();
+			
+			$this->total_rows = $this->db->count();
 			$this->db->refill_query();
 		}
 
