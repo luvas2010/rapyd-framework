@@ -1,13 +1,14 @@
 <?php
-/**
- * rapyd framework
- *
- */
+
+
+//rapyd don't need magic quotes,
+//in a production server feel free to change or remove this line (at your risc)
+set_magic_quotes_runtime(0);
 
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
-session_start();
+if (!session_id() ) session_start();
 
 /**
  * define root and version
@@ -31,9 +32,10 @@ include_once(RAPYD_ROOT.'rapyd/libraries/rapyd.php');
 /**
  * autoload system
  */
-function __autoload($class_name) {
-    rpd::auto_load($class_name);
-}
+//function __autoload($class_name) {
+//    rpd::auto_load($class_name);
+//}
+spl_autoload_register(array('rpd', 'auto_load'));
 
 
 /**

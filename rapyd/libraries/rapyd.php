@@ -40,8 +40,10 @@ class rpd
 			return TRUE;
 		if (($suffix = strrpos($class, '_')) > 0)
 		{
-			// Find the class suffix
+			// Find the class prefix and suffix
+			$prefix = substr($class, 0, $suffix);
 			$suffix = substr($class, $suffix + 1);
+			
 		}
 
 		$path = '';
@@ -61,8 +63,12 @@ class rpd
 		{
 			$suffix = 'library';
 		}
-
-		self::load($suffix, $path.$file);
+                //hack for CI integration (nota.. i file creati in CI non devono avere suffisso _helper _field ecc..)
+		if (@$prefix != 'CI' AND (in_array($suffix,array('helper','field','driver','library','controller')) OR strpos(@$prefix,'rpd_')!==false)){
+			self::load($suffix, $path.$file);
+		} else {
+                    return FALSE;
+                }
 		return TRUE;
 	}
 
@@ -73,6 +79,8 @@ class rpd
 		*/
 	public static function load($directory, $file_name)
 	{
+		if ($file_name == 'rpd') return null;
+
 		$file = self::find_file($directory, $file_name);
 		if($file)
 		{
@@ -130,8 +138,9 @@ class rpd
 	{
 		static $file_cache;
 
+
 		if ($type!="") $type = self::plural($type);
-		$search = $type.'/'.$file_name.'.php';
+                $search = $type.'/'.$file_name.'.php';
 
 		if (isset($file_cache['paths'][$search]))
 				return $file_cache['paths'][$search];
@@ -139,6 +148,7 @@ class rpd
 		$file_found = FALSE;
 		foreach (self::config('include_paths') as $path)
 		{
+
 				if (is_file(RAPYD_ROOT.$path.'/'.$search))
 				{
 						$file_found = RAPYD_ROOT.$path.'/'.$search;
@@ -156,18 +166,11 @@ class rpd
 	 */
 	public static function router()
 	{
-		// get segments from URL
-		//$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
-		$self = self::$qs->get_self();
+              // get segments from URL
+              //$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
+                $url = trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/');
 
-		if (RAPYD_PATH != '/'){
-			$url = trim(substr($self, strpos($self, RAPYD_PATH) + strlen(RAPYD_PATH)), '/');
-		}
-		if(strpos($self, 'index.php')){
-			$url = trim(substr($self, strpos($self, 'index.php') + 9), '/');
-		}
-
-		if(empty($url) || !preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url))
+		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
 		{
 			$segment_arr = (!empty($url)) ? explode('/', $url) : array();
 
@@ -364,7 +367,9 @@ class rpd
 	public static function url($uri)
 	{
 		$index = (self::config('index_page')) ? self::config('index_page').'/' : '';
-		return rtrim('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index.$uri,'/');
+                $basename = (self::config('basename')) ? trim(self::config('basename'),'/').'/' : '';
+		//return rtrim('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index.$uri,'/');
+                return rtrim('http://' . $_SERVER['HTTP_HOST'].'/'.$basename.$index.$uri,'/');
 	}
 
 
@@ -375,12 +380,17 @@ class rpd
 	public static function uri($url)
 	{
 		$index = (self::config('index_page')) ? self::config('index_page').'/' : '';
-		return rtrim(str_replace('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index,'',$url),'/');
+                $basename = (rtrim(self::config('basename'),'/')) ? rtrim(self::config('basename'),'/').'/' : '';
+		//return rtrim(str_replace('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index,'',$url),'/');
+		return rtrim(str_replace('http://' . $_SERVER['HTTP_HOST'].$basename.$index,'',$url),'/');
 	}
 
 	public static function asset($resource)
 	{
 		return  RAPYD_PATH.dirname(str_replace(RAPYD_ROOT,'',self::$working_path)).'/assets/'.$resource;
+
+		//CI fix
+		//return RAPYDASSETS.$resource;
 	}
 
 	public function head()

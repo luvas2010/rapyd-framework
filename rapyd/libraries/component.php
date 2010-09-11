@@ -154,7 +154,7 @@ class rpd_component_library {
 
 	public function when($action = "false")
 	{
-    return action_is($action);
+                return $this->action_is($action);
 	}
 
   // --------------------------------------------------------------------

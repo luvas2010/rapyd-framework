@@ -1,7 +1,7 @@
 <?php if (!defined('RAPYD_PATH')) exit('No direct script access allowed');
 
 
-class datamodel_model {
+class rpd_datamodel_model {
 
   public $table  = null;
   public $loaded = false;
@@ -61,9 +61,20 @@ class datamodel_model {
 
 	// --------------------------------------------------------------------
 
-  public function pre_process($action,$function,$arr_values=array())
+  public function pre_process($actions,$function,$arr_values=array())
   {
-    $this->preprocess_functions[$action] = array("name"=>$function, "arr_values"=>$arr_values);
+    $actions = (array)$actions;
+    $object = '';
+    foreach ($actions as $action)
+    {
+       if (is_array($function) and count($function) == 2)
+       {
+           $object = $function[0];
+           $function = $function[1];
+       }
+       $this->preprocess_functions[$action] = array("name"=>$function, "arr_values"=>$arr_values, "object"=>$object);
+    }
+
   }
 
 	// --------------------------------------------------------------------
@@ -71,14 +82,19 @@ class datamodel_model {
   protected function exec_preprocess_functions($action)
   {
   	$this->preprocess_result = TRUE;
-    if (isset($this->preprocess_functions[$action]))
-    {
-      $function = $this->preprocess_functions[$action];
-      $arr_values = $function["arr_values"];
-      (count($arr_values)>0)? array_unshift($arr_values, $this):$arr_values = array($this);
-      $this->preprocess_result = call_user_func_array($function["name"], $arr_values);
-      return $this->preprocess_result;
-    }
+        if (isset($this->preprocess_functions[$action]))
+        {
+          $function = $this->preprocess_functions[$action];
+          $arr_values = $function["arr_values"];
+          (count($arr_values)>0)? array_unshift($arr_values, $this):$arr_values = array($this);
+            if ($function["object"]!='')
+                   $this->preprocess_result = call_user_func_array(array($function["object"], $function["name"]), $arr_values);
+            else
+                   $this->preprocess_result = call_user_func_array($function["name"], $arr_values);
+
+          //$this->preprocess_result = call_user_func_array($function["name"], $arr_values);
+          return $this->preprocess_result;
+        }
   }
 
 	// --------------------------------------------------------------------
@@ -86,9 +102,15 @@ class datamodel_model {
   public function post_process($actions,$function,$arr_values=array())
   {
     $actions = (array)$actions;
+    $object = '';
     foreach ($actions as $action)
     {
-      $this->postprocess_functions[$action] = array("name"=>$function, "arr_values"=>$arr_values);
+       if (is_array($function) and count($function) == 2)
+       {
+           $object = $function[0];
+           $function = $function[1];
+       }
+      $this->postprocess_functions[$action] = array("name"=>$function, "arr_values"=>$arr_values, "object"=>$object);
     }
   }
 
@@ -103,7 +125,13 @@ class datamodel_model {
       (count($arr_values)>0)? array_unshift($arr_values, $this):$arr_values = array($this);
 
       $this->action = $action;
-      $this->postprocess_result = call_user_func_array($function["name"], $arr_values);
+        if ($function["object"]!='')
+               $this->postprocess_result = call_user_func_array(array($function["object"], $function["name"]), $arr_values);
+        else
+               $this->postprocess_result = call_user_func_array($function["name"], $arr_values);
+
+        //$this->postprocess_result = call_user_func_array($function["name"], $arr_values);
+
       return  $this->postprocess_result;
     }
   }
@@ -244,6 +272,7 @@ class datamodel_model {
         }
       }
       $escape = $this->exec_preprocess_functions("insert");
+
       if ($escape !== false)
       {
         $result = $this->db->insert($this->table, $this->data);

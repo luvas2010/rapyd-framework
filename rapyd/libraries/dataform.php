@@ -74,12 +74,13 @@ class dataform_library extends rpd_component_library {
 	// --------------------------------------------------------------------
 	public function set_source($source) {
 		//instance or reuse a model
-		if (is_object($source) and (get_class($source) == 'datamodel' OR is_subclass_of($source, "datamodel"))) {
+		if (is_object($source) and (get_class($source) == 'rpd_datamodel_model' OR is_subclass_of($source, "rpd_datamodel_model"))) {
 			$this->model = $source;
 		} elseif (is_string($source)) {
-			$this->model = new datamodel_model($source);
+			$this->model = new rpd_datamodel_model($source);
 		} else {
-			$this->show_error('datamodel non valido');
+
+			$this->show_error('datamodel non valido '.get_class($source));
 			die();
 		}
 		if (count($this->fields)) {
