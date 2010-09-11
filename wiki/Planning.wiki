@@ -21,9 +21,11 @@ Completed features have a strike through them.
 
   * new site, built on current svn.. i'm sorry for old forum, probably i've lost all recent backups.
  
-  * new release with  flatsql, better windows compatibility, and postgres driver by tannoiser (already on current trunk),
+  * fix to keep CI compatibility and to cleanup syntax 
 
-  * demos driven by flatsql (so no mysql installation, and no dump required to run samples, just download, unzip and run)
+  * ~~add postgres driver by tannoiser~~
+
+  * ~~demos driven by flat-file sqlite3 database~~
 
 0.6
 
