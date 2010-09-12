@@ -4,8 +4,9 @@ Server Requirements For this demo:
 
 - php >= 5.1
 - pdo_sqlite driver enabled *
+- folder&files /modules/demo/db/ must have rwx permission (777)
 
-This demo use a flat file sqlite3 database, but rapyd has also drivers for mysql, mysqli, postgres.
+This demo use a flat file sqlite3 database, but rapyd has also drivers for mysql and postgres.
 
 
 * on a debian/ubuntu you can install sqlite driver with:

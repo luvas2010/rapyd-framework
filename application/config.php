@@ -27,7 +27,7 @@ $config['locale_language'] = 'en_US';
 $config['db']['hostname'] = "";
 $config['db']['username'] = "";
 $config['db']['password'] = "";
-$config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/assets/demo.db';
+$config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/db/demo.db';
 $config['db']['dbdriver'] = "pdo";
 $config['db']['dbprefix'] = "";
 
