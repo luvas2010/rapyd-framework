@@ -10,7 +10,7 @@ class demo_controller extends rpd {
 		$data['head']		= $this->head();
 		$data['title'] 		= 'Repyd Demos';
 		$data['content']	= nl2br($this->view('home'));
-		$data['code'] 		= nl2br($this->view('sql'));
+		$data['code'] 		= '';
 
 		//output
 
