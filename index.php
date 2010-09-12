@@ -19,8 +19,8 @@ define('DOC_ROOT', substr($filepath, 0, strrpos($filepath, $_SERVER['SCRIPT_NAME
 
 define('RAPYD_ROOT', $cwd.DIRECTORY_SEPARATOR);
 define('RAPYD_PATH', str_replace(DOC_ROOT,'',str_replace('\\','/',RAPYD_ROOT)));
-define('RAPYD_VERSION', '0.6');
-define('RAPYD_BUILD_DATE', '2009-08-11');
+define('RAPYD_VERSION', '0.7');
+define('RAPYD_BUILD_DATE', '2010-09-19');
 
 unset($filepath,$cwd);
 /**
