@@ -5,13 +5,9 @@
 main goals:
 
   * be a stand-alone MVC application framework,  but preserve flexibility of a simple php library (if you need some parts only).
-
   * widget oriented architecture (grids, forms, tables, etc..)
-
   * ultraconcise syntax
-
   * be smart, few files, clean filesystem
- 
   * include just few (and tiny) third party libs (nicEdit,jquery,some jquery plugin)
  
  
