@@ -341,11 +341,10 @@ class rpd
 			//enable $this->db->.. inside controllers
 			if (isset(self::$db))
 				$controller->db = self::$db;
-		    $controller->qs = self::$qs;
+                        $controller->qs = self::$qs;
 			if (is_callable(array($controller, $method)))
 			{
-				// Start validation of the controller
-				$controller->$method($params);
+                                call_user_func_array(array($controller, $method), $params);
 			}
 			else
 			{
