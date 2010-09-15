@@ -16,7 +16,7 @@ class edit_controller extends rpd {
 		$edit->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
 		$edit->field('dropdown','author_id','Author')->options('SELECT author_id, firstname FROM authors')
 			 ->rule('required');
-		$edit->field('date','datefield','Date')->attributes(array('style'=>'width: 80px'));
+		$edit->field('date','date','Date')->attributes(array('style'=>'width: 100px'));
 		$edit->field('editor','body','Description')->rule('required');
 
 		$edit->buttons('modify','save','undo','back');
