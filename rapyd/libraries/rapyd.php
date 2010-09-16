@@ -7,6 +7,7 @@ class rpd
 	public static $config;
 	public static $working_path;
 	public static $qs;
+	public static $uri;
 	public static $controller;
 	public static $method;
 	public static $params = array();
@@ -169,6 +170,7 @@ class rpd
               // get segments from URL
               //$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
                 $url = trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/');
+		self::$uri = $url;
 
 		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
 		{
@@ -336,26 +338,36 @@ class rpd
 		$method = self::$method;
 		$params = self::$params;
 
-		if(is_object($controller) && method_exists($controller, $method))
+		if(is_object($controller))
 		{
-			//enable $this->db->.. inside controllers
-			if (isset(self::$db))
+                    if (isset(self::$db))
 				$controller->db = self::$db;
-                        $controller->qs = self::$qs;
+                    $controller->qs = self::$qs;
+                    $controller->uri = self::$uri;
+
+                    if(method_exists($controller, $method))
+                    {
 			if (is_callable(array($controller, $method)))
 			{
                                 call_user_func_array(array($controller, $method), $params);
+                                return;
 			}
 			else
 			{
 				self::error('404');
 			}
 
-		}
-		else
-		{
-			self::error('404');
-		}
+                    }
+                    elseif (is_callable(array($controller, 'remap')))
+                    {
+                            array_unshift($params, $method);
+                            call_user_func_array(array($controller, 'remap'), $params);
+                            return;
+                    }
+                }
+
+		self::error('404');
+
 	}
 
 	/**
