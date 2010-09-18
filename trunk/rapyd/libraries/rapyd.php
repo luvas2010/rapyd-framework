@@ -65,7 +65,7 @@ class rpd
 			$suffix = 'library';
 		}
                 //hack for CI integration (nota.. i file creati in CI non devono avere suffisso _helper _field ecc..)
-		if (@$prefix != 'CI' AND (in_array($suffix,array('helper','field','driver','library','controller')) OR strpos(@$prefix,'rpd_')!==false)){
+		if (@$prefix != 'CI' AND (in_array($suffix,array('helper','field','driver','library','controller','model')) OR strpos(@$prefix,'rpd_')!==false)){
 			self::load($suffix, $path.$file);
 		} else {
                     return FALSE;
