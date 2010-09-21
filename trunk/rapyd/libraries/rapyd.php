@@ -324,7 +324,8 @@ class rpd
 		//controller called using parameters
 		if (isset($controller, $method))
 		{
-			self::$controller =	new $controller.'_controller'; //self::load('controller', $controller);
+                        $controller .= '_controller';
+			self::$controller = new $controller(); //self::load('controller', $controller);
 			self::$method = str_replace('-', '_', $method);
 			self::$params = $params;
 		}
@@ -349,8 +350,7 @@ class rpd
                     {
 			if (is_callable(array($controller, $method)))
 			{
-                                call_user_func_array(array($controller, $method), $params);
-                                return;
+                                return call_user_func_array(array($controller, $method), $params);
 			}
 			else
 			{
@@ -361,8 +361,7 @@ class rpd
                     elseif (is_callable(array($controller, 'remap')))
                     {
                             array_unshift($params, $method);
-                            call_user_func_array(array($controller, 'remap'), $params);
-                            return;
+                            return call_user_func_array(array($controller, 'remap'), $params);
                     }
                 }
 
