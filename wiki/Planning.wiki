@@ -3,7 +3,7 @@
 
 Completed features have a strike through them.
 
-0.8 planned
+0.8 under dev.
 
   * core rewrite, syntax should be "only" oop strict, and "entirely" chainable. (loose array syntax for a better and clean class inheritance).
 
@@ -17,7 +17,7 @@ Completed features have a strike through them.
 
 
 
-0.7 under dev.
+0.7 
 
   * ~~new site, built on current svn..~~ i'm sorry for old forum, probably i've lost all recent backups.
  
