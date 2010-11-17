@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Welcome to Rapyd <?=RAPYD_VERSION?></title>
+    <title>Welcome to Rapyd <?php echo RAPYD_VERSION?></title>
     <style>
         body {
             margin: 0;
