@@ -5,7 +5,7 @@
         body {
             margin: 0;
             padding: 20px;
-            font-family: Lucida Grande, Verdana, Geneva, Sans-serif;
+            font-family: "Lucida Grande", Verdana, Geneva, Sans-serif;
             font-size: 14px;
             color: #4F5155;
             background-color: #fff;
