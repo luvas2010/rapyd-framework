@@ -1,5 +1,15 @@
+/* author: felice ostuni
+  tool to replace fieldset with jquery-ui tabs (require jquery 1.3.x and jquery-ui 1.7.x)
+ 
+  usage:  append this before e dataedit  build()
 
-//$(document).ready(function() { $('.dataform').formTabs({ propery: 'value'}); });
+    rpd_html_helper::js('jquery/jquery.formtabs.js');
+    rpd_html_helper::head_script('
+        $(document).ready(function() { $('.dataform').formTabs({ propery: 'value'}); });
+    ');
+  
+ */
+
 
 (function($) {
 
