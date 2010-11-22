@@ -187,7 +187,8 @@ class rpd_component_library {
 
   public function replace_functions($content, $functions='ALL')
   {
-    $formatting_functions = array("htmlspecialchars","htmlentities",
+    $formatting_functions = array("rpd[^>]+",
+                                  "htmlspecialchars","htmlentities",
                                   "strtolower","strtoupper",
                                   "substr","strpos","nl2br", "number_format",
                                   "dropdown", "radiogroup"
