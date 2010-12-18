@@ -77,17 +77,19 @@ class rpd_html_helper {
 	{
 		$buffer = "";
 
-    //css links
+                //css links
 		foreach (self::$css as $item)
-    {
-			$buffer .= sprintf(self::$tags['css'], RAPYDASSETS.$item )."\n";
+                {
+                        $item = (strpos($item,'http')===false AND $item[0] != '/') ? RAPYDASSETS .$item : $item;
+			$buffer .= sprintf(self::$tags['css'], $item )."\n";
 		}
-    //js links
+                //js links
 		foreach (self::$js as $item)
-    {
-			$buffer .= sprintf(self::$tags['js'], RAPYDASSETS.$item )."\n";
+                {
+                        $item = (strpos($item,'http')===false AND $item[0] != '/') ? RAPYDASSETS .$item : $item;
+			$buffer .= sprintf(self::$tags['js'], $item )."\n";
 		}
-    //javascript in page, head section
+                //javascript in page, head section
 		$buffer .= sprintf(self::$tags['script'], implode("\n",self::$scripts) )."\n";
 
 		return $buffer;
