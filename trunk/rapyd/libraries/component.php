@@ -191,7 +191,7 @@ class rpd_component_library {
                                   "htmlspecialchars","htmlentities",
                                   "strtolower","strtoupper",
                                   "substr","strpos","nl2br", "number_format",
-                                  "dropdown", "radiogroup"
+                                  "dropdown", "radiogroup","date","strtotime"
                                   );
 
     if  (is_string($functions) AND $functions=='ALL')
