@@ -20,7 +20,7 @@ $config['root_path']  = getenv("DOCUMENT_ROOT"); // or './../../';
 $config['include_paths'][]  = 'rapyd';
 
 $config['assets_path']     = RAPYD_PATH.'rapyd/assets/';
-
+$config['cache_path']      = RAPYD_ROOT.'cache/';
 $config['locale_language'] = 'en_US';
 
 
