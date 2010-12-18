@@ -3,7 +3,7 @@
 
 //rapyd don't need magic quotes,
 //in a production server feel free to change or remove this line (at your risc)
-set_magic_quotes_runtime(0);
+ini_set('magic_quotes_runtime', 0);
 
 
 error_reporting(E_ALL);
@@ -21,6 +21,9 @@ define('RAPYD_ROOT', $cwd.DIRECTORY_SEPARATOR);
 define('RAPYD_PATH', str_replace(DOC_ROOT,'',str_replace('\\','/',RAPYD_ROOT)));
 define('RAPYD_VERSION', '0.7');
 define('RAPYD_BUILD_DATE', '2010-09-19');
+
+define('RAPYD_BENCH_TIME',  microtime(true));
+define('RAPYD_BENCH_MEMORY', memory_get_usage());
 
 unset($filepath,$cwd);
 /**
