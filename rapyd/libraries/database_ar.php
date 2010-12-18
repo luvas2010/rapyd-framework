@@ -259,7 +259,7 @@ class rpd_database_ar_library extends rpd_database_library {
 
 	// --------------------------------------------------------------------
 
-	public function set($key, $value = '')
+	public function set($key, $value = '', $escape=true)
 	{
 		$key = $this->_object_to_array($key);
 
@@ -270,7 +270,8 @@ class rpd_database_ar_library extends rpd_database_library {
 
 		foreach ($key as $k => $v)
 		{
-			$this->ar_set[$k] = $this->escape($v);
+                        $v = ($escape)? $this->escape($v) : $v;
+			$this->ar_set[$k] = $v;
 		}
 
 		return $this;
