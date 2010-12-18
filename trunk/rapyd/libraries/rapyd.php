@@ -8,6 +8,7 @@ class rpd
 	public static $working_path;
 	public static $qs;
 	public static $uri;
+	public static $url;
 	public static $controller;
 	public static $method;
 	public static $params = array();
@@ -170,15 +171,16 @@ class rpd
               // get segments from URL
               //$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
                 $url = trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/');
-		self::$uri = $url;
+                self::$uri = $url;
+                self::$url = $url;
 
 		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
 		{
 			$segment_arr = (!empty($url)) ? explode('/', $url) : array();
 
-			// defaults
-			$controller_name = self::config('default_controller');
-			$method_name = self::config('default_method');
+                    // defaults
+                    $controller_name = self::config('default_controller');
+                    $method_name = self::config('default_method');
 			$params = array();
 
 			// if URL segments exist, overwrite defaults
@@ -243,8 +245,23 @@ class rpd
 		extract($input_data, EXTR_SKIP);
 		include $view_path;
 		$output = ob_get_clean();
+		$output = str_replace('{time}', self::benchmarks('time'), $output);
+		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
 		return $output;
 	}
+
+
+	public static function benchmarks($aspect='time')
+	{
+		if ($aspect=='time')
+		{
+			return number_format((microtime(true) - RAPYD_BENCH_TIME),3) .'ms';
+		} elseif ($aspect=='memory') {
+			return number_format((memory_get_usage() - RAPYD_BENCH_MEMORY) / 1024 / 1024, 2).'MB';
+		}
+	}
+
+
 
 	/**
 	 * centralized error view (for 404 or custom errors)
@@ -252,16 +269,7 @@ class rpd
 	 */
 	public static function error($message)
 	{
-		if ($message=='404')
-		{
-			$page = '404';
-		}
-		else
-		{
-			$page = 'error';
-			$message = array('error'=>$message);
-		}
-		echo self::view('errors/'.$page, $message);
+                self::run('error','error_message',array($message));
 		die();
 	}
 
@@ -321,9 +329,49 @@ class rpd
 	 */
 	public static function run($controller=null,$method=null,$params=array())
 	{
+
+                if (isset($controller) AND is_array($controller))
+                {
+                    $controller = $controller[1];
+                    self::$url = $controller;
+                    //die($controller);
+                }
+
+                if (isset($controller) AND !isset($method) AND strpos($controller,'/'))
+                {
+                        
+                        $segment_arr = explode('/', $controller);
+                        self::$url = $controller;
+                        while($segment_arr)
+                        {
+                                $path = implode('/', $segment_arr);
+
+                                $arr_segments[] = array_pop($segment_arr);
+
+                                // starting from last segment.. searching for a valid controller
+                                // when is found, next segment is the method and others are params
+                                if($controller = self::find_file('controller', $path))
+                                {
+                                        $controller_name = $path;
+
+                                        $arr_segments = array_reverse($arr_segments);
+                                        if(isset($arr_segments[1])) $method_name = $arr_segments[1];
+                                        if(isset($arr_segments[2])) $params = array_slice($arr_segments, 2);
+
+                                        $controller .= '_controller';
+                                        self::$controller = new $controller(); //self::load('controller', $controller);
+                                        self::$method = str_replace('-', '_', $method);
+                                        self::$params = $params;
+
+                                        break;
+                                }
+                        }
+
+                }
 		//controller called using parameters
 		if (isset($controller, $method))
 		{
+                        self::$url = $controller.'/'.$method.'/'.implode('/',$params);
                         $controller .= '_controller';
 			self::$controller = new $controller(); //self::load('controller', $controller);
 			self::$method = str_replace('-', '_', $method);
@@ -345,6 +393,13 @@ class rpd
 				$controller->db = self::$db;
                     $controller->qs = self::$qs;
                     $controller->uri = self::$uri;
+                    $controller->url = self::$uri;
+
+                    $cached = self::get_cache();
+                    if ($cached!=''){
+                            echo $cached;
+                            exit;
+                    }
 
                     if(method_exists($controller, $method))
                     {
@@ -408,6 +463,20 @@ class rpd
 		return rpd_html_helper::head();
 	}
 
+        public function js($js)
+        {
+            return rpd_html_helper::js($js);
+        }
+
+
+
+        public function css($css)
+        {
+            return rpd_html_helper::css($css);
+        }
+
+        // --------------------------------------------------------------------
+        
 	public static function connect()
 	{
 
@@ -430,6 +499,128 @@ class rpd
 		return $result;
 
 	}
+
+
+
+
+
+
+  	public static function get_cache()
+	{
+
+		if ( !is_dir(self::config('cache_path')) OR !is_writable(self::config('cache_path')))
+		{
+			return FALSE;
+		}
+
+		$cache_path = self::config('cache_path').str_replace('/', '.', self::$url.'.cache');//.sha1(self::$url);
+
+		if ( ! @file_exists($cache_path))
+		{
+			return FALSE;
+		}
+
+		if ( ! $cp = @fopen($cache_path, 'rb'))
+		{
+			return FALSE;
+		}
+
+		flock($cp, LOCK_SH);
+
+		$cache = '';
+		if (filesize($cache_path) > 0)
+		{
+			$cache = fread($cp, filesize($cache_path));
+		}
+
+		flock($cp, LOCK_UN);
+		fclose($cp);
+
+		if ( ! preg_match("/(<tstamp>(\d+)<\/tstamp><callback>([A-Za-z0-9\_]*)<\/callback>)/", $cache, $match))
+		{
+			return FALSE;
+		}
+
+		if (time() >= $match['2'])
+		{
+			@unlink($cache_path);
+			return FALSE;
+		}
+		$output = str_replace($match['0'], '', $cache);
+		$output = str_replace('{time}', self::benchmarks('time'), $output);
+		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
+                //$output = preg_replace("/{rpd::([^}]+)}/", '\\1', $output);
+		/*if (preg_match('/{rpd::([^}]+)}/', $output, $dmatch))
+		{
+                        $output = str_replace($dmatch[0], rpd::run($dmatch[1]), $output);
+			//$output = preg_replace_callback('/{rpd::([^}]+)}/', 'rpd::run', $output);
+		}*/
+		
+
+                
+		if ($match['3']!=''){
+			$controller = self::$controller;
+			$method = $match['3'];
+			if (is_callable(array($controller, $method)))
+			{
+				$output = $controller->$method($output);
+			}
+		}
+
+		return $output;
+	}
+
+
+	public static function set_cache($output, $expiration=0, $callback='')
+	{
+		$cache_path = rtrim(self::config('cache_path'),'/');
+
+		if ( !is_dir($cache_path) OR !is_writable($cache_path))
+		{
+			die($cache_path);
+			return FALSE;
+		}
+
+		$stamp = time()+$expiration;
+		$cache_path .= '/'.str_replace('/', '.', self::$url.'.cache');//sha1( self::$url);
+
+		if ( ! $cp = fopen($cache_path, 'wb'))
+		{
+			return FALSE;
+		}
+
+		if (flock($cp, LOCK_EX))
+		{
+			fwrite($cp, '<tstamp>'.$stamp.'</tstamp><callback>'.$callback.'</callback>'.$output);
+			flock($cp, LOCK_UN);
+		}
+		else
+		{
+			return FALSE;
+		}
+		fclose($cp);
+		@chmod($cache_path, 0777);
+		return TRUE;
+	}
+
+	public static function cache($output, $expiration, $callback='')
+	{
+		rpd::set_cache($output, $expiration, $callback);
+		$controller = self::$controller;
+                if ($callback!='' AND is_callable(array($controller, $callback)))
+                {
+                        $output = $controller->$callback($output);
+                }
+                //$output = preg_replace("/{rpd::([^}]*)}/", '\\1',   $output);
+		$output = str_replace('{time}', self::benchmarks('time'), $output);
+		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
+		return $output;
+	}
+
+
+
+
+
 
 
 }
