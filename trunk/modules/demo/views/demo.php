@@ -101,8 +101,7 @@ CODE <br />
 
   <div class="footer">
     <p>
-     built <?php echo strftime("%A %d %B %Y", strtotime(RAPYD_BUILD_DATE))?> | ver <?php echo RAPYD_VERSION?> | &copy; Felice Ostuni | MIT licensed
-    </p>
+     <?php echo strftime("%A %d %B %Y", strtotime(RAPYD_BUILD_DATE))?> | ver <?php echo RAPYD_VERSION?> | rendered in {time} / {memory} </p>
   </div>
 
 </div>
