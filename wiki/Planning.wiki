@@ -14,6 +14,8 @@ Completed features have a strike through them.
 
   * upgrade jquery version, nicedit (or replace nicedit with anoter wysiwyg based on jquery)
 
+  * ~~benchmark (timestamp, memory usage)~~
+
   * ~~build a cache (similar to CI, but with "partials" support), my idea is to cache a parsed view~~, but keep a non cached placeholders/subview {subview}..
 
   * ~~i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.~~
