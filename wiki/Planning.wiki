@@ -3,13 +3,18 @@
 
 Completed features have a strike through them.
 
-0.8 under dev.
+0.9
 
   * core rewrite, syntax should be "only" oop strict, and "entirely" chainable. (loose array syntax for a better and clean class inheritance).
 
   * better and full orm (object-relational mapping) try to follow kohana
 
-  * build a cache (similar to CI, but with "partials" support), my idea is to cache a parsed view, but keep a non cached placeholders/subview {subview}..
+
+0.8 under dev.
+
+  * upgrade jquery version, nicedit (or replace nicedit with anoter wysiwyg based on jquery)
+
+  * ~~build a cache (similar to CI, but with "partials" support), my idea is to cache a parsed view~~, but keep a non cached placeholders/subview {subview}..
 
   * ~~i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.~~
 
