@@ -7,6 +7,7 @@
 
 $config['index_page'] = 'index.php'; //use 'index.php' if htaccess not allowed
 $config['basename'] = ""; //it correspont to .htaccess BASENAME
+$config['url_method'] = "uri"; //alternative: "qs"  define if rapyd will use uri or query string for its semantic
 $config['default_controller'] = 'welcome';
 $config['default_method']     = 'index';
 
