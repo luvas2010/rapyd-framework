@@ -14,9 +14,9 @@ class edit_grid_controller extends rpd {
 		$edit->buttons('modify','save','undo');
 		$edit->build();
 
-		if ($this->qs->value('show'))
+		if ($this->uri->value('show'))
 		{
-			if ($this->qs->value('show1|modify1|update1|create1|insert1|do_delete1'))
+			if ($this->uri->value('show1|modify1|update1|create1|insert1|do_delete1'))
 			{
 				$edit->nest('comments',$this->comment());
 			} else {
@@ -38,13 +38,13 @@ class edit_grid_controller extends rpd {
 		$grid = new datagrid_library();
 		$grid->label = 'Comments';
 		$grid->source('comments');
-		$grid->db->where('article_id',$this->qs->value('create|show|modify|update'));
+		$grid->db->where('article_id',$this->uri->value('create|show|modify|update'));
 		$grid->db->orderby('comment_id','desc');
 		$grid->column('comment_id', 'ID', true)
-				->url('edit_grid/article?show={article_id}&modify1={comment_id}','detail.gif');
+				->url('edit_grid/article/show/{article_id}/modify1/{comment_id}','detail.gif');
 		$grid->column('comment','Comment');
 		$grid->column('delete', 'delete')
-				->url('edit_grid/article?show={article_id}&do_delete1={comment_id}');
+				->url('edit_grid/article/show/{article_id}/do_delete1/{comment_id}');
 		$grid->buttons('add');
 		$grid->build();
 
@@ -56,13 +56,13 @@ class edit_grid_controller extends rpd {
 		//comments dataedit
 		$edit = new dataedit_library();
 		$edit->label = 'Manage Comment';
-		$edit->back_url = $this->url('edit_grid/article?show='.$this->qs->value('show'));
+		$edit->back_url = $this->url('edit_grid/article/show/'.$this->uri->value('show'));
 		$edit->back_save = true;
 		$edit->back_delete = true;
 		$edit->back_cancel = true;
 		$edit->back_cancel_save = true;
 		$edit->source('comments');
-		$edit->field('hidden','article_id','')->insert_value($this->qs->value('show'));
+		$edit->field('hidden','article_id','')->insert_value($this->uri->value('show'));
 		$edit->field('textarea','comment','Comment');
 		$edit->buttons('modify','save','undo','back');
 		$edit->build();
