@@ -137,7 +137,7 @@ class rpd_form_helper {
 	}
 
 
-	public static function dropdown($data = '', $options = array(), $selected = '', $extra = '', $disabled = '')
+	public static function dropdown($data = '', $options = array(), $selected = '', $extra = '', $disabled = null)
 	{
 		if ( ! is_array($data))
 		{
@@ -148,7 +148,7 @@ class rpd_form_helper {
 		foreach ($options as $key => $val)
 		{
 			$sel = ($selected == $key) ? ' selected="selected"' : '';
-			$dis = ($disabled == $key) ? ' disabled="disabled"' : '';
+			$dis = ($disabled === $key) ? ' disabled="disabled"' : '';
 			$input .= '<option value="'.$key.'"'.$sel.$dis.'>'.$val.'</option>'."\n";
 		}
 		$input .= '</select>';

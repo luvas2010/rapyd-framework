@@ -20,8 +20,8 @@ class input_field extends field_field {
     //http://digitalbush.com/projects/masked-input-plugin
     if (isset($this->mask))
     {
-      rpd_html_helper::js('jquery/jquery.js');
-      rpd_html_helper::js('jquery/maskedinput.js');
+      rpd_html_helper::js('jquery/jquery.min.js');
+      rpd_html_helper::js('jquery/jquery.maskedinput.js');
     }
 
     switch ($this->status)
@@ -44,7 +44,7 @@ class input_field extends field_field {
         if (isset($this->mask))
         {
           $output .= rpd_html_helper::script('
-                jQuery(function($){
+                $(function(){
                   $("#'.$this->name.'").mask("'.$this->mask.'");
                 });');
         }

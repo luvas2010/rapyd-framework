@@ -7,7 +7,7 @@
     <td>
       <table class="collapsed">
         <tr>
-          <td class="dg_header"><?php echo $label?></td>
+          <td class="dg_header"><?php if($label!='') echo $label.'&nbsp;('.$total_rows.')'?></td>
           <td class="dg_header" align="right"><?php echo $container["TR"]?></td>
         </tr>
       </table>

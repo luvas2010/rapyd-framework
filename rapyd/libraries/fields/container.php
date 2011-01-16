@@ -36,7 +36,7 @@ class container_field extends field_field {
 
         break;
 
-      default:
+      default:;
     }
     $this->output = "\n".$output."\n";
   }

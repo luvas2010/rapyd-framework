@@ -1,7 +1,7 @@
 <?php if (!defined('RAPYD_PATH')) exit('No direct script access allowed');
 
 
-class dataform_free extends dataform_field {
+class free_field extends field_field {
 
   public $type = "free";
 

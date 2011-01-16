@@ -7,7 +7,9 @@ class dataset_library extends rpd_component_library {
 
 	public $source;
 	public $per_page = 10;
+        public $num_links;
 	public $data;
+        public $hash = '';
 
 	public $pagination;
 
@@ -17,7 +19,7 @@ class dataset_library extends rpd_component_library {
 	protected $type;
 	protected $limit;
 	protected $orderby;
-	protected $total_rows;
+	public $total_rows;
 	protected $orderby_uri_asc;
 	protected $orderby_uri_desc;
 
@@ -69,8 +71,8 @@ class dataset_library extends rpd_component_library {
 		$url = rpd_url_helper::remove('reset'.$this->cid, $url);
 
 		//build orderby urls
-		$this->orderby_uri_asc = rpd_url_helper::append('orderby'.$this->cid, array("{field}","asc"), $url);
-		$this->orderby_uri_desc = rpd_url_helper::append('orderby'.$this->cid, array("{field}","desc"), $url);
+		$this->orderby_uri_asc = rpd_url_helper::append('orderby'.$this->cid, array("{field}","asc"), $url).$this->hash;
+		$this->orderby_uri_desc = rpd_url_helper::append('orderby'.$this->cid, array("{field}","desc"), $url).$this->hash;
 	}
 
 	// --------------------------------------------------------------------
@@ -78,7 +80,7 @@ class dataset_library extends rpd_component_library {
 	public function orderby_link($field, $direction="asc")
 	{
 		$direction = "orderby_uri_".$direction;
-		return str_replace(rawurlencode('{field}'),$field, $this->$direction);
+		return str_replace('{field}',$field, $this->$direction);
 	}
 
 	// --------------------------------------------------------------------
@@ -136,6 +138,8 @@ class dataset_library extends rpd_component_library {
 			'cid' => $this->cid,
 			'total_items'    => $this->total_rows, // use db count query here of course
 			'items_per_page' => $this->per_page, // it may be handy to set defaults for stuff like this in config/pagination.php
+                        'num_links' => $this->num_links,
+                        'hash'      => $this->hash,
 		);
 		$this->pagination = new rpd_pagination_library($config);
 		$offset = $this->pagination->offset();

@@ -15,7 +15,7 @@ class dataedit_library extends dataform_library {
 		$caption = (isset($config['caption'])) ? $config['caption'] : rpd::lang('btn.modify');
 		if ($this->status_is("show") && rpd_url_helper::value('show' . $this->cid)) {
 			$modify_url = rpd_url_helper::replace('show' . $this->cid, 'modify' . $this->cid);
-			$action = "javascript:window.location='" . $modify_url . "'";
+			$action = "javascript:window.location.href='" . $modify_url . "'";
 			$this->button("btn_modify", $caption, $action, "TR");
 		}
 	}
@@ -24,10 +24,10 @@ class dataedit_library extends dataform_library {
 		$caption = (isset($config['caption'])) ? $config['caption'] : rpd::lang('btn.delete');
 		if ($this->status_is("show") && rpd_url_helper::value('show' . $this->cid)) {
 			$delete_url = rpd_url_helper::replace('show' . $this->cid, 'delete' . $this->cid);
-			$action = "javascript:window.location='" . $delete_url . "'";
+			$action = "javascript:window.location.href='" . $delete_url . "'";
 			$this->button("btn_delete", $caption, $action, "TR");
 		} elseif ($this->status_is("delete")) {
-			$action = "javascript:window.location='" . $this->process_url . "'";
+			$action = "javascript:window.location.href='" . $this->process_url . "'";
 			$this->button("btn_delete", $caption, $action, "BL");
 		}
 	}
@@ -42,7 +42,7 @@ class dataedit_library extends dataform_library {
 	protected function undo_button($config = null) {
 		$caption = (isset($config['caption'])) ? $config['caption'] : rpd::lang('btn.undo');
 		if ($this->status_is("create")) {
-			$action = "javascript:window.location='{$this->back_url}'";
+			$action = "javascript:window.location.href='{$this->back_url}'";
 			$this->button("btn_undo", $caption, $action, "TR");
 		} elseif ($this->status_is("modify")) {
 			if (($this->back_cancel_save === FALSE) || ($this->back_cancel === FALSE)) {
@@ -54,16 +54,16 @@ class dataedit_library extends dataform_library {
 				elseif (rpd_url_helper::value('update' . $this->cid)) {
 					$undo_url = rpd_url_helper::replace('update' . $this->cid, 'show' . $this->cid);
 				}
-				$action = "javascript:window.location='" . $undo_url . "'";
+				$action = "javascript:window.location.href='" . $undo_url . "'";
 			} else {
-				$action = "javascript:window.location='{$this->back_url}'";
+				$action = "javascript:window.location.href='{$this->back_url}'";
 			}
 			$this->button("btn_undo", $caption, $action, "TR");
 		} elseif ($this->status_is("delete")) {
 			if (($this->back_cancel_delete === FALSE) || ($this->back_cancel === FALSE)) {
-				$action = "javascript:window.location='{$this->undo_url}'";
+				$action = "javascript:window.location.href='{$this->undo_url}'";
 			} else {
-				$action = "javascript:window.location='{$this->back_url}'";
+				$action = "javascript:window.location.href='{$this->back_url}'";
 			}
 			$this->button("btn_undo", $caption, $action, "TR");
 		}
@@ -72,7 +72,7 @@ class dataedit_library extends dataform_library {
 	protected function back_button($config = null) {
 		$caption = (isset($config['caption'])) ? $config['caption'] : rpd::lang('btn.back');
 		if ($this->status_is(array("show", "unknow_record")) || $this->action_is("delete")) {
-			$action = "javascript:window.location='{$this->back_url}'";
+			$action = "javascript:window.location.href='{$this->back_url}'";
 			$this->button("btn_back", $caption, $action, "BL");
 		}
 	}
@@ -196,10 +196,10 @@ class dataedit_library extends dataform_library {
 					$qs = (count($this->model->pk) < 2) ? current($this->model->pk) : $this->model->pk;
 					$this->postprocess_url = rpd_url_helper::append('show' . $this->cid, $qs, $this->postprocess_url);
 					if ($this->back_save) {
-						return rpd_html_helper::script("javascript:window.location='" . $this->back_url . "'");
+						return rpd_html_helper::script("javascript:window.location.href='" . $this->back_url . "'");
 						die();
 					} else {
-						return rpd_html_helper::script("javascript:window.location='" . $this->postprocess_url . "'");
+						return rpd_html_helper::script("javascript:window.location.href='" . $this->postprocess_url . "'");
 						die();
 					}
 				}
@@ -216,10 +216,10 @@ class dataedit_library extends dataform_library {
 					$qs = (count($this->model->pk) < 2) ? reset($this->model->pk) : $this->model->pk;
 					$this->postprocess_url = rpd_url_helper::append('show' . $this->cid, $qs, $this->postprocess_url);
 					if ($this->back_save) {
-						return rpd_html_helper::script("javascript:window.location='" . $this->back_url . "'");
+						return rpd_html_helper::script("javascript:window.location.href='" . $this->back_url . "'");
 						die();
 					} else {
-						return rpd_html_helper::script("javascript:window.location='" . $this->postprocess_url . "'");
+						return rpd_html_helper::script("javascript:window.location.href='" . $this->postprocess_url . "'");
 						die();
 					}
 				}
@@ -232,7 +232,7 @@ class dataedit_library extends dataform_library {
 				if ($this->on("success")) {
 					$this->build_buttons();
 					if ($this->back_delete) {
-						return rpd_html_helper::script("javascript:window.location='" . $this->back_url . "'");
+						return rpd_html_helper::script("javascript:window.location.href='" . $this->back_url . "'");
 						die();
 					} else {
 						return $this->build_message('record cancellato');
