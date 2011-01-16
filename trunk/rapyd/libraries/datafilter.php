@@ -106,6 +106,8 @@ class datafilter_library extends dataform_library {
 	}
 	// --------------------------------------------------------------------
 	function build() {
+		$this->reset_url = $this->reset_url.$this->hash;
+		$this->process_url = $this->process_url.$this->hash;
 		//sniff and build fields
 		$this->sniff_fields();
 		//build fields

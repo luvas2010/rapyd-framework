@@ -22,34 +22,33 @@ class textarea_field extends field_field {
 
     if (isset($this->max_chars))
     {
-      rpd_html_helper::js('jquery/jquery.js');
+      rpd_html_helper::js('jquery/jquery.min.js');
 
 			$output .= rpd_html_helper::script('
-				var $j = jQuery.noConflict();
 
 				function limit_chars_'.$this->name.'()
 				{
 				  var limit = '.$this->max_chars.';
-					var text = $j("#'.$this->name.'").val();
+					var text = $("#'.$this->name.'").val();
 					var textlength = text.length;
 
 
 					if(textlength > limit)
 					{
-					 $j("#'.$this->name.'_info").html(" non puoi superare i "+limit+" caratteri!");
-					 $j("#'.$this->name.'").val(text.substr(0,limit));
+					 $("#'.$this->name.'_info").html(" non puoi superare i "+limit+" caratteri!");
+					 $("#'.$this->name.'").val(text.substr(0,limit));
 					 return false;
 					}
 					else
 					{
-					 $j("#'.$this->name.'_info").html("hai "+ (limit - textlength) +" caratteri rimanenti");
+					 $("#'.$this->name.'_info").html("hai "+ (limit - textlength) +" caratteri rimanenti");
 					 return true;
 					}
 
 
 				}
 
-				$j("#'.$this->name.'").keyup(function(){
+				$("#'.$this->name.'").keyup(function(){
 					limit_chars_'.$this->name.'();
 				});
 

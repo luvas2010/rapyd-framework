@@ -225,14 +225,21 @@ class rpd_component_library {
         {
           $replace = call_user_func_array(array($this, $function), $arguments);
         }
+        //static class/metdod
         elseif (strpos($function,"::")!==FALSE)
         {
-          list($static_class,$static_method) = explode($function);
+          list($static_class,$static_method) = explode("::",$function);
           $replace = call_user_func_array(array($static_class,$static_method), $arguments);
+        }
+        //dynamic object/method
+        elseif (strpos($function,".")!==FALSE)
+        {
+          list($class,$method) = explode(".",$function);
+          $replace = call_user_func_array(array($$class,$method), $arguments);
         }
         else
         {
-          $replace = call_user_func_array($function, $arguments);
+          $replace = @call_user_func_array($function, $arguments);
         }
 
         $content = str_replace($toreplace, $replace, $content);

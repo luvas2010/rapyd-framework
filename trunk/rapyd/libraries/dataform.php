@@ -4,6 +4,7 @@ class dataform_library extends rpd_component_library {
 	public $output = "";
 	protected $source;
 	public $fields = array();
+	public $hash = "";
 	protected $errors = array();
 	//form action, enctype, scripts
 	protected $process_url = "";
@@ -140,6 +141,7 @@ class dataform_library extends rpd_component_library {
 	}
 	// --------------------------------------------------------------------
 	public function build($method = 'form') {
+		$this->process_url = $this->process_url.$this->hash;
 		//detect form status (output)
 		if (isset($this->model)) {
 			$this->status = ($this->model->loaded) ? "modify" : "create";

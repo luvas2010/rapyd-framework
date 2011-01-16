@@ -7,6 +7,7 @@ class datagrid_library extends dataset_library {
 	public $checkbox_form = false;
 	public $output = "";
 	public $add_url = "";
+	public $add_hash = "";
 	// --------------------------------------------------------------------
 	protected function set_columns($columns) {
 		foreach($columns as $column) {
@@ -48,6 +49,9 @@ class datagrid_library extends dataset_library {
 			$url = (isset($config['url'])) ? $config['url'] : $this->add_url;
 		}
 		$url = rpd_url_helper::append('create' . $this->cid, 1, $url);
+		if (isset($config['hash']) OR $this->add_hash != "") {
+                   $url .= '#'.$this->add_hash;
+                }
 		$action = "javascript:window.location='" . $url . "'";
 		$this->button("btn_add", $caption, $action, "TR");
 	}
@@ -118,30 +122,34 @@ class datagrid_library extends dataset_library {
 	}
 	// --------------------------------------------------------------------
 	protected function build_csv() {
+           
 		$output = '';
-		$filename = $this->label . ".csv";
+		$filename = preg_replace('/[^0-9a-z\_\-]/i', '',$this->label) . ".csv";
 		header('Pragma: private');
 		header('Cache-control: private, must-revalidate');
-		header("Content-type: csv/xml;");
+		header("Content-type: application/csv");
 		header("Content-Disposition: attachment; filename=" . $filename);
+                
 		$data = get_object_vars($this);
 		foreach($this->columns as $column) {
 			$labels[] = $column->label;
 		}
-		$output.= implode(';', $labels) . "\n";
+		$output.= '"'.implode('";"', $labels) .'"'."\n";
 		//rows
 		foreach($this->data as $tablerow) {
 			unset($values);
 			foreach($this->columns as $column) {
 				$column->reset_pattern();
 				$column->set_row($tablerow);
-				$values[] = str_replace('"', '""', $column->get_value()); //quota "  come "" (notazione excel)
+				$values[] = str_replace('"', '""', strip_tags($column->get_value())); //quota "  come "" (notazione excel)
 
 			}
 			$rows[] = '"' . implode('";"', $values) . '"';
 		}
-		$output.= implode("\n", $rows) . "\n";
-		return mb_convert_encoding($output, 'iso-8859-1', 'utf-8');
+		//$output.= implode("\n", $rows) . "\n";
+                echo $output.= implode("\n", $rows) . "\n";
+                die;
+		//return mb_convert_encoding($output, 'iso-8859-1', 'utf-8');
 	}
 	// --------------------------------------------------------------------
 	public function build($method = 'grid') {
@@ -227,7 +235,12 @@ class datagrid_column extends rpd_component_library {
                 $this->onclick = $onclick;
 		return $this;
 	}
-
+	// --------------------------------------------------------------------
+	public function set_attributes($attributes)
+	{
+		$this->attributes = $attributes;
+		return $this;
+	}
 	// --------------------------------------------------------------------
 	public function set_callback($callback, $object = null) {
 		$this->callback = $callback;
@@ -301,6 +314,6 @@ class datagrid_column extends rpd_component_library {
 	}
 	// --------------------------------------------------------------------
 	function orderby_link() {
-		return str_replace(rawurlencode('{field}'), $column->orderby_field, $this->orderby_asc_url);
+		return str_replace('{field}', $column->orderby_field, $this->orderby_asc_url);
 	}
 } // End Datagrid Column Class

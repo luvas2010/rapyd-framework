@@ -5,7 +5,7 @@ class rpd_pagination_library {
 
 	public $items_per_page = 10;
 	public $total_items = 0;
-
+        public $hash = '';
 	protected static $identifier = 0;
 	protected $url;
 	protected $current_page;
@@ -16,6 +16,7 @@ class rpd_pagination_library {
 	protected $last_page;
 	protected $previous_page;
 	protected $next_page;
+        protected $num_links;
 
 
 	public function __construct($config = array())
@@ -39,19 +40,21 @@ class rpd_pagination_library {
 
 	public function initialize($config = array())
 	{
-    foreach ($config as $key => $value)
-    {
-      if (property_exists($this, $key))
-      {
-        $this->$key = $value;
-      }
-    }
+                foreach ($config as $key => $value)
+                {
+                  if (property_exists($this, $key))
+                  {
+                    $this->$key = $value;
+                  }
+                }
 
 		if (!isset($this->url))
-    $this->url = rpd_url_helper::get_url();
+                $this->url = rpd_url_helper::get_url();
 
-    //'pag'.(string)$this->cid. ' ';
-    $this->url = rpd_url_helper::append('pag'.(string)$this->cid, "{page}");
+		//unset current pagination
+                $this->url = rpd_url_helper::remove('reset'.$this->cid, $this->url);
+                $this->url = rpd_url_helper::append('pag'.(string)$this->cid, "{page}", $this->url);
+                $this->url = $this->url.$this->hash;
 
 		// Core pagination values
 		$this->total_items        = (int) max(0, $this->total_items);
@@ -67,11 +70,20 @@ class rpd_pagination_library {
 		$this->last_page          = ($this->current_page >= $this->total_pages) ? FALSE : $this->total_pages;
 		$this->previous_page      = ($this->current_page > 1) ? $this->current_page - 1 : FALSE;
 		$this->next_page          = ($this->current_page < $this->total_pages) ? $this->current_page + 1 : FALSE;
+
+                if ($this->num_links)
+                {
+                    $this->nav_start = (($this->current_page - $this->num_links) > 0) ? $this->current_page - ($this->num_links - 1) : 1;
+                    $this->nav_end   = (($this->current_page + $this->num_links) < $this->total_pages) ? $this->current_page + $this->num_links : $this->total_pages;
+                } else {
+                    $this->nav_start = 1;
+                    $this->nav_end   = $this->total_pages;
+                }
 	}
 
 	public function create_links($view = 'pagination')
 	{
-    return rpd::view($view, get_object_vars($this));
+		return rpd::view($view, get_object_vars($this));
 		return $view->render();
 	}
 

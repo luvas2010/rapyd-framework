@@ -8,7 +8,7 @@ class rpd
 	public static $working_path;
 	public static $qs;
 	public static $uri;
-	public static $url;
+	public static $uri_string;
 	public static $controller;
 	public static $method;
 	public static $params = array();
@@ -17,7 +17,8 @@ class rpd
 	public static function init($config)
 	{
 		self::$config = $config;
-		self::$qs = new rpd_url_helper();
+		self::$qs = new rpd_url_helper(); //keep compatibility
+		self::$uri = new rpd_url_helper();
 		if (!defined('RAPYDASSETS')) {
 			define('RAPYDASSETS', $config['assets_path']);
 		}
@@ -168,20 +169,21 @@ class rpd
 	 */
 	public static function router()
 	{
-              // get segments from URL
-              //$url = trim(substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], 'index.php') + 9), '/');
-                $url = trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/');
-                self::$uri = $url;
-                self::$url = $url;
 
-		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', $url) || empty($url))
+        self::$uri_string = rpd_url_helper::get_uri();
+
+		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', self::$uri_string) || empty(self::$uri_string))
 		{
-			$segment_arr = (!empty($url)) ? explode('/', $url) : array();
+			if (self::$uri_string == '')
+				$segment_arr = array();
+			else
+				$segment_arr = explode('/', self::$uri_string);
 
-                    // defaults
-                    $controller_name = self::config('default_controller');
-                    $method_name = self::config('default_method');
+            // defaults
+            $controller_name = self::config('default_controller');
+            $method_name = self::config('default_method');
 			$params = array();
+
 
 			// if URL segments exist, overwrite defaults
 			$controller = true;
@@ -197,7 +199,8 @@ class rpd
 
 					// starting from last segment.. searching for a valid controller
 					// when is found, next segment is the method and others are params
-					if($controller = self::find_file('controller', $path))
+					$controller = self::find_file('controller', $path);
+					if($controller)
 					{
 						$controller_name = $path;
 
@@ -333,7 +336,7 @@ class rpd
                 if (isset($controller) AND is_array($controller))
                 {
                     $controller = $controller[1];
-                    self::$url = $controller;
+                    self::$uri_string = $controller;
                     //die($controller);
                 }
 
@@ -341,7 +344,7 @@ class rpd
                 {
                         
                         $segment_arr = explode('/', $controller);
-                        self::$url = $controller;
+                        self::$uri_string = $controller;
                         while($segment_arr)
                         {
                                 $path = implode('/', $segment_arr);
@@ -371,8 +374,8 @@ class rpd
 		//controller called using parameters
 		if (isset($controller, $method))
 		{
-                        self::$url = $controller.'/'.$method.'/'.implode('/',$params);
-                        $controller .= '_controller';
+			self::$uri_string = $controller.'/'.$method.'/'.implode('/',$params);
+			$controller .= '_controller';
 			self::$controller = new $controller(); //self::load('controller', $controller);
 			self::$method = str_replace('-', '_', $method);
 			self::$params = $params;
@@ -393,7 +396,7 @@ class rpd
 				$controller->db = self::$db;
                     $controller->qs = self::$qs;
                     $controller->uri = self::$uri;
-                    $controller->url = self::$uri;
+                    $controller->uri_string = self::$uri_string;
 
                     $cached = self::get_cache();
                     if ($cached!=''){
@@ -424,30 +427,16 @@ class rpd
 
 	}
 
-	/**
-	 * take an 'application' URI (ie. controller/method/param)
-	 * and return a full URL  (ie. http://host/rapydpath/[index.php]/controller/method/param)
-	 *
-	 */
+
 	public static function url($uri)
 	{
-		$index = (self::config('index_page')) ? self::config('index_page').'/' : '';
-                $basename = (self::config('basename')) ? trim(self::config('basename'),'/').'/' : '';
-		//return rtrim('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index.$uri,'/');
-                return rtrim('http://' . $_SERVER['HTTP_HOST'].'/'.$basename.$index.$uri,'/');
+		return rpd_url_helper::url($uri);
 	}
 
 
-	/**
-	 *reverse or url(), return an application uri removing [http://host/path/index.php/]uri
-	 *
-	 */
 	public static function uri($url)
 	{
-		$index = (self::config('index_page')) ? self::config('index_page').'/' : '';
-                $basename = (rtrim(self::config('basename'),'/')) ? rtrim(self::config('basename'),'/').'/' : '';
-		//return rtrim(str_replace('http://' . $_SERVER['HTTP_HOST'].RAPYD_PATH.$index,'',$url),'/');
-		return rtrim(str_replace('http://' . $_SERVER['HTTP_HOST'].$basename.$index,'',$url),'/');
+		return rpd_url_helper::uri($url);
 	}
 
 	public static function asset($resource)
@@ -463,19 +452,16 @@ class rpd
 		return rpd_html_helper::head();
 	}
 
-        public function js($js)
-        {
-            return rpd_html_helper::js($js);
-        }
+	public function css($css, $external=false)
+	{
+		return rpd_html_helper::css($css, $external);
+	}
 
+	public function js($js, $external=false)
+	{
+		return rpd_html_helper::js($js, $external);
+	}
 
-
-        public function css($css)
-        {
-            return rpd_html_helper::css($css);
-        }
-
-        // --------------------------------------------------------------------
         
 	public static function connect()
 	{
@@ -513,7 +499,7 @@ class rpd
 			return FALSE;
 		}
 
-		$cache_path = self::config('cache_path').str_replace('/', '.', self::$url.'.cache');//.sha1(self::$url);
+		$cache_path = self::config('cache_path').str_replace('/', '.', self::$uri_string.'.cache');
 
 		if ( ! @file_exists($cache_path))
 		{
@@ -582,7 +568,7 @@ class rpd
 		}
 
 		$stamp = time()+$expiration;
-		$cache_path .= '/'.str_replace('/', '.', self::$url.'.cache');//sha1( self::$url);
+		$cache_path .= '/'.str_replace('/', '.', self::$uri_string.'.cache');
 
 		if ( ! $cp = fopen($cache_path, 'wb'))
 		{

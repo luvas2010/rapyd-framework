@@ -18,11 +18,12 @@ class iframe_field extends field_field {
 
   function get_value()
   {
-    if (is_set($this->model) AND is_object($this->model))
+    if (isset($this->model) AND is_object($this->model))
     {
       $this->url = parent::replace_pattern($this->url,$this->model->get_all());
     }
-    $this->iframe = '<IFRAME src="'. $this->url .'>" width="100%" height="'.$this->height.'" scrolling="'.$this->scrolling.'" frameborder="'.$this->frameborder.'" id="'.$this->name.'">iframe not supported</IFRAME>';
+    $this->iframe = '<IFRAME src="'. $this->url .'" width="100%" height="'.$this->height.'" scrolling="'.$this->scrolling.'" frameborder="'.$this->frameborder.'" id="'.$this->name.'">iframe not supported</IFRAME>';
+    $this->value =  $this->iframe;
   }
 
 

@@ -19,7 +19,7 @@
 			//property: 'value',
 		}, settings);
 
-        this.find('.df_body').prepend('<ul></ul>');
+        this.find('.df_body:first').prepend('<ul></ul>');
         var ul = this.find("ul");
 
         //console.log('custom property: ', settings.propery);
@@ -30,7 +30,8 @@
             $(ul).append('<li><a href="#tab_'+$(this).attr('id')+'"><span>'+$(this).find('legend').text()+'</span></a></li>');
 
         });
-        this.find('.df_body').tabs();
+        this.find('.df_body:first').tabs({ cookie: { expires: 30, name: 'tabss'} });
+        $(".ui-tabs-panel").css('padding-top',0);
     };
 
 

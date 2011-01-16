@@ -34,6 +34,7 @@ class field_field extends rpd_component_library {
 	public $model;  //dataobject model
 	public $insert_value = null; //default value for insert
 	public $update_value = null; //default value for update
+        public $show_value = null; //default value in visualization
 	public $options = array(); //associative&multidim. array ($value => $description)
 	public $mask = null;
 	public $group;
@@ -214,6 +215,9 @@ class field_field extends rpd_component_library {
 		} elseif (($this->status == "modify") && ($this->update_value != null))
 		{
 			$this->value = $this->update_value;
+		} elseif (($this->status == "show") && ($this->show_value != null))
+		{
+			$this->value = $this->show_value;
 		}
 		elseif ( (isset($this->model)) && ($this->model->loaded) && (!isset($_POST[$this->name])) && (isset($this->db_name)) )
 		{
@@ -282,7 +286,12 @@ class field_field extends rpd_component_library {
 	{
 		switch ($this->mode)
 		{
-
+			case "showonly":
+				if (($this->status != "show"))
+				{
+                                    $this->status = "hidden";
+                                }
+				break;
 			case "autohide":
 				if (($this->status == "modify")||($this->action == "update"))
 				{
@@ -313,9 +322,13 @@ class field_field extends rpd_component_library {
 					$this->apply_rules = false;
 				}
 				break;
-
+			case "hidden":
+					$this->status = "hidden";
+					$this->apply_rules = false;
+				break;
 			case "show":
 				break;
+
 			default:;
 		}
 
