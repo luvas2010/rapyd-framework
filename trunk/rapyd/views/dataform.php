@@ -96,7 +96,7 @@
 <?php if (isset($groups)):?>
 <?php foreach ($groups as $group)://groups?>
 <?php if ($group["group_name"] != "ungrouped"):?>
-<fieldset id="group_<? echo strtolower(preg_replace('/[^A-Za-z0-9_]*/', '', $group["group_name"]));?>">
+<fieldset id="group_<?php echo strtolower(preg_replace('/[^A-Za-z0-9_]*/', '', $group["group_name"]));?>">
     <legend><?php echo $group["group_name"]?></legend>
 <?php endif;?>
 <?php foreach ($group["series"] as $field_series)://field_series?>
