@@ -21,10 +21,11 @@ class filtered_grid_controller extends rpd {
 		$grid = new datagrid_library();
 		$grid->label = 'Article List';
 		$grid->per_page = 5;
+		$grid->cid = '';
 		$grid->source($filter);
-		$grid->column('article_id','ID',true)->url('edit?show={article_id}','detail.gif');
+		$grid->column('article_id','ID',true)->url('edit/index/show/{article_id}','detail.gif');
 		$grid->column('title','Title',true);
-		$grid->column('body','Body')->callback('escape');
+		$grid->column('body','Body')->callback('escape',$this);
 		$grid->column('{firstname} {lastname}','Author');
 		$grid->build();
 
@@ -37,10 +38,12 @@ class filtered_grid_controller extends rpd {
 		echo $this->view('demo', $data);
 	}
 
+	function escape($row)
+	{
+		return htmlspecialchars(substr($row['body'],0,10));
+	}
+
 }
 
 
-function escape($row)
-{
-	return htmlspecialchars(substr($row['body'],0,10));
-}
+

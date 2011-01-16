@@ -10,12 +10,12 @@ class grid_controller extends rpd {
 		$grid = new datagrid_library();
 		$grid->label = 'Article List';
 		$grid->per_page = 5;
-
+        $grid->add_url = 'edit/index';
 		$grid->source('articles');
-		$grid->column('article_id','ID',true)->url('edit?show={article_id}','detail.gif');
+		$grid->column('article_id','ID',true)->url('edit/index/show/{article_id}','detail.gif');
 		$grid->column('title','Title');
-		$grid->column('body','Body')->callback('escape');
-
+		$grid->column('body','Body')->callback('escape',$this);
+		$grid->buttons('add');
 		$grid->build();
 
 		$data['head']	= $this->head();
@@ -29,10 +29,10 @@ class grid_controller extends rpd {
 
 	}
 
-
+	function escape($row)
+	{
+		return htmlspecialchars(substr($row['body'],0,10));
+	}
 }
 
-function escape($row)
-{
-	return htmlspecialchars(substr($row['body'],0,10));
-}
+

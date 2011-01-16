@@ -9,7 +9,7 @@ class edit_controller extends rpd {
 		//edit
 		$edit = new dataedit_library();
 		$edit->label = 'Manage Article';
-		$edit->back_url = $this->url('filtered_grid');
+		$edit->back_url = $this->url('filtered_grid/index');
 
 		$edit->source('articles');
 		$edit->field('input','title','Title')->rule('trim','required');
@@ -17,7 +17,7 @@ class edit_controller extends rpd {
 		$edit->field('dropdown','author_id','Author')->options('SELECT author_id, firstname FROM authors')
 			 ->rule('required');
 		$edit->field('date','date','Date')->attributes(array('style'=>'width: 100px'));
-		$edit->field('editor','body','Description')->rule('required');
+		$edit->field('rteditor','body','Description')->rule('required');
 
 		$edit->buttons('modify','save','undo','back');
 

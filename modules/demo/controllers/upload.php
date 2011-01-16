@@ -15,7 +15,7 @@ class upload_controller extends rpd {
 			->upload_path(RAPYD_ROOT.'uploads/')
 			->allowed_types('jpg|gif')
 			->max_size('2M');
-		$form->button('back','List','window.location=\''.$this->url('upload/show').'\'','TR');
+		$form->button('back','List','window.location.href=\''.$this->url('upload/show').'\'','TR');
 		$form->buttons('save');
 		$form->build();
 
@@ -62,7 +62,7 @@ class upload_controller extends rpd {
 		$grid->source($files);
 		$grid->column('file_id', 'ID', true)->attributes(array('style' => 'width:170px'));
 		$grid->column('<a href="{filepath}">{filename}</a>', 'File');
-		$grid->button('add','upload','window.location=\''.$this->url('upload/file').'\'','TR');
+		$grid->button('add','upload','window.location.href=\''.$this->url('upload/file').'\'','TR');
 		$grid->build();
 
 		$data['head']	= $this->head();
