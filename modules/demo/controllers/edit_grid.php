@@ -9,7 +9,7 @@ class edit_grid_controller extends rpd {
 		$edit->label = 'Manage Articls';
 		$edit->source('articles');
 		$edit->field('input','title','Title')->rule('trim','required');
-		$edit->field('editor','body','Description')->rule('required');
+		$edit->field('rteditor','body','Description')->rule('required');
 		$edit->field('container','comments','m');
 		$edit->buttons('modify','save','undo');
 		$edit->build();
