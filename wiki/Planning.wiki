@@ -3,16 +3,22 @@
 
 Completed features have a strike through them.
 
-0.9
+0.9  under dev.
 
   * core rewrite, syntax should be "only" oop strict, and "entirely" chainable. (loose array syntax for a better and clean class inheritance).
 
   * better and full orm (object-relational mapping) try to follow kohana
 
+  * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
 
-0.8 under dev.
+  * test cache with new uri-architecture
 
-  * upgrade jquery version, nicedit (or replace nicedit with anoter wysiwyg based on jquery)
+  * clean a bit new class datachart, build 2 samples: simple and filtered based.
+
+
+0.8
+
+  *  ~~upgrade jquery version, nicedit (or replace nicedit with anoter wysiwyg based on jquery) ~~
 
   * ~~benchmark (timestamp, memory usage)~~
 
@@ -20,7 +26,7 @@ Completed features have a strike through them.
 
   * ~~i must learn a bit more about "hmvc", try to take inspiration from kohana if possible.~~
 
-  * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
+  * (postponed) controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
 
 
 
