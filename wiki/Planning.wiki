@@ -3,7 +3,7 @@
 
 Completed features have a strike through them.
 
-0.9  under dev.
+1.0 
 
   * core rewrite, syntax should be "only" oop strict, and "entirely" chainable. (loose array syntax for a better and clean class inheritance).
 
@@ -11,9 +11,18 @@ Completed features have a strike through them.
 
   * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
 
+
+0.9  under dev.
+
   * test cache with new uri-architecture
 
   * clean a bit new class datachart, build 2 samples: simple and filtered based.
+
+  * build hooks system, pre-system / pre-controller / post-controller / post-system
+    (for example, i need a pre-system call to do modules-stuffs like attach sqllite-db)
+
+  * build "blog module", in future rapyd will be more cms-ready.
+
 
 
 0.8
