@@ -349,44 +349,36 @@ class rpd
 	public static function run($controller=null,$method=null,$params=array())
 	{
 
-                if (isset($controller) AND is_array($controller))
-                {
-                    $controller = $controller[1];
-                    self::$uri_string = $controller;
-                    //die($controller);
-                }
+		if (isset($controller) AND is_array($controller))
+		{
+			$controller = $controller[1];
+			self::$uri_string = $controller;
+			//die($controller);
+		}
 
-                if (isset($controller) AND !isset($method) AND strpos($controller,'/'))
-                {
-                        
-                        $segment_arr = explode('/', $controller);
-                        self::$uri_string = $controller;
-                        while($segment_arr)
-                        {
-                                $path = implode('/', $segment_arr);
+		if (isset($controller) AND !isset($method) AND strpos($controller,'/'))
+		{
+				$segment_arr = explode('/', $controller);
+				self::$uri_string = $controller;
+				while($segment_arr)
+				{
+						$path = implode('/', $segment_arr);
+						$arr_segments[] = array_pop($segment_arr);
 
-                                $arr_segments[] = array_pop($segment_arr);
+						$controller = self::find_file('controller', $path);
+						if($controller)
+						{
+							$controller = $path;
 
-                                // starting from last segment.. searching for a valid controller
-                                // when is found, next segment is the method and others are params
-                                if($controller = self::find_file('controller', $path))
-                                {
-                                        $controller_name = $path;
+							$arr_segments = array_reverse($arr_segments);
+							if(isset($arr_segments[1])) $method = $arr_segments[1];
+							if(isset($arr_segments[2])) $params = array_slice($arr_segments, 2);
 
-                                        $arr_segments = array_reverse($arr_segments);
-                                        if(isset($arr_segments[1])) $method_name = $arr_segments[1];
-                                        if(isset($arr_segments[2])) $params = array_slice($arr_segments, 2);
+							break;
+						}
+				}
 
-                                        $controller .= '_controller';
-                                        self::$controller = new $controller(); //self::load('controller', $controller);
-                                        self::$method = str_replace('-', '_', $method);
-                                        self::$params = $params;
-
-                                        break;
-                                }
-                        }
-
-                }
+		}
 		//controller called using parameters
 		if (isset($controller, $method))
 		{
@@ -409,7 +401,7 @@ class rpd
 		if(is_object($controller))
 		{
                     if (isset(self::$db))
-				$controller->db = self::$db;
+						$controller->db = self::$db;
                     $controller->qs = self::$qs;
                     $controller->uri = self::$uri;
                     $controller->uri_string = self::$uri_string;
@@ -422,14 +414,14 @@ class rpd
 
                     if(method_exists($controller, $method))
                     {
-			if (is_callable(array($controller, $method)))
-			{
-                                return call_user_func_array(array($controller, $method), $params);
-			}
-			else
-			{
-				self::error('404');
-			}
+						if (is_callable(array($controller, $method)))
+						{
+											return call_user_func_array(array($controller, $method), $params);
+						}
+						else
+						{
+							self::error('404');
+						}
 
                     }
                     elseif (is_callable(array($controller, 'remap')))
