@@ -5,6 +5,7 @@
 class rpd
 {
 	public static $config;
+	public static $lang;
 	public static $working_path;
 	public static $qs;
 	public static $uri;
@@ -22,6 +23,8 @@ class rpd
 		if (!defined('RAPYDASSETS')) {
 			define('RAPYDASSETS', $config['assets_path']);
 		}
+		include_once RAPYD_ROOT.'rapyd/i18n/'.self::$config['locale_language'].'.php';
+		self::$lang = $lang;
 
 		//init application & modules
 		foreach (self::$config['include_paths'] as $path)
@@ -34,8 +37,15 @@ class rpd
 			}
 			if (is_file(RAPYD_ROOT.$path.'/init.php'))
 			{
-				require_once RAPYD_ROOT.$path.'/init.php';
+				include_once RAPYD_ROOT.$path.'/init.php';
 			}
+			if (is_file(RAPYD_ROOT.$path.'/i18n/'.self::$config['locale_language'].'.php'))
+			{
+				$lang = array();
+				include_once RAPYD_ROOT.$path.'/i18n/'.self::$config['locale_language'].'.php';
+				self::$lang = array_merge(self::$lang, $lang);
+			}
+
 
 		}
 	}
@@ -293,26 +303,13 @@ class rpd
 	}
 
 
-	public static function lang($key = null, $args = array(), $path = null)
+	public static function lang($key = null, $args = array())
 	{
-		static $language = array();
-
-		if (count($language)<1)
-		{
-			// include language file anche cache messages
-			include RAPYD_ROOT.'rapyd/'.'i18n/'.self::config('locale_language').'.php';
-			$language = $lang;
-		}
-		if (isset($path) AND !isset($key))
-		{
-			include_once $path.'rapyd/'.'i18n/'.self::config('locale_language').'.php';
-			$language = array_merge($language, $lang);
-		}
 		if (strpos($key,'.*'))
 		{
 			$namespace = str_replace('*','',$key);
 			$array = array();
-			foreach($language as $subkey => $value)
+			foreach(self::$lang as $subkey => $value)
 			{
 				if (strpos($subkey,$namespace)!== false)
 				{
@@ -322,12 +319,12 @@ class rpd
 			}
 			return $array;
 		}
-		if ($key == '' OR ! isset($language[$key]))
+		if ($key == '' OR ! isset(self::$lang[$key]))
 		{
 			return $key;
 		}
 
-		$string = $language[$key];
+		$string = self::$lang[$key];
 		if ($args == '')
 		{
 			return $string;
@@ -338,7 +335,7 @@ class rpd
 		}
 		else
 		{
-			return sprintf($line_string, $args);
+			return sprintf($string, $args);
 		}
 
 	}
