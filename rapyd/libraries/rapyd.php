@@ -22,6 +22,22 @@ class rpd
 		if (!defined('RAPYDASSETS')) {
 			define('RAPYDASSETS', $config['assets_path']);
 		}
+
+		//init application & modules
+		foreach (self::$config['include_paths'] as $path)
+		{
+			if (is_file(RAPYD_ROOT.$path.'/config.php'))
+			{
+				$config = array();
+				require_once RAPYD_ROOT.$path.'/config.php';
+				self::$config = array_merge(self::$config, $config);
+			}
+			if (is_file(RAPYD_ROOT.$path.'/init.php'))
+			{
+				require_once RAPYD_ROOT.$path.'/init.php';
+			}
+
+		}
 	}
 
 	public static function config($item)
@@ -258,7 +274,7 @@ class rpd
 	{
 		if ($aspect=='time')
 		{
-			return number_format((microtime(true) - RAPYD_BENCH_TIME),3) .'ms';
+			return number_format((microtime(true) - RAPYD_BENCH_TIME),3) .'sec';
 		} elseif ($aspect=='memory') {
 			return number_format((memory_get_usage() - RAPYD_BENCH_MEMORY) / 1024 / 1024, 2).'MB';
 		}
@@ -482,6 +498,16 @@ class rpd
 		{
 			self::$db->select_db();
 		}
+
+		//connect modules (check custom script for each module, to override or attach dbs)
+		foreach (self::$config['include_paths'] as $path)
+		{
+			if (is_file(RAPYD_ROOT.$path.'/connect.php'))
+			{
+				require_once RAPYD_ROOT.$path.'/connect.php';
+			}
+		}
+
 		return $result;
 
 	}
