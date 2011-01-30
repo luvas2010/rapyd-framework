@@ -10,11 +10,11 @@
             color: #4F5155;
             background-color: #fff;
         }
-        small, .error {background-color: #ececec; padding: 5px; display: inline}
+        small, .error {background-color: #ececec; padding: 5px; white-space:nowrap}
     </style>
 </head>
 <body>
     <h1>Application Error</h1>
-    <p class="error"><?=$error?></p>
+    <p class="error"><?=nl2br($error)?></p>
 </body>
 </html>
