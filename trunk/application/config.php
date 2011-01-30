@@ -14,7 +14,7 @@ $config['default_method']     = 'index';
 
 $config['include_paths'][]  = 'application';
 $config['include_paths'][]  = 'modules/demo';
-//$config['include_paths'][]  = 'modules/module2';
+//$config['include_paths'][]  = 'modules/blog';
 
 $config['root_path']  = getenv("DOCUMENT_ROOT"); // or './../../';
 
@@ -31,7 +31,7 @@ $config['db']['password'] = "";
 $config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/db/demo.db';
 $config['db']['dbdriver'] = "pdo";
 $config['db']['dbprefix'] = "";
-
+$config['db']['db_debug'] = true;
 /**
  * custom configurations
  *
