@@ -322,7 +322,7 @@ class rpd
 			$message = $e->getMessage();
 			$file    = $e->getFile();
 			$line    = $e->getLine();
-			$trace   = $e->getTrace();
+			$trace   = $e->getTraceAsString();
 
 			$errors = array(
 				E_ERROR              => 'Fatal Error',
@@ -341,10 +341,10 @@ class rpd
 
 			if (!headers_sent())
 				header('HTTP/1.1 500 Internal Server Error');
+				self::run('error','error_message',array("'$message' in $file($line)\n\nCall Stack:\n$trace"));
+				//self::run('error','error_message',array($code.', '.$message.', '.$file.', '.$line));
 
-			self::run('error','error_message',array($message));
-
-			return TRUE;
+			//return TRUE;
 		}
 		catch (Exception $e)
 		{
