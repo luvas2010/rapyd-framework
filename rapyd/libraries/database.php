@@ -53,7 +53,7 @@ class rpd_database_library {
 			{
 				return $this->show_error(	array($this->error_number($this->conn_id), $this->error_message($this->conn_id), $sql));
 			}
-		  return FALSE;
+		   return  $this->show_error('DATABASE ERROR');
 		}
 		$this->last_query = $sql;
 		return $this->result_id;
@@ -248,7 +248,8 @@ class rpd_database_library {
 
 	protected function show_error($message)
 	{
-		echo '<p>'.implode('</p><p>', ( ! is_array($message)) ? array($message) : $message).'</p>';
+		rpd::error(implode(', ', ( ! is_array($message)) ? array($message) : $message));
+		//echo '<p>'.implode('</p><p>', ( ! is_array($message)) ? array($message) : $message).'</p>';
 	}
 
 }
