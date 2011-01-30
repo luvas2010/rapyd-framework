@@ -35,11 +35,14 @@ include_once(RAPYD_ROOT.'rapyd/libraries/rapyd.php');
 /**
  * autoload system
  */
-//function __autoload($class_name) {
-//    rpd::auto_load($class_name);
-//}
 spl_autoload_register(array('rpd', 'auto_load'));
 
+
+/**
+ * error and exception handling
+ */
+set_exception_handler(array('rpd', 'exception_handler'));
+set_error_handler(array('rpd', 'error_handler'));
 
 /**
  * configuration file
