@@ -293,15 +293,65 @@ class rpd
 
 
 	/**
-	 * centralized error view (for 404 or custom errors)
-	 *
+	 *  error controller (for 404 or custom errors)
 	 */
 	public static function error($message)
 	{
-                self::run('error','error_message',array($message));
-		die();
+		self::run('error','error_message',array($message));
+		exit(1);
 	}
 
+	/**
+	 * error handling
+	 */
+	public static function error_handler($code, $error, $file = NULL, $line = NULL)
+	{
+		if (error_reporting() & $code)
+		{
+			throw new ErrorException($error, $code, 0, $file, $line);
+		}
+		return TRUE;
+	}
+
+	public static function exception_handler(Exception $e)
+	{
+		try
+		{
+			$type    = get_class($e);
+			$code    = $e->getCode();
+			$message = $e->getMessage();
+			$file    = $e->getFile();
+			$line    = $e->getLine();
+			$trace   = $e->getTrace();
+
+			$errors = array(
+				E_ERROR              => 'Fatal Error',
+				E_USER_ERROR         => 'User Error',
+				E_PARSE              => 'Parse Error',
+				E_WARNING            => 'Warning',
+				E_USER_WARNING       => 'User Warning',
+				E_STRICT             => 'Strict',
+				E_NOTICE             => 'Notice',
+				E_RECOVERABLE_ERROR  => 'Recoverable Error',
+			);
+			if (isset($errors[$code]))
+			{
+				$code = $errors[$code];
+			}
+
+			if (!headers_sent())
+				header('HTTP/1.1 500 Internal Server Error');
+
+			self::run('error','error_message',array($message));
+
+			return TRUE;
+		}
+		catch (Exception $e)
+		{
+			echo strip_tags($e->getMessage()).' on '.$e->getFile().' line ['.$e->getLine()."]\n";
+			exit(1);
+		}
+	}
 
 	public static function lang($key = null, $args = array())
 	{
@@ -482,6 +532,7 @@ class rpd
 		self::$db->database = self::$config['db']['database'];
 		self::$db->dbprefix = self::$config['db']['dbprefix'];
 		self::$db->dbdriver = self::$config['db']['dbdriver'];
+		self::$db->db_debug = self::$config['db']['db_debug'];
 		$result = self::$db->connect();
 		if ($result !==false)
 		{
