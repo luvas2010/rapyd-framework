@@ -14,7 +14,7 @@ $config['default_method']     = 'index';
 
 $config['include_paths'][]  = 'application';
 $config['include_paths'][]  = 'modules/demo';
-//$config['include_paths'][]  = 'modules/blog';
+$config['include_paths'][]  = 'modules/blog';
 
 $config['root_path']  = getenv("DOCUMENT_ROOT"); // or './../../';
 
