@@ -5,21 +5,22 @@
 class rpd_database_mysqli_driver extends rpd_database_ar_library {
 
 
+
 	public function connect()
 	{
-	$this->conn_id = new mysqli($this->hostname, $this->username, $this->password);
+			$this->conn_id = mysqli_connect($this->hostname, $this->username, $this->password);
 			return $this->conn_id;
 	}
 
 	public function pconnect()
 	{
-		$this->conn_id = new mysqli($this->hostname, $this->username, $this->password);
+		$this->conn_id = mysqli_connect("p:".$this->hostname, $this->username, $this->password);
 		return $this->conn_id;
 	}
 
 	public function select_db()
 	{
-		return @mysqli_select_db($this->database, $this->conn_id);
+		return @mysqli_select_db( $this->conn_id, $this->database);
 	}
 
 	public function db_set_charset($charset, $collation)
@@ -29,15 +30,23 @@ class rpd_database_mysqli_driver extends rpd_database_ar_library {
 
 	protected function execute($sql)
 	{
+
 		//rrr : reset result resources
 		$this->result_id     = FALSE;
 		$this->result_array = array();
 		$this->result_object = array();
+                @mysqli_query($this->conn_id, "SET CHARACTER SET utf8");
+                @mysqli_query($this->conn_id, "SET NAMES utf8");
+		return @mysqli_query($this->conn_id, $sql);
+		if (!$resurce and $this->db_debug)
+		{
+			'<pre>'.$sql.'</pre>';
+		}
+		return $resurce;
 
-		return @mysqli_query($sql, $this->conn_id);
 	}
 
-	protected static function escape_str($str)
+	protected function escape_str($str)
 	{
 		if (function_exists('mysqli_real_escape_string'))
 		{
@@ -85,7 +94,46 @@ class rpd_database_mysqli_driver extends rpd_database_ar_library {
 
 	public function fetch_field()
 	{
-		return mysqli_fetch_field($this->result_id);
+		$mysql_data_type_hash = array(
+			1=>'tinyint',
+			2=>'smallint',
+			3=>'int',
+			4=>'float',
+			5=>'double',
+			7=>'timestamp',
+			8=>'bigint',
+			9=>'mediumint',
+			10=>'date',
+			11=>'time',
+			12=>'datetime',
+			13=>'year',
+			16=>'bit',
+			252=>'text',//is currently mapped to all text and blob types (MySQL 5.0.51a)
+			253=>'varchar',
+			254=>'char',
+			246=>'decimal'
+		);
+
+		//$fields = mysqli_fetch_field($this->result_id);
+		//var_dump($fields);
+		//$fields = mysqli_fetch_field($this->result_id);
+		//var_dump($fields);
+		//for ($i = 0; $i < $this->num_fields(); $i++)
+		//foreach($fields as $meta)
+		//{
+
+			$meta = mysqli_fetch_field($this->result_id);
+		    if ($meta)
+			{
+				$meta->type 		= $mysql_data_type_hash[$meta->type];
+				$meta->primary_key  = ($meta->flags & 2) ? 1 : 0;
+				$meta->default		= '';
+			}
+			return $meta;
+			//$retval[] = $meta;
+		//}
+		
+		//return $retval;
 	}
 
 	public function num_rows()
