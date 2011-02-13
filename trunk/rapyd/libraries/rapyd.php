@@ -163,13 +163,13 @@ class rpd
 	 * according with configured include_paths and passed type and name of file
 	 *
 	 */
-	public static function find_file($type, $file_name)
+	public static function find_file($type, $file_name, $ext = 'php')
 	{
 		static $file_cache;
 
 
 		if ($type!="") $type = self::plural($type);
-                $search = $type.'/'.$file_name.'.php';
+                $search = $type.'/'.$file_name.'.'.$ext;
 
 		if (isset($file_cache['paths'][$search]))
 				return $file_cache['paths'][$search];
