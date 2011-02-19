@@ -64,7 +64,7 @@ class edit_grid_controller extends rpd {
 		$edit->source('comments');
 		$edit->field('hidden','article_id','')->insert_value($this->uri->value('show'));
 		$edit->field('textarea','comment','Comment');
-		$edit->field('captcha','captcha','retype');
+		$edit->field('captcha','captcha','retype code');
 		$edit->buttons('modify','save','undo','back');
 		$edit->build();
 
