@@ -47,7 +47,7 @@ $lang = array
 	'val.in_range'      => 'The %s field must be between %s and %s .',
 	'val.regex'         => 'The %s field does not match accepted input.',
   'val.unique'		    => 'The %s field must be unique, there is another field with this value.',
-  'val.captcha'		    => 'The %s field must be unique, there is another field with this value.',
+  'val.captcha'		    => 'The %s field does not match the captcha image, retry with the new one',
   'val.approve'	      => 'You must approve %s .',
   'val.valid_type'	  => 'The %s field can contain %s chars',
 
