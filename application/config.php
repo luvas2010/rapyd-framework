@@ -14,7 +14,7 @@ $config['default_method']     = 'index';
 
 $config['include_paths'][]  = 'application';
 $config['include_paths'][]  = 'modules/demo';
-$config['include_paths'][]  = 'modules/blog';
+#$config['include_paths'][]  = 'modules/blog';
 
 $config['root_path']  = getenv("DOCUMENT_ROOT"); // or './../../';
 
@@ -24,6 +24,9 @@ $config['assets_path']     = RAPYD_PATH.'rapyd/assets/';
 $config['cache_path']      = RAPYD_ROOT.'cache/';
 $config['locale_language'] = 'en_US';
 
+$config['routes'] = array(
+	//'product/(:num)/:str' => 'catalogmodule/product/$1';
+);
 
 $config['db']['hostname'] = "";
 $config['db']['username'] = "";
