@@ -197,6 +197,7 @@ class rpd
 	{
 
         self::$uri_string = rpd_url_helper::get_uri();
+		self::$uri_string = self::reroute(self::$uri_string, self::config('routes'));
 
 		if(!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', self::$uri_string) || empty(self::$uri_string))
 		{
@@ -255,6 +256,35 @@ class rpd
 		else
 			self::error('The URL you entered contains illegal characters.');
 	}
+
+	//reroute inspired by caffeinephp
+	public static function reroute($uri, $routes=array())
+	{
+		if($routes)
+		{
+			foreach($routes as $regex => $dest)
+			{
+				$regex = '^' . $regex;
+				$regex = str_replace(':num', '[0-9]{1,}', $regex);
+				$regex = str_replace(':str', '[A-Za-z]{1,}$', $regex);
+				$regex = str_replace(':any', '[A-Za-z0-9-_/]{1,}$', $regex);
+				$regex = $regex . '$'; 
+				if(preg_match_all('@' . $regex . '@', $uri, $matches, PREG_SET_ORDER))
+				{
+					$count = 0;
+					foreach($matches[0] as $match)
+					{
+						$dest = str_replace('$' . $count, $match, $dest);
+						$count++;
+					}
+					return $dest;
+				}
+			}
+		}
+		return $uri;
+	}
+
+
 
 	/**
 	 * load a view file, passing it an associative array of
