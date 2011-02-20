@@ -52,6 +52,17 @@ class rpd
 
 	public static function config($item)
 	{
+		if (strpos($item, '.')!==false)
+	    {
+			$item_arr = explode('.', $item);
+			$path = self::$config;
+			foreach ($item_arr as $i)
+		    {
+				if (!isset($path[$i])) return false;
+				$path = $path[$i];
+			}
+			return $path;
+		}
 		if ( ! isset(self::$config[$item]))
 		{
 			return FALSE;
