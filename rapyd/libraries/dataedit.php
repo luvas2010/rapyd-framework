@@ -66,6 +66,7 @@ class dataedit_library extends dataform_library
 	/**
 	 * internal, add a save button
 	 * 
+	 * @todo check if it's needed, dataform already has this method
 	 * @param array $config 
 	 */
 	public function save_button($config = null)
@@ -402,7 +403,7 @@ class dataedit_library extends dataform_library
 	}
 
 	/**
-	 * main method it detact status, exec action and build output
+	 * main method it detect status, exec action and build output
 	 * 
 	 * @todo back_url seems wrong (index.php should be conditional)
 	 * @todo many string should be moved inside i18n language files
