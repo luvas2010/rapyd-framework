@@ -402,6 +402,8 @@ class dataedit_library extends dataform_library
 	}
 
 	/**
+	 * main method it detact status, exec action and build output
+	 * 
 	 * @todo back_url seems wrong (index.php should be conditional)
 	 * @todo many string should be moved inside i18n language files
 	 * @param type $method 
