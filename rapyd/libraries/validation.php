@@ -200,8 +200,29 @@ class rpd_validation_library {
 					$this->$field = $_POST[$field];
           continue;
         }
-				$result = $this->$rule($_POST[$field], $params);
-
+		
+					
+				if ($callback === TRUE)
+				{
+					
+					if ( ! method_exists(rpd::$controller, $rule))
+					{ 		
+						continue;
+					}
+					
+					$result = rpd::$controller->$rule($_POST[$field], $params);
+					
+					// If the field isn't required and we just processed a callback we'll move on...
+					if ( ! in_array('required', $ex, TRUE) AND $result !== FALSE)
+					{
+						continue 2;
+					}
+					
+				}
+				else
+				{
+					$result = $this->$rule($_POST[$field], $params);
+				}
 
 				// Did the rule test negatively?  If so, grab the error.
 				if ($result === FALSE)
