@@ -23,7 +23,7 @@ Completed features have a strike through them.
 
   * build "blog module", in future rapyd will be more cms-ready.
 
-
+  * rewrite all class files, apply a clean indentation and add phpdoc comments to auto-generate an api
 
 0.8
 
