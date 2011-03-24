@@ -19,6 +19,8 @@ class rpd_datamodel_model {
     public $postprocess_result = null;
     public $preprocess_result = null;
 
+    public $error_string = ''; //if filled it inject a custom error on validation using this model
+
     protected $one_to_one = array();
     protected $one_to_many = array();
     protected $many_to_many = array();
