@@ -391,10 +391,10 @@ class dataform_library extends rpd_component_library
 					{
 						if ($this->action_is("update"))
 						{
-							$this->error_string.= $this->model->errors['pre_update'];
+							$this->error_string.= $this->model->error_string;
 						} else
 						{
-							$this->error_string.= $this->model->errors['pre_insert'];
+							$this->error_string.= $this->model->error_string;
 						}
 					}
 					$this->process_status = "error";
@@ -407,7 +407,7 @@ class dataform_library extends rpd_component_library
 				{
 					if ($this->model->preprocess_result === false)
 					{
-						$this->error_string.= $this->model->errors['pre_delete'];
+						$this->error_string.= $this->model->error_string;
 					}
 					$this->process_status = "error";
 				} else
