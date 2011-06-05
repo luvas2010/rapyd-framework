@@ -19,17 +19,24 @@ define('DOC_ROOT', substr($filepath, 0, strrpos($filepath, $_SERVER['SCRIPT_NAME
 
 define('RAPYD_ROOT', $cwd.DIRECTORY_SEPARATOR);
 define('RAPYD_PATH', str_replace(DOC_ROOT,'',str_replace('\\','/',RAPYD_ROOT)));
-define('RAPYD_VERSION', '0.8');
-define('RAPYD_BUILD_DATE', '2011-01-20');
+define('RAPYD_VERSION', '0.9');
+define('RAPYD_BUILD_DATE', '2011-06-05');
 
 define('RAPYD_BENCH_TIME',  microtime(true));
 define('RAPYD_BENCH_MEMORY', memory_get_usage());
 
 unset($filepath,$cwd);
+
+
+/**
+ * compatibility functions (mbstring, etc..)
+ */
+include_once(RAPYD_ROOT . 'core/helpers/compat.php');
+
 /**
  * core class
  */
-include_once(RAPYD_ROOT.'rapyd/libraries/rapyd.php');
+include_once(RAPYD_ROOT.'core/libraries/rapyd.php');
 
 
 /**
@@ -48,6 +55,12 @@ set_error_handler(array('rpd', 'error_handler'));
  * configuration file
  */
 include_once(RAPYD_ROOT.'application/config.php');
+
+/**
+ * locale settings
+ */
+setlocale(LC_TIME, $config['locale_language'], $config['locale_language'].".utf8");
+
 
 /**
  * bootstrap
