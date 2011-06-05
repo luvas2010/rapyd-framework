@@ -14,13 +14,13 @@ $config['default_method']     = 'index';
 
 $config['include_paths'][]  = 'application';
 $config['include_paths'][]  = 'modules/demo';
-#$config['include_paths'][]  = 'modules/blog';
+
 
 $config['root_path']  = getenv("DOCUMENT_ROOT"); // or './../../';
 
-$config['include_paths'][]  = 'rapyd';
+$config['include_paths'][]  = 'core';
 
-$config['assets_path']     = RAPYD_PATH.'rapyd/assets/';
+$config['assets_path']     = RAPYD_PATH.'core/assets/';
 $config['cache_path']      = RAPYD_ROOT.'cache/';
 $config['locale_language'] = 'en_US';
 

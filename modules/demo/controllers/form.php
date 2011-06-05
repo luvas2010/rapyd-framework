@@ -10,9 +10,9 @@ class form_controller extends rpd {
 		//form
 
 		$form = new dataform_library();
-
+		$form->validation->set_message('customcheck','Error!');
 		$form->field('input','name','Name')
-			->rule('trim','required')
+			->rule('required|trim|callback_customcheck')
 			->group('personal data')
 			->attributes(array('style'=>'width: 100px'));
 
@@ -49,6 +49,14 @@ class form_controller extends rpd {
 
 		//output
 		echo $this->view('demo', $data);
+	}
+	
+	function customcheck($value)
+	{
+		if ($value!='xxx')
+			return false;
+
+		return true;
 	}
 
 
