@@ -3,27 +3,30 @@
 
 Completed features have a strike through them.
 
-1.0 
+1.0 not in production, fouds needed  so i'll try to monetize making portals using the cms.
 
-  * core rewrite, syntax should be "only" oop strict, and "entirely" chainable. (loose array syntax for a better and clean class inheritance).
+  * cms on svn? (maybe yes) on trunk or not?
 
   * better and full orm (object-relational mapping) try to follow kohana
 
   * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
 
-
-0.9  under dev.
-
   * test cache with new uri-architecture
 
-  * clean a bit new class datachart, build 2 samples: simple and filtered based.
+  *  new class datachart.. needed? or google chart api is a better choise?.
 
-  * build hooks system, pre-system / pre-controller / post-controller / post-system
+  * build hooks system? pre-system / pre-controller / post-controller / post-system
     (for example, i need a pre-system call to do modules-stuffs like attach sqllite-db)
 
-  * build "blog module", in future rapyd will be more cms-ready.
-
   * rewrite all class files, apply a clean indentation and add phpdoc comments to auto-generate an api
+
+0.9 
+
+  * ~~build a CMS from the framework, with at least a blog module.~~
+
+  * ~~keep alignment bw framework / cms  (but framework is still the main project)~~
+
+
 
 0.8
 
