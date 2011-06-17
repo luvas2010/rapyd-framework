@@ -166,7 +166,7 @@ class dataset_library extends rpd_component_library {
 		if(isset($this->orderby))
 		{
 			list($field, $direction) = $this->orderby;
-
+			$column = array();
 			foreach ($this->source as $key => $row)
 			{
 				$column[$key] = $row[$field];
