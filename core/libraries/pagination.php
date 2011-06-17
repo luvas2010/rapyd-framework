@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('RAPYD_PATH')) exit('No direct script access allowed');
 
 
 class rpd_pagination_library {

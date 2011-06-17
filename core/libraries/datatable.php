@@ -1,8 +1,7 @@
 <?php if (!defined('RAPYD_PATH')) exit('No direct script access allowed');
 
-rpd::load('component','dataset');
 
-class datatable extends dataset {
+class datatable_library extends dataset_library {
 
   protected $fields	= array();
   protected $header_footer = true;
@@ -82,7 +81,7 @@ class datatable extends dataset {
 
 
 
-class datatable_cell extends rpd_component {
+class datatable_cell extends rpd_component_library {
 
   protected $pattern = "";
   protected $field_list = array();
@@ -116,4 +115,3 @@ class datatable_cell extends rpd_component {
 
 }
 
-?>

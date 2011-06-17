@@ -276,7 +276,7 @@ class dataedit_library extends dataform_library
 			if ($result && !$this->model->are_unique($pk_check))
 			{
 				$result = false;
-				$pk_error.= "errore: chiave primaria non univoca<br />";
+				$pk_error.= rpd::lang('de.err_dup_pk');
 				$this->error_string.= $pk_error;
 			}
 		}
@@ -358,7 +358,7 @@ class dataedit_library extends dataform_library
 						die();
 					} else
 					{
-						return $this->build_message('record cancellato');
+						return $this->build_message(rpd::lang('de.deleted'));
 					}
 				}
 				break;
@@ -373,11 +373,11 @@ class dataedit_library extends dataform_library
 				break;
 			case "delete":
 				$this->build_buttons();
-				return $this->build_message('confermi la cancellazione?');
+				return $this->build_message(rpd::lang('de.confirm_delete'));
 				break;
 			case "unknow_record":
 				$this->build_buttons();
-				return $this->build_message('record sconosciuto');
+				return $this->build_message(rpd::lang('de.err_read'));
 				break;
 		}
 	}
@@ -417,11 +417,11 @@ class dataedit_library extends dataform_library
 			$this->status = ($this->model->loaded) ? "modify" : "create";
 		} else
 		{
-			$this->show_error('errore: manca un datamodel');
+			$this->show_error(rpd::lang('de.err_no_model'));
 		}
 		if (($this->back_url == "") && isset($this->buttons["back"]))
 		{
-			$this->show_error('errore: devi impostare la proprieta\' "back_url"');
+			$this->show_error(rpd::lang('de.err_no_backurl'));
 		}
 		$this->sniff_status();
 		//build fields
