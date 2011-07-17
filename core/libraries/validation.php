@@ -491,7 +491,10 @@ class rpd_validation_library {
 
 	function captcha($str)
 	{
-		return ( strtolower($_SESSION["captcha"]) == strtolower($str) );
+		if (!isset($_SESSION["captcha"])) return false;
+		$match = ( strtolower($_SESSION["captcha"]) == strtolower($str) ) ? true : false;
+		unset($_SESSION["captcha"]);
+		return $match;
 	}
 
 	// --------------------------------------------------------------------
