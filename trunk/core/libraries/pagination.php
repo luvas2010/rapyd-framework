@@ -5,10 +5,10 @@ class rpd_pagination_library {
 
 	public $items_per_page = 10;
 	public $total_items = 0;
-        public $hash = '';
+	public $hash = '';
 	protected static $identifier = 0;
 	protected $url;
-	protected $current_page;
+	public $current_page;
 	protected $total_pages;
 	protected $current_first_item;
 	protected $current_last_item;
@@ -60,7 +60,9 @@ class rpd_pagination_library {
 		$this->total_items        = (int) max(0, $this->total_items);
 		$this->items_per_page     = (int) max(1, $this->items_per_page);
 		$this->total_pages        = (int) ceil($this->total_items / $this->items_per_page);
-		$this->current_page       = (int) min(max(1, rpd_url_helper::value('pag'.$this->cid)), max(1, $this->total_pages));
+		
+		if (!isset($this->current_page))
+			$this->current_page       = (int) min(max(1, rpd_url_helper::value('pag'.$this->cid)), max(1, $this->total_pages));
 		$this->current_first_item = (int) min((($this->current_page - 1) * $this->items_per_page) + 1, $this->total_items);
 		$this->current_last_item  = (int) min($this->current_first_item + $this->items_per_page - 1, $this->total_items);
 
