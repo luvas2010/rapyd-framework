@@ -7,10 +7,11 @@ class dataset_library extends rpd_component_library {
 
 	public $source;
 	public $per_page = 10;
-        public $num_links;
+	public $num_links;
 	public $data;
-        public $hash = '';
-
+	public $hash = '';
+	public $url;
+	public $current_page;
 	public $pagination;
 
 	public $orderby_field;
@@ -138,8 +139,10 @@ class dataset_library extends rpd_component_library {
 			'cid' => $this->cid,
 			'total_items'    => $this->total_rows, // use db count query here of course
 			'items_per_page' => $this->per_page, // it may be handy to set defaults for stuff like this in config/pagination.php
-                        'num_links' => $this->num_links,
-                        'hash'      => $this->hash,
+			'num_links' => $this->num_links,
+			'hash'      => $this->hash,
+			'url'       => $this->url, 
+			'current_page' =>  $this->current_page, 
 		);
 		$this->pagination = new rpd_pagination_library($config);
 		$offset = $this->pagination->offset();
