@@ -52,7 +52,7 @@ class rpd_auth_library {
    * prova a validare un login con user/password,  setta una variabile di sessione, opzionalmete salva un cookie
    * da usare nella pagina di login.
    */
-  function login($username, $password)
+  function login($username, $password, $min_role=0)
   {
     $password_hash = md5($password);
 	rpd::connect();
@@ -60,7 +60,8 @@ class rpd_auth_library {
     rpd::$db->from($this->table);
     rpd::$db->where($this->username, $username);
     rpd::$db->where($this->password, $password_hash);
-    rpd::$db->where('role_id<=2');
+	if ($min_role>0)
+		rpd::$db->where('role_id<='.$min_role);
     rpd::$db->get();
 
     $user = rpd::$db->row_object();
@@ -69,10 +70,13 @@ class rpd_auth_library {
 
     $user_session = array (
       'user_name'  =>  $username,
+      'user_id'    =>  $user->user_id,
+      'email'      =>  $user->email,
       'password'   =>  $password,
       'name'       =>  $user->name,
       'ip_address' =>  $_SERVER['REMOTE_ADDR'],
       'role_id'    =>  $user->role_id,
+
     );
     $_SESSION[$this->namespace] = $this->encrypt(serialize($user_session));
 
@@ -85,6 +89,9 @@ class rpd_auth_library {
    */
   function logged()
   {
+	static $user;
+	if (isset($user))
+			return $user;
     if ($this->cookie AND !isset($_SESSION[$this->namespace]))
     {
       if(!isset($_COOKIE[$this->namespace])) return false;
@@ -108,6 +115,17 @@ class rpd_auth_library {
     exit;
   }
 
+  function check_role($role_id, $strict=false)
+  {
+	$user = $this->logged();
+	if (!$user)  return false;
+	
+	if (($strict && ($user['role_id'] == $role_id)) || (!$strict && ($user['role_id'] <= $role_id))){
+		return true;
+	} else {
+		return false;
+	}
+  }
 
   /**
    * restituisce l'array o una sottochiave dei dati utente
