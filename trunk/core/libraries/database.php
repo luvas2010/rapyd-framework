@@ -27,6 +27,7 @@ class rpd_database_library
 	public $result_array = array();
 	public $result_object = array();
 	public $last_query;
+	public $queries = array();
 
 	/**
 	 * when rapyd is used as "library" it can use a valid connection resource link
@@ -68,7 +69,7 @@ class rpd_database_library
 	 */
 	public function query($sql)
 	{
-
+		$this->queries[] = $sql;
 		if (FALSE === ($this->result_id = $this->execute($sql)))
 		{
 			if ($this->db_debug)
