@@ -11,7 +11,6 @@
  */
  class rpd
  {
-
 	public static $config;
 	public static $lang;
 	public static $working_path;
@@ -26,6 +25,7 @@
 	public static $db;
 	public static $routed = false;
 	public static $main_controller;
+	public static $cached_files = 0;
 
 	/**
 	 * init is called (from index.php or include.php) one time per execution
@@ -33,7 +33,8 @@
 	 * @param array $config 
 	 */
 	public static function init($config)
-	{
+	{		
+		ob_start();
 		self::$config = $config;
 		self::$qs = new rpd_url_helper(); //keep compatibility
 		self::$uri = new rpd_url_helper();
@@ -182,7 +183,6 @@
 	 * /application/resourcES/name.php
 	 * /modules/modulex/resourcES/name.php
 	 * /system/resourcES/name.php
-
 	 * @param string $str
 	 * @return string plural version of $str
 	 */
@@ -213,7 +213,6 @@
 	public static function find_file($type, $file_name, $ext = 'php')
 	{
 		static $file_cache;
-		
 
 		if ($type != "" && !strpos($type,'/'))
 			$type = self::plural($type);
@@ -232,7 +231,6 @@
 		} else {
 			foreach (self::config('include_paths') as $path)
 			{
-
 				if (is_file(RAPYD_ROOT . $path . '/' . $search))
 				{
 					$file_found = RAPYD_ROOT . $path . '/' . $search;
@@ -252,7 +250,6 @@
 	 */
 	public static function router()
 	{
-
 		self::$uri_string = rpd_url_helper::get_uri();
 		self::$uri_string = self::reroute(self::$uri_string, self::config('routes'));
 
@@ -267,7 +264,6 @@
 			$controller_name = self::config('default_controller');
 			$method_name = self::config('default_method');
 			$params = array();
-
 
 			// if URL segments exist, overwrite defaults
 			$controller = true;
@@ -385,30 +381,25 @@
 			$view_path = self::config('cms.theme').$file_name.'.php';
 
 		} 
-		
-		ob_start();
 
 		extract($input_data, EXTR_SKIP);
-
-		//$trace = debug_backtrace(false); 
-
 		
+		ob_start();
 		include $view_path;
-		
 		$output = ob_get_contents();
-		//ob_end_clean();
-		
-		$output = ob_get_clean();
-		$output = str_replace('{time}', self::benchmarks('time'), $output);
-		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
-		
-/*
-		if (ob_get_level() > self::$ob_level + 1)
-		{
-			ob_end_flush();
-		}
-*/
+		ob_end_clean();
 		return $output;
+		
+		/*
+		try
+		{
+			include $view_path;
+		}
+		catch (Exception $e)
+		{
+			ob_end_clean();
+			throw $e;
+		}*/
 	}
 
 	/**
@@ -491,6 +482,8 @@
 
 			if (!headers_sent())
 				header('HTTP/1.1 500 Internal Server Error');
+
+
 			self::run('error', 'error_message', array("'$message' in $file($line)\n\nCall Stack:\n$trace"));
 			//self::run('error','error_message',array($code.', '.$message.', '.$file.', '.$line));
 			//return TRUE;
@@ -500,6 +493,78 @@
 			exit(1);
 		}
 	}
+	
+
+	/**
+	 * shutdown handling
+	 * 
+	 */
+	public static function shutdown_handler()
+	{
+		//todo .. cache replaces here
+		$output = ob_get_clean();
+		$output = str_replace('{time}', self::benchmarks('time'), $output);
+		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
+		$output = str_replace('{included_files}', count(get_included_files()), $output);
+		$output = str_replace('{cached_files}', self::$cached_files, $output);
+		if (isset(self::$db))
+			$output = str_replace('{queries}', count(self::$db->queries), $output);
+
+		while (preg_match_all("/<rpd run=\"([^\"]+)\">/i", $output, $matches))
+		{
+			foreach ($matches[1] as $id=>$uri)
+			{
+				$uncached = rpd::run($uri);
+				$output = str_replace($matches[0][$id], $uncached, $output);
+			}
+		}
+ 
+		//$output = preg_replace_callback('/{run::([^}]+)}/', 'rpd::gino', $output);
+		//call_user_func_array(array($controller, $method), $params);
+		
+		$level = self::$config['output_compression'];
+		if ($level AND ini_get('output_handler') !== 'ob_gzhandler' AND (int) ini_get('zlib.output_compression') === 0)
+		{
+			if ($level < 1 OR $level > 9)
+			{
+				$level = max(1, min($level, 9));
+			}
+
+			if (stripos(@$_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== FALSE)
+			{
+				$compress = 'gzip';
+			}
+			elseif (stripos(@$_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate') !== FALSE)
+			{
+				$compress = 'deflate';
+			}
+		}
+
+		if (isset($compress) AND $level > 0)
+		{
+			switch ($compress)
+			{
+				case 'gzip':
+					// Compress output using gzip
+					$output = gzencode($output, $level);
+				break;
+				case 'deflate':
+					// Compress output using zlib (HTTP deflate)
+					$output = gzdeflate($output, $level);
+				break;
+			}
+
+			header('Vary: Accept-Encoding');
+			header('Content-Encoding: '.$compress);
+
+			if (stripos(PHP_SAPI, 'cgi') === FALSE)
+			{
+				header('Content-Length: '.strlen($output));
+			}
+		}
+		echo $output;
+	}
+	
 
 	/**
 	 * lang get i18n string in the configured language
@@ -599,7 +664,7 @@
 		//controller called using parameters
 		if (isset($controller, $method))
 		{
-			self::$uri_string = $controller . '/' . $method . '/' . implode('/', $params);
+			self::$uri_string = trim($controller . '/' . $method . '/' . implode('/', $params),'/');
 			$controller .= '_controller';
 			self::$controller = new $controller(); //self::load('controller', $controller);
 			self::$method = str_replace('-', '_', $method);
@@ -629,18 +694,42 @@
 			if (!isset(self::$main_controller))
 				self::$main_controller = $controller;
 			
-			$cached = self::get_cache();
+			$cached = self::get_cache(self::$uri_string);
 			if ($cached != '')
 			{
-				echo $cached;
-				exit;
+				self::$cached_files++;
+				//is routed? so i'm here from rpd::run(); need to send output end exit.				
+				if (self::$routed){
+					echo $cached;
+					return;
+				//i'm here from echo rpd::run('some/uri') so need to return output to caller
+				} else {
+					return $cached;
+				}
+
 			}
 
 			if (method_exists($controller, $method))
 			{
 				if (is_callable(array($controller, $method)))
 				{
+					//if there are params, check they are not more than expected
+					if (count($params))
+					{
+						//basically this stuff remove from params all "widgets" segments-semantic (like pagination, orderby, editing actions, always admitted)
+						$uri = implode('/', $params);
+						$url = rpd_url_helper::remove_all(null, rpd_url_helper::url($uri));
+						$uri = rpd_url_helper::uri($url);
+						$params = ($uri=='') ? array() : explode('/', $uri);
+
+						$reflector = new ReflectionClass(get_class($controller));
+						$default_params_count = count($reflector->getMethod($method)->getParameters());
+						if (count($params) > $default_params_count){
+							self::error('404');
+						}
+					}
 					return call_user_func_array(array($controller, $method), $params);
+
 				} else
 				{
 					self::error('404');
@@ -654,7 +743,7 @@
 		self::error('404');
 
 	}
-
+ 
 	/**
 	 * shortcut for rpd_url_helper::url
 	 * 
@@ -725,7 +814,6 @@
 	public static function asset($resource)
 	{
 		return RAPYD_PATH . dirname(str_replace(RAPYD_ROOT, '', self::$working_path)) . '/assets/' . $resource;
-
 		//CI fix
 		//return RAPYDASSETS.$resource;
 	}
@@ -776,7 +864,6 @@
 			return;
 
 		$db_class = 'rpd_database_' . self::$config['db']['dbdriver'] . '_driver';
-
 		self::$db = new $db_class();
 		self::$db->hostname = self::$config['db']['hostname'];
 		self::$db->username = self::$config['db']['username'];
@@ -809,16 +896,15 @@
 	 * 
 	 * @return cached content 
 	 */
-	public static function get_cache()
+	public static function get_cache($uri)
 	{
-
 		if (!is_dir(self::config('cache_path')) OR !is_writable(self::config('cache_path')))
 		{
 			return FALSE;
 		}
 
-		$cache_path = self::config('cache_path') . str_replace('/', '.', self::$uri_string . '.cache');
-
+		$cache_path = self::config('cache_path') . str_replace('/', '.', "_".$uri . '.cache');
+		
 		if (!@file_exists($cache_path))
 		{
 			return FALSE;
@@ -828,7 +914,6 @@
 		{
 			return FALSE;
 		}
-
 		flock($cp, LOCK_SH);
 
 		$cache = '';
@@ -840,7 +925,7 @@
 		flock($cp, LOCK_UN);
 		fclose($cp);
 
-		if (!preg_match("/(<tstamp>(\d+)<\/tstamp><callback>([A-Za-z0-9\_]*)<\/callback>)/", $cache, $match))
+		if (!preg_match("/(<tstamp>(\d+)<\/tstamp>)/", $cache, $match))
 		{
 			return FALSE;
 		}
@@ -851,27 +936,8 @@
 			return FALSE;
 		}
 		$output = str_replace($match['0'], '', $cache);
-		$output = str_replace('{time}', self::benchmarks('time'), $output);
-		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
-		//$output = preg_replace("/{rpd::([^}]+)}/", '\\1', $output);
-		/* if (preg_match('/{rpd::([^}]+)}/', $output, $dmatch))
-		  {
-		  $output = str_replace($dmatch[0], rpd::run($dmatch[1]), $output);
-		  //$output = preg_replace_callback('/{rpd::([^}]+)}/', 'rpd::run', $output);
-		  } */
-
-
-
-		if ($match['3'] != '')
-		{
-			$controller = self::$controller;
-			$method = $match['3'];
-			if (is_callable(array($controller, $method)))
-			{
-				$output = $controller->$method($output);
-			}
-		}
-
+		
+		//ob_clean();
 		return $output;
 	}
 
@@ -883,18 +949,18 @@
 	 * @param type $callback parsing method to execute even if the cache not expired
 	 * @return bool if cached or not 
 	 */
-	public static function set_cache($output, $expiration=0, $callback='')
+	public static function set_cache($uri, $output, $expiration=0)
 	{
 		$cache_path = rtrim(self::config('cache_path'), '/');
 
 		if (!is_dir($cache_path) OR !is_writable($cache_path))
 		{
-			die($cache_path);
+			//die($cache_path);
 			return FALSE;
 		}
 
 		$stamp = time() + $expiration;
-		$cache_path .= '/' . str_replace('/', '.', self::$uri_string . '.cache');
+		$cache_path .= '/' . str_replace('/', '.', "_".$uri . '.cache');
 
 		if (!$cp = fopen($cache_path, 'wb'))
 		{
@@ -903,7 +969,7 @@
 
 		if (flock($cp, LOCK_EX))
 		{
-			fwrite($cp, '<tstamp>' . $stamp . '</tstamp><callback>' . $callback . '</callback>' . $output);
+			fwrite($cp, '<tstamp>' . $stamp . '</tstamp>'. $output);
 			flock($cp, LOCK_UN);
 		} else
 		{
@@ -924,23 +990,13 @@
 	 * 
 	 * @param string $output
 	 * @param int $expiration
-	 * @param string $callback callback method (usually to str_replace/preg_replace placeholders)
 	 * @return string $output or cached content 
 	 */
-	public static function cache($output, $expiration, $callback='')
+	public static function cache($uri, $output, $expiration)
 	{
-		rpd::set_cache($output, $expiration, $callback);
-		$controller = self::$controller;
-		if ($callback != '' AND is_callable(array($controller, $callback)))
-		{
-			$output = $controller->$callback($output);
-		}
-		//$output = preg_replace("/{rpd::([^}]*)}/", '\\1',   $output);
-		$output = str_replace('{time}', self::benchmarks('time'), $output);
-		$output = str_replace('{memory}', self::benchmarks('memory'), $output);
+		self::set_cache($uri, $output, $expiration);
 		return $output;
 	}
 	
-
 }
 
