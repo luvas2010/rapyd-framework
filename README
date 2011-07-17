@@ -1,6 +1,6 @@
 Hi all rapyd guys, 
-this is the 1.0 version is planned for (2011-08-25)
-don't know yed it it will be released in bundle with cms
+this is the 1.0 version, and is planned for (2011-08-25)
+don't know yet if it will be released in bundle with cms
 
 this software is open source, it include some LGPL third party libraries, so rapyd-framework license is LGPL too (no more MIT)
 
@@ -22,7 +22,7 @@ you should make writable:
 CONFIGURATION POSSIBILITIES:
 
 - by default rapyd-framework is configured to run in the document root folder
-if you run it "inside a folder" instead of deploying root level you need to:
+if you run it "inside a folder" instead of deploing root level you need to:
 - edit /application/config.php  and set $config['basename'] = "/folder/";  (with both slashes)
 
 
@@ -36,7 +36,7 @@ CHANGELOG:
 
 - readme added (as for cms branch), needed to add this changelog to the zip
 - auth library, alignment from cms (check_role added)
-- chache, found a great solution to support "partials", I'll explain more on rapyd.com (blog and forum)
+- cache, found a great solution to support "partials", I'll explain more on rapyd.com (blog and forum)
 - performance improvement, some "statics" added, and basically if you use cache with some non-cached partials and few queries, rapyd will compile output in 0.02/0.03 seconds :)
 - output_compression possible, just set up  level [0-9] of gzip on config.php (require zlib enabled)
 - bugfix on url->remove_all(), validation captcha, pagination, etc..
