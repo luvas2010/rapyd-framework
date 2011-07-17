@@ -1,0 +1,54 @@
+Hi all rapyd guys, 
+this is the 1.0 version is planned for (2011-08-25)
+don't know yed it it will be released in bundle with cms
+
+this software is open source, it include some LGPL third party libraries, so rapyd-framework license is LGPL too (no more MIT)
+
+DEPLOY:
+
+- unzip if possible on your document root 
+- you need only php5.1+ and sqlite3-pdo (to run demo module)
+
+WRITABLE:
+
+you should make writable:
+- application/db (if you will use sqlite3 as db-driver)
+
+- modules/demo/db (if you will run demos, built on sqlite3)
+- uploads (suggested as repository of application uploaded files)
+- cache (if you need file cache)
+
+
+CONFIGURATION POSSIBILITIES:
+
+- by default rapyd-framework is configured to run in the document root folder
+if you run it "inside a folder" instead of deploying root level you need to:
+- edit /application/config.php  and set $config['basename'] = "/folder/";  (with both slashes)
+
+
+you can omitt "index.php" in urls if you can use apache+mod_rewrite:
+- edit /application/config.php  and set $config['index_page'] = ""; 
+- edit .htaccess and set RewriteBase /folder/ (or / if the framework is in the document root)
+(remember that all rows on .htaccess are commented, remove #  to enable rewrite)
+
+
+CHANGELOG:
+
+- readme added (as for cms branch), needed to add this changelog to the zip
+- auth library, alignment from cms (check_role added)
+- chache, found a great solution to support "partials", I'll explain more on rapyd.com (blog and forum)
+- performance improvement, some "statics" added, and basically if you use cache with some non-cached partials and few queries, rapyd will compile output in 0.02/0.03 seconds :)
+- output_compression possible, just set up  level [0-9] of gzip on config.php (require zlib enabled)
+- bugfix on url->remove_all(), validation captcha, pagination, etc..
+- {time} {memory} now display the exact amount (even with cached content), now I use a custom shutdown-function.. more on rapyd.com
+
+
+
+
+
+Feedbacks, suggestions, collaborations, donations  are all welcome.
+
+Felice Ostuni
+http://www.rapyd.com
+
+
