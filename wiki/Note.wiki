@@ -26,3 +26,20 @@ questo puo' forse essere fatto a livello di "component".. (classe ancestor di tu
   * Integrare le ultime modifiche alle pre_post process function e approfittare per rinominare in callback
   * provare a spostare il dataset nel folder model
   * provare a estendere i model negli esempi e spostare lì la parte che opera sul db
+
+
+
+test
+.
+└── default
+    └── base
+        ├── css 
+        ├── images
+        │   ├── banks
+        │   ├── dashboard
+        │   ├── default
+        │   ├── flags
+        │   ├── menu
+        │   └── stars
+        ├── js
+        └── scripts
