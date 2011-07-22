@@ -28,7 +28,7 @@ questo puo' forse essere fatto a livello di "component".. (classe ancestor di tu
   * provare a estendere i model negli esempi e spostare lì la parte che opera sul db
 
 
-
+{{{
 test
 .
 └── default
@@ -43,3 +43,4 @@ test
         │   └── stars
         ├── js
         └── scripts
+}}}
