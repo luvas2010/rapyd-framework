@@ -26,7 +26,7 @@ class dataform_library extends rpd_component_library
 	protected $process_url = "";
 	protected $multipart = false;
 	protected $default_group;
-	protected $attributes = array('class' => 'form');
+	public $attributes = array('class' => 'form');
 	protected $error_string;
 	protected $form_scripts;
 	
@@ -40,7 +40,8 @@ class dataform_library extends rpd_component_library
 		parent::__construct($config);
 		$this->cid = parent::get_identifier();
 		$this->validation = new rpd_validation_library();
-		$this->process_url = rpd_url_helper::append('process', 1);
+                $url = ($this->url != '') ? $this->url : rpd_url_helper::get_url();
+		$this->process_url = rpd_url_helper::append('process', 1, $url);
 		if (isset($this->model))
 		{
 			$this->status = "create";
@@ -112,6 +113,17 @@ class dataform_library extends rpd_component_library
 		return $field_obj; //method chaining
 	}
 
+	public function &get_field($field_name)
+	{
+		if (isset($this->fields[$field_name]))
+		{
+			return $this->fields[$field_name];
+		}else {
+			$this->show_error('datamodel non valido ' . get_class($source));
+			die();
+		}
+	}
+	
 	/**
 	 * set css style
 	 * @todo search online for a better way to work with html/css for example using a dom-api like phpquery  

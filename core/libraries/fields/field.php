@@ -114,6 +114,13 @@ class field_field extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
+	public function set_clause($clause)
+	{
+		$this->clause = $clause;
+		return $this;
+	}
+	// --------------------------------------------------------------------
+
 	public function set_attributes($attributes)
 	{
 
@@ -249,8 +256,15 @@ class field_field extends rpd_component_library {
 		}
 		elseif ( (isset($this->model)) && ($this->model->loaded) && (!isset($_POST[$this->name])) && (isset($this->db_name)) )
 		{
+		
 			$name = $this->db_name;
-			if ($this->options_table!="")
+			$path = explode('.', $name);
+			if (count($path)==3 && $this->model->has_rel($path[0]))
+			{
+				$v = $this->model->get_rel($path[0],$path[1]); 
+				$this->value = $v[$path[2]];
+			}
+			elseif ($this->options_table!="")
 			{
 				//da ottimizzare, (options_array dovrebbe accettare anche uncampo solo)
 				rpd::$db->query('SET @rownum:=-1;');
@@ -266,6 +280,7 @@ class field_field extends rpd_component_library {
 				$this->value = $this->model->get($name);
 			}
 		}
+
 		$this->get_mode();
 	}
 
@@ -420,7 +435,13 @@ class field_field extends rpd_component_library {
 			{
 			if (!in_array($this->db_name, $this->model->field_names))
 			{
-			return true;
+				$path = explode('.', $this->db_name);
+				if (count($path)==3 && $this->model->has_rel($path[0]))
+				{
+				$v = $this->model->set_rel($path[0],$path[2], $this->new_value); 
+				$this->value = $v[$path[2]];
+				}
+				return true;
 			}
 				if (isset($this->new_value))
 				{

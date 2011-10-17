@@ -41,6 +41,7 @@ class input_field extends field_field {
       case "create":
       case "modify":
         $output = rpd_form_helper::input($this->attributes, $this->value);
+	$output .= "\n". $this->extra_output;
         if (isset($this->mask))
         {
           $output .= rpd_html_helper::script('
@@ -56,7 +57,7 @@ class input_field extends field_field {
 
       default:;
     }
-    $this->output = "\n".$this->before_output."\n".$output."\n". $this->extra_output."\n";
+    $this->output = "\n".$this->before_output."\n".$output."\n";
   }
 
 }

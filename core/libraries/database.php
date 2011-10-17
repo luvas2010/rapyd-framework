@@ -87,7 +87,7 @@ class rpd_database_library
 	 * 
 	 * @return array the resultset
 	 */
-	public function result_array()
+	public function result_array($field='')
 	{
 		if (count($this->result_array) > 0)
 		{
@@ -102,7 +102,12 @@ class rpd_database_library
 		$this->data_seek(0);
 		while ($row = $this->fetch_assoc())
 		{
-			$this->result_array[] = $row;
+			if ($field!='')
+			{
+				$this->result_array[$row[$field]] = $row;
+			} else {
+				$this->result_array[] = $row;
+			}
 		}
 
 		return $this->result_array;

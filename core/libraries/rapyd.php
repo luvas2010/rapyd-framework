@@ -19,6 +19,7 @@
 	public static $uri;
 	public static $auth;
 	public static $uri_string;
+	public static $ruri_string;
 	public static $controller;
 	public static $method;
 	public static $params = array();
@@ -26,6 +27,7 @@
 	public static $routed = false;
 	public static $main_controller;
 	public static $cached_files = 0;
+	public static $error_message = '';
 
 	/**
 	 * init is called (from index.php or include.php) one time per execution
@@ -44,27 +46,28 @@
 		{
 			define('RAPYDASSETS', $config['assets_path']);
 		}
-		include_once RAPYD_ROOT . 'core/i18n/' . self::$config['locale_language'] . '.php';
+		include_once RAPYD_ROOT . 'core/i18n/' . self::get_lang('locale') . '.php';
 		self::$lang = $lang;
 
 		//init application & modules
 		foreach (self::$config['include_paths'] as $path)
 		{
+
+			if (is_file(RAPYD_ROOT . $path . '/init.php'))
+			{
+				include_once RAPYD_ROOT . $path . '/init.php';
+			}
+			if (is_file(RAPYD_ROOT . $path . '/i18n/' . self::get_lang('locale') . '.php'))
+			{
+				$lang = array();
+				include_once RAPYD_ROOT . $path . '/i18n/' . self::get_lang('locale') . '.php';
+				self::$lang = array_merge(self::$lang, $lang);
+			}
 			if (is_file(RAPYD_ROOT . $path . '/config.php'))
 			{
 				$config = array();
 				require_once RAPYD_ROOT . $path . '/config.php';
 				self::$config = array_merge_recursive(self::$config, $config);
-			}
-			if (is_file(RAPYD_ROOT . $path . '/init.php'))
-			{
-				include_once RAPYD_ROOT . $path . '/init.php';
-			}
-			if (is_file(RAPYD_ROOT . $path . '/i18n/' . self::$config['locale_language'] . '.php'))
-			{
-				$lang = array();
-				include_once RAPYD_ROOT . $path . '/i18n/' . self::$config['locale_language'] . '.php';
-				self::$lang = array_merge(self::$lang, $lang);
 			}
 		}
 	}
@@ -251,14 +254,17 @@
 	public static function router()
 	{
 		self::$uri_string = rpd_url_helper::get_uri();
-		self::$uri_string = self::reroute(self::$uri_string, self::config('routes'));
+		//remove if present language segment
+		if (rpd::get_lang('set')!='')
+			self::$uri_string =	preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', self::$uri_string);
+		self::$ruri_string = self::reroute(self::$uri_string, self::config('routes'));
 
-		if (!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', self::$uri_string) || empty(self::$uri_string))
+		if (!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', self::$ruri_string) || empty(self::$ruri_string))
 		{
-			if (self::$uri_string == '')
+			if (self::$ruri_string == '')
 				$segment_arr = array();
 			else
-				$segment_arr = explode('/', self::$uri_string);
+				$segment_arr = explode('/', self::$ruri_string);
 
 			// defaults
 			$controller_name = self::config('default_controller');
@@ -321,6 +327,7 @@
 	 */
 	public static function reroute($uri, $routes=array())
 	{
+		//lang here
 		if ($routes)
 		{
 			foreach ($routes as $regex => $dest)
@@ -425,9 +432,10 @@
 	 *
 	 * @param string $message 
 	 */
-	public static function error($message)
+	public static function error($code, $message='')
 	{
-		self::run('error', 'error_message', array($message));
+		self::$error_message = $message;
+		self::run('error/code/'.$code);
 		exit(1);
 	}
 
@@ -456,6 +464,7 @@
 	 */
 	public static function exception_handler(Exception $e)
 	{
+
 		try
 		{
 			$type = get_class($e);
@@ -483,10 +492,10 @@
 			if (!headers_sent())
 				header('HTTP/1.1 500 Internal Server Error');
 
+			ob_clean();
+			self::error('500', "'$message' in $file($line)\n\nCall Stack:\n$trace");
+			exit;
 
-			self::run('error', 'error_message', array("'$message' in $file($line)\n\nCall Stack:\n$trace"));
-			//self::run('error','error_message',array($code.', '.$message.', '.$file.', '.$line));
-			//return TRUE;
 		} catch (Exception $e)
 		{
 			echo strip_tags($e->getMessage()) . ' on ' . $e->getFile() . ' line [' . $e->getLine() . "]\n";
@@ -607,6 +616,56 @@
 		}
 	}
 
+
+	public static function get_lang($value='')
+	{		
+		static $array = array();
+		static $set;
+		static $current;
+		
+		if ($value=='array' && count($array) ) return $array;
+		if ($value=='set' && !is_null($set)) return $set;
+		if (in_array($value, array('locale','name','segment','index')) && !is_null($current)) return $current[$value];
+		if ($value=='' && !is_null($current)) return $current;
+
+		//no static cache?  so cycle languages and uri and fill static vars
+		$segments = array();
+		foreach(self::config("languages") as $lang)
+		{ 
+			if ($lang['segment'] == '')
+			{
+				$default = $lang;
+				continue;
+			}
+			$segments[$lang['segment']] = $lang;
+		}
+		$current = $default;
+		if (count($segments)>0) //piu' di una lingua
+		{
+			$set = '('.implode('|',array_keys($segments)).')';
+			if (preg_match('@^'.$set.'/?@i', rpd_url_helper::get_uri() , $match))
+			{
+				$current = $segments[$match[1]];
+			}
+		}
+
+		$array = array_merge(array('default'=>$default), $segments);
+		$curr = array_search($current, $array);
+		$array[$curr]['is_current'] = true;
+		
+		
+//		var_dump($array);
+//		var_dump($set);
+//		var_dump($current);
+//		die;
+		
+		if ($value=='array') return $array;
+		if ($value=='set') return $set;
+		if (in_array($value, array('locale','name','segment','index'))) return $current[$value];
+		return $current;
+	}
+	
+	
 	/**
 	 * run() instance a controller and execute one of it's methods
 	 * (using parameters or detecting it by current url), 
@@ -619,6 +678,11 @@
 	 */
 	public static function run($controller=null, $method=null, $params=array())
 	{
+		/**
+		 * locale settings
+		 */
+		setlocale(LC_TIME, rpd::get_lang('locale'), rpd::get_lang('locale').".utf8");
+		
 		if (isset($controller) && strpos($controller,'{controller}')!==false)
 		{
 			$controller = str_replace('{controller}', str_replace('_controller', '', get_class(self::$main_controller)), $controller);
@@ -633,10 +697,12 @@
 		//this case we have a rpd::run('controller/method/..')
 		if (isset($controller) AND !isset($method) AND strpos($controller, '/'))
 		{
-			$segment_arr = explode('/', $controller);
 			self::$uri_string = $controller;
+			self::$ruri_string = self::reroute($controller, self::config('routes'));
+			$segment_arr = explode('/', self::$ruri_string);
 			while ($segment_arr)
 			{
+
 				$path = implode('/', $segment_arr);
 				$arr_segments[] = array_pop($segment_arr);
 
@@ -644,13 +710,11 @@
 				if ($controller)
 				{
 					$controller = $path;
-
 					$arr_segments = array_reverse($arr_segments);
 					if (isset($arr_segments[1]))
 						$method = $arr_segments[1];
 					if (isset($arr_segments[2]))
 						$params = array_slice($arr_segments, 2);
-
 					break;
 				}
 			}
@@ -665,6 +729,7 @@
 		if (isset($controller, $method))
 		{
 			self::$uri_string = trim($controller . '/' . $method . '/' . implode('/', $params),'/');
+			self::$ruri_string = self::$uri_string;
 			$controller .= '_controller';
 			self::$controller = new $controller(); //self::load('controller', $controller);
 			self::$method = str_replace('-', '_', $method);
@@ -684,11 +749,13 @@
 
 		if (is_object($controller))
 		{
+
 			if (isset(self::$db))
 				$controller->db = self::$db;
 			$controller->qs = self::$qs;
 			$controller->uri = self::$uri;
 			$controller->uri_string = self::$uri_string;
+			$controller->ruri_string = self::$ruri_string;
 			$controller->auth = self::$auth; 
 
 			if (!isset(self::$main_controller))
@@ -711,6 +778,8 @@
 
 			if (method_exists($controller, $method))
 			{
+
+
 				if (is_callable(array($controller, $method)))
 				{
 					//if there are params, check they are not more than expected
@@ -719,7 +788,10 @@
 						//basically this stuff remove from params all "widgets" segments-semantic (like pagination, orderby, editing actions, always admitted)
 						$uri = implode('/', $params);
 						$url = rpd_url_helper::remove_all(null, rpd_url_helper::url($uri));
-						$uri = rpd_url_helper::uri($url);
+						if (rpd::get_lang('set')!='')
+							$uri = preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', rpd_url_helper::uri($url));
+						else 
+							$uri = rpd_url_helper::uri($url);
 						$params = ($uri=='') ? array() : explode('/', $uri);
 
 						$reflector = new ReflectionClass(get_class($controller));
@@ -774,9 +846,9 @@
 	 * @param string $uri
 	 * @return object 
 	 */
-	public static function url($uri)
+	public static function url($uri, $lang=null)
 	{
-			return rpd_url_helper::url($uri);
+			return rpd_url_helper::url($uri, $lang);
 	}
 
 	/**
@@ -903,7 +975,7 @@
 			return FALSE;
 		}
 
-		$cache_path = self::config('cache_path') . str_replace('/', '.', "_".$uri . '.cache');
+		$cache_path = self::config('cache_path') . str_replace('/', '.', "_".rpd::get_lang('segment').'_'.$uri . '.cache');
 		
 		if (!@file_exists($cache_path))
 		{
@@ -952,6 +1024,7 @@
 	public static function set_cache($uri, $output, $expiration=0)
 	{
 		$cache_path = rtrim(self::config('cache_path'), '/');
+		
 
 		if (!is_dir($cache_path) OR !is_writable($cache_path))
 		{
@@ -960,7 +1033,7 @@
 		}
 
 		$stamp = time() + $expiration;
-		$cache_path .= '/' . str_replace('/', '.', "_".$uri . '.cache');
+		$cache_path .= '/' . str_replace('/', '.', "_".rpd::get_lang('segment').'_'.$uri . '.cache');
 
 		if (!$cp = fopen($cache_path, 'wb'))
 		{

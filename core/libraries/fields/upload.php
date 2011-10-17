@@ -10,10 +10,13 @@ class upload_field extends field_field {
 	public $upload_path;
 	public $upload_root;
 	public $preview;
+	public $popup_params;
 
 	public $upload_error;
 	public $allowed_types = array();
 	public $max_size;
+	public $crop_to = array();
+	
 
 	// --------------------------------------------------------------------
 
@@ -26,6 +29,11 @@ class upload_field extends field_field {
 
 	public function set_upload_path($path) {
 		$this->upload_path= $path;
+		return $this;
+	}
+	
+	public function set_www_path($path) {
+		$this->www_path= $path;
 		return $this;
 	}
 
@@ -56,6 +64,14 @@ class upload_field extends field_field {
 
 	// --------------------------------------------------------------------
 
+	public function set_crop($width, $height) {
+		$this->crop_to = array($width, $height);
+		return $this;
+	}
+
+	
+	// --------------------------------------------------------------------
+
 	protected function draw_link() {
 		if (isset($this->preview)) {
 			return $this->draw_preview_link();
@@ -71,6 +87,8 @@ class upload_field extends field_field {
 	protected function draw_upload_link() {
 		if ($this->www_path == "") {
 			$this->www_path = $this->upload_path;
+		} elseif($this->www_path == "")  {
+			$this->www_path = RAPYD_PATH.'uploads/';
 		}
 		$action = "javascript:window.open('" . $this->www_path . $this->value . "','" . $this->name . "','" . $this->popup_params . ",');";
 		return '<a onclick="' . $action . '" href="javascript:void(0);">' . $this->value . '</a>';
@@ -99,8 +117,13 @@ class upload_field extends field_field {
 
 		$file = rpd_upload_helper::save($this->name . "_user_file",  $this->upload_path);
 		if ($file){
+			if (count($this->crop_to)>1)
+			{
+				rpd_image_helper::crop($this->upload_path.$file, $this->upload_path.$file, $this->crop_to[0], $this->crop_to[1]);
+			}
 			return $file;
 		}
+		
 		$this->save_error = $this->label . ": Upload Error";
 		return false;
 

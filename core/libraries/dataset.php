@@ -7,7 +7,7 @@ class dataset_library extends rpd_component_library {
 
 	public $source;
 	public $per_page = 10;
-	public $num_links;
+	public $num_links = 8;
 	public $data;
 	public $hash = '';
 	public $url;
@@ -62,8 +62,9 @@ class dataset_library extends rpd_component_library {
 
 	protected function build_orderby_links()
 	{
+
 		//current uri
-		$url = rpd_url_helper::get_url();
+		$url = ($this->url != '') ? $this->url : rpd_url_helper::get_url();
 
 		//unset current pagination
 		$url = rpd_url_helper::remove('pag'.$this->cid, $url);

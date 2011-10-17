@@ -119,7 +119,8 @@ class datagrid_library extends dataset_library
 		{
 			rpd::load('helper', 'form');
 			$attributes = array('class' => 'form', 'name' => 'grid');
-			$data['form_begin'] = rpd_form_helper::open(rpd_url_helper::get_url(), $attributes);
+                        $url = ($this->url != '') ? $this->url : rpd_url_helper::get_url();
+			$data['form_begin'] = rpd_form_helper::open($url, $attributes);
 			$data['form_end'] = rpd_form_helper::close();
 			$data['hidden'] = rpd_form_helper::hidden('grid_action', 'true');
 		} else

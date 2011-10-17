@@ -22,16 +22,24 @@ $config['include_paths'][]  = 'core';
 
 $config['assets_path']     = RAPYD_PATH.'core/assets/';
 $config['cache_path']      = RAPYD_ROOT.'cache/';
-$config['locale_language'] = 'en_US';
+//default language is the one with segment => ''
+//for others, segment is the first uri-segment that set language:  [/it]/controller/method/...
+$config['languages'] = array(
+	array('index'=>1, 'name'=>'english',  'locale'=>'en_US', 'segment'=>''),
+	array('index'=>2, 'name'=>'italiano', 'locale'=>'it_IT', 'segment'=>'it'),
+);
+
 
 $config['routes'] = array(
-	//'product/(:num)/:str' => 'catalogmodule/product/$1';
+//	'page/(:any)' => 'frontend/page/$1',
+//	'spage/(:any)' => 'frontend/spage/$1',
+
 );
 
 $config['db']['hostname'] = "";
 $config['db']['username'] = "";
 $config['db']['password'] = "";
-$config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/db/demo.db';
+$config['db']['database'] = 'sqlite:'.RAPYD_ROOT.'modules/demo/db/demo.sqlite';
 $config['db']['dbdriver'] = "pdo";
 $config['db']['dbprefix'] = "";
 $config['db']['db_debug'] = true;
@@ -39,3 +47,6 @@ $config['db']['db_debug'] = true;
  * custom configurations
  *
  */
+
+//$config['cms']['theme'] = RAPYD_ROOT.'application/views/themes/white/';
+//$config['cms']['assets_path'] = RAPYD_PATH.'assets/';

@@ -20,7 +20,7 @@ define('DOC_ROOT', substr($filepath, 0, strrpos($filepath, $_SERVER['SCRIPT_NAME
 define('RAPYD_ROOT', $cwd.DIRECTORY_SEPARATOR);
 define('RAPYD_PATH', str_replace(DOC_ROOT,'',str_replace('\\','/',RAPYD_ROOT)));
 define('RAPYD_VERSION', '1.0');
-define('RAPYD_BUILD_DATE', '2011-08-25');//planned release
+define('RAPYD_BUILD_DATE', '2011-09-10');
 
 define('RAPYD_BENCH_TIME',  microtime(true));
 define('RAPYD_BENCH_MEMORY', memory_get_usage());
@@ -29,7 +29,13 @@ unset($filepath,$cwd);
 
 
 /**
- * compatibility functions (mbstring, etc..)
+ * utf8 compat. str functions (to handle mbstring if not loaded) borrowed from dokuwiki
+ * remember to use in your code utf8_ prefix (utf8_strlen, utf8_substr, utf8_strtolower, ...) 
+ */
+include_once(RAPYD_ROOT . 'core/helpers/utf8.php');
+
+/**
+ * compatibility functions (intended to handle differences of PHP 5.* versions)
  */
 include_once(RAPYD_ROOT . 'core/helpers/compat.php');
 
@@ -58,11 +64,6 @@ register_shutdown_function(array('rpd', 'shutdown_handler'));
  * configuration file
  */
 include_once(RAPYD_ROOT.'application/config.php');
-
-/**
- * locale settings
- */
-setlocale(LC_TIME, $config['locale_language'], $config['locale_language'].".utf8");
 
 
 /**

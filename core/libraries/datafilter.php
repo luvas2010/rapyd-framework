@@ -31,7 +31,7 @@ class datafilter_library extends dataform_library
 		}
 		$this->status = 'create';
 		//sniff current action
-		$this->sniff_action();
+		//$this->sniff_action();
 	}
 
 	/**
@@ -39,28 +39,31 @@ class datafilter_library extends dataform_library
 	 */
 	protected function sniff_action()
 	{
-		$url = rpd_url_helper::remove_all();
-		$this->reset_url = rpd_url_helper::append('reset', 1, $url);
-		$this->process_url = rpd_url_helper::append('search', 1, $url);
+
+                $url = ($this->url != '') ? $this->url : rpd_url_helper::get_url();
+//		$url = rpd_url_helper::remove_all(null, $url);
+//		$this->reset_url = rpd_url_helper::append('reset', 1, $url);
+//		$this->process_url = rpd_url_helper::append('search', 1, $url);
+                
 		///// search /////
 		if (rpd_url_helper::value('search'))
 		{
 			$this->action = "search";
 			// persistence
-			rpd_sess_helper::save_persistence();
+			rpd_sess_helper::save_persistence($url);
 		}
 		///// reset /////
 		elseif (rpd_url_helper::value("reset"))
 		{
 			$this->action = "reset";
 			// persistence cleanup
-			rpd_sess_helper::clear_persistence();
+			rpd_sess_helper::clear_persistence($url);
 		}
 		///// show /////
 		else
 		{
 			// persistence
-			rpd_sess_helper::save_persistence();
+			rpd_sess_helper::save_persistence($url);
 		}
 	}
 
@@ -152,8 +155,14 @@ class datafilter_library extends dataform_library
 	 */
 	function build()
 	{
+                $url = ($this->url != '') ? $this->url : rpd_url_helper::get_url();
+		$url = rpd_url_helper::remove_all(null, $url);
+		$this->reset_url = rpd_url_helper::append('reset', 1, $url);
+		$this->process_url = rpd_url_helper::append('search', 1, $url);
 		$this->reset_url = $this->reset_url . $this->hash;
 		$this->process_url = $this->process_url . $this->hash;
+                $this->sniff_action();
+                
 		//sniff and build fields
 		$this->sniff_fields();
 		//build fields
