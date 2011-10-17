@@ -41,7 +41,7 @@
         <tr <?php if($rowcount % 2){ echo 'class="odd"';}else{ echo 'class="even"';} ?>>
 <?php foreach ($row as $cell):?>
 <?php if ($cell['type'] == "detail" OR $cell['link']!=""):?>
-          <td <?php echo $cell['attributes']?> class="table_row"><a href="<?php echo $cell['link']?>"><?php if($cell['img']!=""){ echo rpd_html_helper::image($cell['img'], array('style'=>'vertical-align:middle')); }?><?php echo $cell['value']?></a></td>
+          <td <?php echo $cell['attributes']?> class="table_row"><a href="<?php echo $cell['link']?>" <?php if($cell['onclick']!='') echo 'onclick="'.$cell['onclick'].'"'?>><?php if($cell['img']!=""){ echo rpd_html_helper::image($cell['img'], array('style'=>'vertical-align:middle')); }?><?php echo $cell['value']?></a></td>
 <?php elseif ($cell['type'] == "clean"):?>
           <td <?php echo $cell['attributes']?>><?php echo $cell['value']?></td>
 <?php elseif ($cell['check'] != ""):?>

@@ -21,8 +21,8 @@ tr.even {background-color:#FCFCFC;}
 
 form { margin: 0; padding: 0; }
 .input, .select, .password, .textarea  { font-family: Lucida Grande, Verdana, Geneva, Sans-serif;	font-size: 1em; margin: 0; padding: 2px; border: 1px solid #92B8CB; border-left:2px solid #92B8CB;}
-.button {  }
-.button_red {	background-color: #FF3300;	border: 1px solid #CC3300; color: White;	font-family: Verdana, Arial, Helvetica;	font-size: 10px; font-weight: normal;	text-decoration: none;}
+/*.button {  font: 13px/1.22 arial,helvetica,clean,sans-serif;}
+.button_red {	background-color: #FF3300;	border: 1px solid #CC3300; color: White;	font-family: Verdana, Arial, Helvetica;	font-size: 10px; font-weight: normal;	text-decoration: none;}*/
 .littlebutton {	background-color: #BED6E0;	border: 1px solid #92B8CB;	color: #153D51;	font-family: Lucida Grande, Verdana, Geneva, Sans-serif;	font-size: 12px;	text-decoration: none;}
 
 body.mceContentBody {

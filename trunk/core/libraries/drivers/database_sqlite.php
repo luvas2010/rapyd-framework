@@ -4,6 +4,7 @@
 
 class rpd_database_sqlite_driver extends rpd_database_ar_library {
 
+    public $ar_match = array();
 
 	public function connect()
 	{
@@ -98,6 +99,25 @@ class rpd_database_sqlite_driver extends rpd_database_ar_library {
 	public function error_number()
 	{
 		return sqlite_last_error($this->conn_id);
+	}
+
+	//basic support for "match" on FTS tables in sqlite
+	public function match($field, $match = '', $type='AND ')
+	{
+		if (!is_array($field))
+		{
+			$field = array($field => $match);
+		}
+
+		foreach ($field as $k => $v)
+		{
+			$prefix = (count($this->ar_match) == 0) ? '' : $type;
+
+			$v = $this->escape_str($v);
+
+			$this->ar_match[] = $prefix . " $k MATCH '{$v}'";
+		}
+		return $this;
 	}
 
 }

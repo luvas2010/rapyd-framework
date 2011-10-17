@@ -13,6 +13,8 @@ class rpd_datamodel_model {
     public $data = array();
     public $data_rel = array();
     public $new_data = array();
+    public $new_data_rel = array();
+    
 
     public $preprocess_callback = array();
     public $postprocess_callback = array();
@@ -202,7 +204,7 @@ class rpd_datamodel_model {
                 $this->db->where($where);
                 $this->db->get();
                 if($this->db->num_rows()>0) {
-                    $this->data_rel[$one_to_many["id"]] = $this->db->result_array();
+                    $this->data_rel[$one_to_many["id"]] = $this->db->result_array($one_to_many["index"]);
                 }
             }
         }
@@ -217,7 +219,7 @@ class rpd_datamodel_model {
                 $this->db->where($where);
                 $this->db->get();
                 if($this->db->num_rows()>0) {
-                    $this->data_rel[$many_to_many["id"]] = $this->db->result_array();
+                    $this->data_rel[$many_to_many["id"]] = $this->db->result_array($many_to_many["index"]);
                 }
             }
         }
@@ -247,6 +249,26 @@ class rpd_datamodel_model {
                     $this->loaded = true;
                     $this->bind_rel();
                 }
+                if($result && $this->has_rel()) 
+		{
+			if (count($this->one_to_one)) 
+			{
+			    foreach($this->one_to_one as $one_to_one) {
+				$this->db->insert($one_to_one["table"], $this->data_rel);
+				die($this->db->last_query);
+			    }
+
+			}
+			if (count($this->one_to_many)) 
+			{
+			    foreach($this->one_to_many as $one_to_many) {
+				$this->db->insert($one_to_many["table"], $this->data_rel);
+				die($this->db->last_query);
+			    }
+
+			}
+		}
+		
                 //exec post process function and store result in a property
                 $this->postprocess_result = $this->exec_postprocess_callback("insert");
                 return $result;
@@ -272,6 +294,31 @@ class rpd_datamodel_model {
                 } else {
                     $result = true;
                 }
+                if($result && $this->has_rel()) 
+		{
+			if (count($this->one_to_one)) 
+			{
+			    foreach($this->one_to_one as $one_to_one) {
+				$this->db->update($one_to_one["table"], $this->new_data_rel);
+				die($this->db->last_query);
+			    }
+
+			}
+			if (count($this->one_to_many)) 
+			{
+
+			    foreach($this->one_to_many as $one_to_many) {
+				var_dump($one_to_many["table"]);
+				var_dump($this->new_data_rel);
+				die();
+				$this->db->update($one_to_many["table"], $this->new_data_rel);
+				$this->db->where($this->pk);
+				//$this->db->where($one_to_many[], xxx);
+				die($this->db->last_query);
+			    }
+
+			}
+		}
                 //exec post process function and store result in a property
                 $this->postprocess_result = $this->exec_postprocess_callback("update");
                 return $result;
@@ -408,7 +455,10 @@ class rpd_datamodel_model {
                 else {
                     $this->new_data[$field] = $value;
                 }
-            }
+            } else {
+		    var_dump($field);
+		    die;
+	    }
         }
         $this->data[$field] = $value;
     }
@@ -417,6 +467,22 @@ class rpd_datamodel_model {
 
     public function set_rel($rel_id, $field, $value) {
         $this->data_rel[$rel_id][$field] = $value;
+		
+        
+	//store only new values in a new array
+        if (isset($this->data_rel[$rel_id][$field])) {
+            if ($value != $this->data_rel[$rel_id][$field])
+                $this->new_data_rel[$rel_id][$field] = $value;
+        } else {
+            if (in_array($field,$this->field_names)) {
+                if ($this->loaded && is_null($value)) {
+                    //is already null
+                }
+                else {
+                    $this->new_data_rel[$rel_id][$field] = $value;
+                }
+            }
+        }
     }
 
     // --------------------------------------------------------------------
@@ -494,13 +560,15 @@ class rpd_datamodel_model {
         }
         $arr["table_alias"] = $alias;
         $arr["on"] = $alias.".".$field." = ".$this->table.".".$field_fk;  //join "on"
+	$arr["field"] = $field;
         $arr["cascade"] = $cascade;
         $this->one_to_one[$id] = $arr;
     }
 
     // --------------------------------------------------------------------
 
-    public function has_many($id, $table, $field_fk="{pk}", $cascade="") {
+    public function has_many($id, $table, $field_fk="{pk}", $field="", $index='', $cascade="") {
+        if ($field=="") $field = $field_fk;
         $arr["id"] = $id;
         $arr["table"] = $table;
         if (strpos($table," as")>0) {
@@ -509,14 +577,16 @@ class rpd_datamodel_model {
             $alias = $table;
         }
         $arr["table_alias"] = $alias;
-        $arr["on"] = $alias.".".$field_fk." = ".$this->table.".".$field_fk;  //join "on"
+        $arr["on"] = $alias.".".$field." = ".$this->table.".".$field_fk;  //join "on"
+        $arr["index"] = $index;
+	$arr["field"] = $field;
         $arr["cascade"] = $cascade;
         $this->one_to_many[$id] = $arr;
     }
 
     // --------------------------------------------------------------------
 
-    public function has_and_belongs_to_many($id, $table, $rel_table, $field, $cascade="") {
+    public function has_and_belongs_to_many($id, $table, $rel_table, $field, $index='', $cascade="") {
         $arr["id"] = $id;
         $arr["rel_table"] = $rel_table;
         $arr["table"] = $table;
@@ -528,8 +598,21 @@ class rpd_datamodel_model {
         }
         $arr["table_alias"] = $alias;
         $arr["on"] = $rel_table.".".$field." = ".$table.".".$field;  //join "on"
+        $arr["index"] = $index;
+	$arr["field"] = $field;
         $arr["cascade"] = $cascade;
         $this->many_to_many[$id]= $arr;
     }
 
+	
+	
+	public function has_rel($id='')
+	{
+		if ($id=='' && (count($this->one_to_one) || count($this->one_to_many) || count($this->many_to_many)))
+			return true;
+		elseif (array_key_exists($id, $this->one_to_one) || array_key_exists($id, $this->one_to_many) || array_key_exists($id, $this->many_to_many))
+			return true;
+
+		return false;
+	}
 }

@@ -106,16 +106,6 @@ class rpd_html_helper {
 	{
 		$buffer = "";
 
-            //css links
-            foreach (self::$css as $item)
-            {
-                    $buffer .= sprintf(self::$tags['css'], RAPYDASSETS.$item )."\n";
-            }
-            //js links
-            foreach (self::$js as $item)
-            {
-                    $buffer .= sprintf(self::$tags['js'], RAPYDASSETS.$item )."\n";
-            }
 
             //external css links
             foreach (self::$external_css as $item)
@@ -128,6 +118,17 @@ class rpd_html_helper {
                     $buffer .= sprintf(self::$tags['js'], $item )."\n";
             }
 
+            //css links
+            foreach (self::$css as $item)
+            {
+                    $buffer .= sprintf(self::$tags['css'], RAPYDASSETS.$item )."\n";
+            }
+            //js links
+            foreach (self::$js as $item)
+            {
+                    $buffer .= sprintf(self::$tags['js'], RAPYDASSETS.$item )."\n";
+            }
+	    
             //javascript in page, head section
             if (count(self::$scripts))
             {

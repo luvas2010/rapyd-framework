@@ -59,10 +59,12 @@ class rteditor_field extends field_field {
 
 
         $output  = rpd_form_helper::textarea($this->attributes, $this->value);
+	$output .= $this->extra_output."\n";
         $output .= rpd_html_helper::script("
 
+				var inst_".$this->name."
                                 $(document).ready(function() {
-                                        $('textarea#".$this->name."').rte({
+                                        inst_".$this->name." = $('textarea#".$this->name."').rte({
                                             	css: ['".RAPYDASSETS."jqueryrte/rte.css'],
                                                 controls_rte: rte_toolbar,
                                                 controls_html: html_toolbar
@@ -78,7 +80,7 @@ class rteditor_field extends field_field {
 
       default:
     }
-    $this->output = "\n".$this->before_output.$output. $this->extra_output."\n";
+    $this->output = "\n".$this->before_output.$output."\n";
   }
 
 }

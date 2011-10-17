@@ -1,6 +1,3 @@
-Hi all rapyd guys, 
-this is the 1.0 version, and is planned for (2011-08-25)
-don't know yet if it will be released in bundle with cms
 
 this software is open source, it include some LGPL third party libraries, so rapyd-framework license is LGPL too (no more MIT)
 
@@ -29,20 +26,15 @@ if you run it "inside a folder" instead of deploing root level you need to:
 you can omitt "index.php" in urls if you can use apache+mod_rewrite:
 - edit /application/config.php  and set $config['index_page'] = ""; 
 - edit .htaccess and set RewriteBase /folder/ (or / if the framework is in the document root)
-(remember that all rows on .htaccess are commented, remove #  to enable rewrite)
+(remember that all rows on .htaccess are commented, remove #  to enable url rewrite)
 
 
 CHANGELOG:
 
+- runtime language switch support, now uri like /{lang}/controller/method is supported to drive language switch
+- cache improved, support of deferred uncached "blocks" using <rpd run="controller/method">
 - readme added (as for cms branch), needed to add this changelog to the zip
-- auth library, alignment from cms (check_role added)
-- cache, found a great solution to support "partials", I'll explain more on rapyd.com (blog and forum)
-- performance improvement, some "statics" added, and basically if you use cache with some non-cached partials and few queries, rapyd will compile output in 0.02/0.03 seconds :)
-- output_compression possible, just set up  level [0-9] of gzip on config.php (require zlib enabled)
-- bugfix on url->remove_all(), validation captcha, pagination, etc..
-- {time} {memory} now display the exact amount (even with cached content), now I use a custom shutdown-function.. more on rapyd.com
-
-
+- some stuffs on pdo-sqlite3 driver 
 
 
 

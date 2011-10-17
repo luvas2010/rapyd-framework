@@ -1,18 +1,17 @@
 <?php
 class error_controller extends rpd {
 
-    function error_message($message)
+    function code($code)
     {
-        if ($message=='404')
+        if ($code=='404')
         {
                 $page = '404';
         }
         else
         {
                 $page = 'error';
-                $message = array('error'=>$message);
         }
-        echo $this->view('errors/'.$page, $message);
+        echo $this->view('errors/'.$page);
     }
 
 

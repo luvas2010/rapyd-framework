@@ -25,6 +25,7 @@ class rpd_component_library
 	public $built = FALSE;
 	public $button_container = array("TR" => array(), "BL" => array(), "BR" => array());
 	public $buttons = array();
+	public $url;
 
 	public function __construct($config = array())
 	{
@@ -303,7 +304,7 @@ class rpd_component_library
 	public function replace_functions($content, $functions='ALL')
 	{
 		$formatting_functions = array("rpd[^>]+",
-			"htmlspecialchars", "htmlentities",
+			"htmlspecialchars", "htmlentities", "utf8_encode",
 			"strtolower", "strtoupper","str_replace",
 			"substr", "strpos", "nl2br", "number_format",
 			"dropdown", "radiogroup", "date", "strtotime"

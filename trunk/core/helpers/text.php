@@ -41,8 +41,15 @@ class rpd_text_helper {
 	
 	}
 
-
-
+	public static function abbr($string, $len, $dotdot='..')
+	{
+		if (utf8_strlen($string)>$len)
+		{
+			return '<abbr title="'.  htmlentities($string).'">'.utf8_substr($string, 0, $len).$dotdot.'</abbr>';
+		} else {
+			return $string;
+		}
+	}
 
 }
 

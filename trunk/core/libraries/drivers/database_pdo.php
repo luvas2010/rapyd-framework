@@ -6,7 +6,8 @@ class rpd_database_pdo_driver extends rpd_database_ar_library {
 
     public $pdo_results = '';
     public $pdo_index = 0;
-	public $field_data = array();
+    public $field_data = array();
+    public $ar_match = array();
 
 	public function connect()
 	{
@@ -192,5 +193,25 @@ class rpd_database_pdo_driver extends rpd_database_ar_library {
         $infos = $this->conn_id->errorInfo();
         return $infos[1];
 	}
+
+	//basic support for "match" on FTS tables in sqlite
+	public function match($field, $match = '', $type='AND ')
+	{
+		if (!is_array($field))
+		{
+			$field = array($field => $match);
+		}
+
+		foreach ($field as $k => $v)
+		{
+			$prefix = (count($this->ar_match) == 0) ? '' : $type;
+
+			$v = $this->escape_str($v);
+
+			$this->ar_match[] = $prefix . " $k MATCH '{$v}'";
+		}
+		return $this;
+	}
+
 
 }
