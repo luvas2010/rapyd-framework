@@ -24,7 +24,7 @@ class date_field extends field_field {
   function build()
   {
 		$output = "";
-    rpd_html_helper::css('jsquery/datepick.css');
+    rpd_html_helper::css('jquery/smoothness.datepick.css');
     rpd_html_helper::js('jquery/jquery.min.js');
     rpd_html_helper::js('jquery/jquery.datepick.pack.js');
     rpd_html_helper::js('jquery/jquery.datepick.'.rpd::get_lang('locale').'.js');
