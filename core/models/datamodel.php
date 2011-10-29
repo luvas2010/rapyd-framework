@@ -100,7 +100,7 @@ class rpd_datamodel_model {
                 $object = $function[0];
                 $function = $function[1];
             }
-            $this->preprocess_callback[$action] = array("name"=>$function, "arr_values"=>$arr_values, "object"=>$object);
+            $this->postprocess_callback[$action] = array("name"=>$function, "arr_values"=>$arr_values, "object"=>$object);
         }
     }
 
