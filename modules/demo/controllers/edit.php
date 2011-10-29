@@ -12,7 +12,7 @@ class edit_controller extends rpd {
 		$edit->back_url = $this->url('filtered_grid/index');
 
 		$edit->source('articles');
-		$edit->field('input','title','Title')->rule('trim','required');
+		$edit->field('input','title','Title')->rule('trim|required');
 		$edit->field('radiogroup','public','Public')->options(array("y"=>"Yes", "n"=>"No"));
 		$edit->field('dropdown','author_id','Author')->options('SELECT author_id, firstname FROM authors')
 			 ->rule('required');
