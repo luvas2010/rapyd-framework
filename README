@@ -1,19 +1,20 @@
 
-this software is open source, it include some LGPL third party libraries, so rapyd-framework license is LGPL too (no more MIT)
+This software is open source, released under LGPL 3 (http://www.gnu.org/copyleft/lesser.html)
+
 
 DEPLOY:
 
 - unzip if possible on your document root 
-- you need only php5.1+ and sqlite3-pdo (to run demo module)
+- you need only php5.2+ and sqlite3-pdo (to run demo module)
 
 WRITABLE:
 
 you should make writable:
-- application/db (if you will use sqlite3 as db-driver)
+- /application/db (if you will use sqlite3 as db-driver)
 
-- modules/demo/db (if you will run demos, built on sqlite3)
-- uploads (suggested as repository of application uploaded files)
-- cache (if you need file cache)
+- /modules/demo/db (if you will run demos, built on sqlite3)
+- /uploads (suggested as repository of application uploaded files)
+- /cache (if you need file cache)
 
 
 CONFIGURATION POSSIBILITIES:
@@ -31,15 +32,14 @@ you can omitt "index.php" in urls if you can use apache+mod_rewrite:
 
 CHANGELOG:
 
+- new samples: sql, mvc, hmvc, etc..
 - runtime language switch support, now uri like /{lang}/controller/method is supported to drive language switch
-- cache improved, support of deferred uncached "blocks" using <rpd run="controller/method">
-- readme added (as for cms branch), needed to add this changelog to the zip
-- some stuffs on pdo-sqlite3 driver 
-
+- fixes on language runtime switch
 
 
 Feedbacks, suggestions, collaborations, donations  are all welcome.
 
+Progect Owner
 Felice Ostuni
 http://www.rapyd.com
 
