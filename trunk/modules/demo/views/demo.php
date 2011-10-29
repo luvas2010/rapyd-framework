@@ -87,7 +87,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 
     <div class="content">
 
-     <?if(isset($title)):?><h2><?php echo $title;?></h2><?endif;?>
+     <?php if(isset($title)):?><h2><?php echo $title;?></h2><?php endif;?>
 
      <?php echo $content?>
 
