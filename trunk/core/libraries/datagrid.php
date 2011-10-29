@@ -175,7 +175,7 @@ class datagrid_library extends dataset_library
 			$data["rows"][] = $row;
 		}
 		$data["total_rows"] = $this->total_rows;
-		return rpd::view('datagrid_excell', $data);
+		return rpd::view('datagrid_excel', $data);
 	}
 
 	// --------------------------------------------------------------------
