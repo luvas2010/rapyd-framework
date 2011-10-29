@@ -1,7 +1,7 @@
 
 
-<?foreach($articles as $article):?>
+<?php foreach($articles as $article):?>
 
 	<?php echo $article['title'];?><br />
 
-<?endforeach;?>
+<?php endforeach;?>
