@@ -77,7 +77,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
     <h3>Links</h3>
     <div><img src="<?php echo rpd::asset('help.png')?>" style="vertical-align:middle" /> <a href="http://code.google.com/p/rapyd-framework/w/list">Documentation</a></div>
     <div><img src="<?php echo rpd::asset('world.png')?>" style="vertical-align:middle" /> <a href="http://www.rapyd.com">Rapyd Website</a> </div>
-    <div><img src="<?php echo rpd::asset('heart.png')?>" style="vertical-align:middle" /> <a href="http://www.rapyd.com/support">Donate</a> :(</div>
+    <div><img src="<?php echo rpd::asset('heart.png')?>" style="vertical-align:middle" /> <a href="http://www.rapyd.com/page/support">Donate</a> :(</div>
 
     <div class="line"></div>
 
