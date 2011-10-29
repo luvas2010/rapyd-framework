@@ -33,7 +33,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 
 </style>
 
-<?php echo $head?>
+<?php if(isset($head)) echo $head;?>
 </head>
 <body>
 
@@ -55,17 +55,24 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
     <div><a href="<?php echo rpd::url('demo')?>">Index</a></div>
     <div class="line"></div>
 
-    <h3>Samples</h3>
+	
+    <h3>Basic</h3>
+    <div><img src="<?php echo rpd::asset('page_white.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('basic/hello')?>">Hello World</a></div>
+    <div><img src="<?php echo rpd::asset('page_white_database.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('sql/simple_query')?>">Simple SQL</a></div>
+    <div><img src="<?php echo rpd::asset('page_white_database.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('sql/active_record')?>">Active Record SQL</a></div>
+    <div><img src="<?php echo rpd::asset('page_white_stack.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('mvc')?>">MVC</a></div>
+    <div><img src="<?php echo rpd::asset('page_white_stack.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('hmvc')?>">HMVC</a></div>
+
+	
+    <h3>CRUD Widgets</h3>
     <div><img src="<?php echo rpd::asset('table.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('grid/index')?>">DataGrid</a></div>
     <div><img src="<?php echo rpd::asset('magnifier.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('filtered_grid/index')?>">DataGrid + DataFilter</a></div>
-    <div class="line"></div>
     <div><img src="<?php echo rpd::asset('application_form.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('form/index')?>">DataForm</a></div>
-    <div class="line"></div>
     <div><img src="<?php echo rpd::asset('application_form_edit.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('edit/index/show/1')?>">DataEdit</a></div>
     <div><img src="<?php echo rpd::asset('table_edit.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('edit_grid/article/show/1')?>">DataEdit + DataGrid</a></div>
     <div><img src="<?php echo rpd::asset('page_save.png')?>" style="vertical-align:middle" /> <a href="<?php echo rpd::url('upload/show')?>">Array Driven DG + Upload</a></div>
 
-    <div class="line"></div>
+
 
     <h3>Links</h3>
     <div><img src="<?php echo rpd::asset('help.png')?>" style="vertical-align:middle" /> <a href="http://code.google.com/p/rapyd-framework/w/list">Documentation</a></div>
@@ -80,7 +87,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 
     <div class="content">
 
-     <h2><?php echo $title?></h2>
+     <?if(isset($title)):?><h2><?php echo $title;?></h2><?endif;?>
 
      <?php echo $content?>
 
@@ -93,7 +100,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 
 <?php if ($code!=''): ?>
   <div class="code">
-CODE <br />
+CONTROLLER <br />
     <?php echo $code?>
   </div>
   <div class="line"></div>
