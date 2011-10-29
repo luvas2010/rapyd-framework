@@ -33,6 +33,6 @@
 <body>
     <h1>404: Page Not Found</h1>
     <p class="error">The page you are trying to access has either moved or doesn't exist.</p>
-    <p><a href="<?=rpd::url('/');?>">Click here to return to main</a></p>
+    <p><a href="<?php echo rpd::url('/');?>">Click here to return to main</a></p>
 </body>
 </html>

@@ -15,6 +15,6 @@
 </head>
 <body>
     <h1>Application Error</h1>
-    <p class="error"><?=nl2br(rpd::$error_message)?></p>
+    <p class="error"><?php echo nl2br(rpd::$error_message)?></p>
 </body>
 </html>
