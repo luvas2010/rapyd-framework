@@ -32,6 +32,7 @@ you can omitt "index.php" in urls if you can use apache+mod_rewrite:
 
 CHANGELOG:
 
+- license now LGPL3
 - new samples: sql, mvc, hmvc, etc..
 - runtime language switch support, now uri like /{lang}/controller/method is supported to drive language switch
 - fixes on language runtime switch
