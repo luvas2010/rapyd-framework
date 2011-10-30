@@ -10,7 +10,7 @@ class form_controller extends rpd {
 		//form
 
 		$form = new dataform_library();
-		$form->validation->set_message('customcheck','Error!');
+		$form->validation->set_message('customcheck','Error, field "name" must be filled with "xxx"');
 		$form->field('input','name','Name')
 			->rule('required|trim|callback_customcheck')
 			->group('personal data')
