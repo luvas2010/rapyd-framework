@@ -55,7 +55,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 			</div>
         <?php endforeach;?>
     </div>
-    <?endif;?>
+    <?php endif;?>
   
   <div>
     <div style="float:left; width:230px">
