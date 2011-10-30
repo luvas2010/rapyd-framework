@@ -61,6 +61,22 @@ class rpd_database_mysqli_driver extends rpd_database_ar_library {
 			return addslashes($str);
 		}
 	}
+	
+	// --------------------------------------------------------------------
+	protected static function escape_field($fieldname)
+	{
+		if (is_array($fieldname))
+		{
+			$escaped = array();
+			foreach($fieldname as $fld)
+			{
+				$escaped[] = '`'.$fld.'`';
+			}
+			return $escaped;
+		}
+		$fieldname = '`'.$fieldname.'`';
+		return $fieldname;
+	}
 
 	public function affected_rows()
 	{

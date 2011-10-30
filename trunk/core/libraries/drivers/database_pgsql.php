@@ -76,6 +76,12 @@ class rpd_database_pgsql_driver extends rpd_database_ar_library {
 		}
 	}
 
+	// --------------------------------------------------------------------
+	protected static function escape_field($fieldname)
+	{
+		return $fieldname;
+	}
+
 	public function affected_rows()
 	{
 		return @pg_affected_rows($this->result_id);

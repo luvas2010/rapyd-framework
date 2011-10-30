@@ -59,6 +59,23 @@ class rpd_database_mysql_driver extends rpd_database_ar_library {
 		}
 	}
 
+	// --------------------------------------------------------------------
+	protected static function escape_field($fieldname)
+	{
+		if (is_array($fieldname))
+		{
+			$escaped = array();
+			foreach($fieldname as $fld)
+			{
+				$escaped[] = '`'.$fld.'`';
+			}
+			return $escaped;
+		}
+		$fieldname = '`'.$fieldname.'`';
+		return $fieldname;
+	}
+
+	
 	public function affected_rows()
 	{
 		return @mysql_affected_rows($this->conn_id);
