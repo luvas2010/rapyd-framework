@@ -27,6 +27,8 @@ $config['cache_path']      = RAPYD_ROOT.'cache/';
 $config['languages'] = array(
 	array('index'=>1, 'name'=>'english',  'locale'=>'en_US', 'segment'=>''),
 	array('index'=>2, 'name'=>'italiano', 'locale'=>'it_IT', 'segment'=>'it'),
+	array('index'=>3, 'name'=>'française',  'locale'=>'fr_FR', 'segment'=>'fr'),
+	array('index'=>4, 'name'=>'československé', 'locale'=>'cs_CZ', 'segment'=>'cs'),
 );
 
 
