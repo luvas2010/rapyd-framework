@@ -5,9 +5,9 @@ Completed features have a strike through them.
 
 1.0 
 
-~~not in production, fouds needed  so i'll try to monetize making portals using the cms.~~ webcamitalia make some bucks..  and 1.0RC is out
+  ~~* not in production, fouds needed  so i'll try to monetize making portals using the cms.~~ webcamitalia make some bucks..  and 1.0RC is out
 
-~~* cms on svn? (maybe yes) on trunk or not?~~ not now, I hope it can be commercial (few bucks)
+  ~~* cms on svn? (maybe yes) on trunk or not?~~ not now, I hope it can be commercial (few bucks)
 
   * better and full orm (object-relational mapping) try to follow kohana
 
