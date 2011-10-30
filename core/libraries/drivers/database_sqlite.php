@@ -51,6 +51,13 @@ class rpd_database_sqlite_driver extends rpd_database_ar_library {
 		}
 	}
 
+	// --------------------------------------------------------------------
+	protected static function escape_field($fieldname)
+	{
+		return $fieldname;
+	}
+
+	
 	public function affected_rows()
 	{
 		return sqlite_changes($this->conn_id);
