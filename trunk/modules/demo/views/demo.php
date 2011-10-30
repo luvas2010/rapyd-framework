@@ -45,7 +45,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
   
     <?php if(count(rpd::get_lang('array'))>1):?>
     <div class="lang">
-        <?foreach(rpd::get_lang('array') as $lang):?>
+        <?php foreach(rpd::get_lang('array') as $lang):?>
 			<div class="lang_item">
 				<?php if(isset($lang["is_current"])):?>
 						<?php echo rpd::image('flags/'.$lang['locale'].'.gif')?> <?php echo $lang['name']?> 
