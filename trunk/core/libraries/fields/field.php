@@ -83,6 +83,15 @@ class field_field extends rpd_component_library {
 
 	// --------------------------------------------------------------------
 
+	public function set_onchange($onchange)
+	{
+
+		$this->onchange = $onchange;
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+
 	public function set_rule($rule)
 	{
 		//keep CI/kohana serialization
@@ -95,6 +104,15 @@ class field_field extends rpd_component_library {
 		return $this;
 	}
 
+	// --------------------------------------------------------------------
+
+	public function set_mode($mode)
+	{
+
+		$this->mode = $mode;
+		return $this;
+	}
+	
 	// --------------------------------------------------------------------
 
 	public function set_mask($mask)
@@ -117,6 +135,14 @@ class field_field extends rpd_component_library {
 	public function set_clause($clause)
 	{
 		$this->clause = $clause;
+		return $this;
+	}
+	
+	// --------------------------------------------------------------------
+
+	public function set_operator($operator)
+	{
+		$this->operator = $operator;
 		return $this;
 	}
 	// --------------------------------------------------------------------
@@ -142,12 +168,7 @@ class field_field extends rpd_component_library {
 	}
 	
 	// --------------------------------------------------------------------
-	
-	public function set_extra($extra)
-	{
-		$this->extra_output = $extra;
-		return $this;
-	}
+
 
 	
 	public function set_before($before)
@@ -172,7 +193,21 @@ class field_field extends rpd_component_library {
 		return $this;
 	}
 
+	// --------------------------------------------------------------------
+	public function set_pattern($pattern)
+	{
+		$this->pattern = $pattern;
+		return $this;
+	}
 
+	// --------------------------------------------------------------------
+	
+	public function set_extra($extra)
+	{
+		$this->extra_output = $extra;
+		return $this;
+	}
+	
 	// --------------------------------------------------------------------
 
 	//http://svn.bitflux.ch/repos/public/popoon/trunk/classes/externalinput.php
@@ -411,6 +446,10 @@ class field_field extends rpd_component_library {
 			{
 				$values = array_values($row);
 				$this->set_option($values[0], $values[1]);
+				if (count($values)==4)
+				{
+					$this->set_option_group($values[0], $values[1], $values[2], $values[3]);
+				}
 			}
 		}
 		return $this;
@@ -423,7 +462,14 @@ class field_field extends rpd_component_library {
 		$this->options[$value] = $description;
 		return $this;
 	}
-
+	// --------------------------------------------------------------------
+	public function set_option_group($value='', $description='', $group_id='', $group_label='')
+	{
+		//$this->options[$value] = $description;
+		$this->option_groups[$group_id]['label'] = $group_label;
+		$this->option_groups[$group_id]['options'][$value] = $description;
+		return $this;
+	}
 	// --------------------------------------------------------------------
 
 	public function auto_update($save=false)
