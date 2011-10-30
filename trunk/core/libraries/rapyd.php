@@ -891,6 +891,17 @@
 	}
 
 	/**
+	 * shortcut for rpd_html_helper::image
+	 *
+	 * @param string $path
+	 * @return string 
+	 */
+	public static function image($path)
+	{
+		return rpd_html_helper::image($path);
+	}
+	
+	/**
 	 * shortcut for rpd_html_helper::head()
 	 * 
 	 * @return string 
