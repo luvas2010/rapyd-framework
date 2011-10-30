@@ -625,7 +625,7 @@
 		
 		if ($value=='array' && count($array) ) return $array;
 		if ($value=='set' && !is_null($set)) return $set;
-		if (in_array($value, array('locale','name','segment','index')) && !is_null($current)) return $current[$value];
+		if (in_array($value, array('locale','name','segment','index','dateformat')) && !is_null($current)) return $current[$value];
 		if ($value=='' && !is_null($current)) return $current;
 
 		//no static cache?  so cycle languages and uri and fill static vars
