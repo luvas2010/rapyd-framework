@@ -62,6 +62,11 @@ class datafilter_library extends dataform_library
 		///// show /////
 		else
 		{
+			$page = rpd_sess_helper::get_persistence($url);
+			if (count($page))
+			{
+				$this->action = "search";
+			}
 			// persistence
 			rpd_sess_helper::save_persistence($url);
 		}
