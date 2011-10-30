@@ -35,7 +35,7 @@ CHANGELOG:
 - license now LGPL3
 - new samples: sql, mvc, hmvc, etc..
 - runtime language switch support, now uri like /{lang}/controller/method is supported to drive language switch
-- fixes on language runtime switch
+- fixes on language runtime switch, new datepiker (locale dateformat supported)
 
 
 Feedbacks, suggestions, collaborations, donations  are all welcome.
