@@ -38,7 +38,7 @@
   <?php $rowcount=0;?>
 <?php foreach ($rows as $row):?>
   <?php $rowcount++;?>
-        <tr <?php if($rowcount % 2){ echo 'class="odd"';}else{ echo 'class="even"';} ?>>
+        <tr <?php if($rowcount % 2){ echo 'class="odd"';}else{ echo 'class="even"';} ?><?php if (isset($row[0], $row[0]['tr_attr'])) { echo $row[0]['tr_attr']; }?>>
 <?php foreach ($row as $cell):?>
 <?php if ($cell['type'] == "detail" OR $cell['link']!=""):?>
           <td <?php echo $cell['attributes']?> class="table_row"><a href="<?php echo $cell['link']?>" <?php if($cell['onclick']!='') echo 'onclick="'.$cell['onclick'].'"'?>><?php if($cell['img']!=""){ echo rpd_html_helper::image($cell['img'], array('style'=>'vertical-align:middle')); }?><?php echo $cell['value']?></a></td>

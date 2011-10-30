@@ -249,6 +249,8 @@ class datagrid_column extends rpd_component_library
 	public $onclick = "";
 	public $label = "";
 	public $attributes = array();
+	public $tr_attributes = array();
+	public $tr_attr = '';
 	public $column_type = "normal"; //orderby, detail, ation
 	public $orderby = false;
 	public $checkbox = "";
@@ -345,6 +347,13 @@ class datagrid_column extends rpd_component_library
 	}
 
 	// --------------------------------------------------------------------
+	public function set_tr_attributes($attributes)
+	{
+		$this->tr_attributes = $attributes;
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
 	public function set_row($data_row)
 	{
 		switch ($this->pattern_type)
@@ -392,6 +401,16 @@ class datagrid_column extends rpd_component_library
 			$this->check = rpd_form_helper::checkbox($attributes, $value);
 		}
 		$this->attributes = rpd_html_helper::attributes($this->attributes);
+		
+		if (count($this->tr_attributes))
+		{
+			$this->tr_attr = array();
+			foreach($this->tr_attributes as $k=>$v)
+			{
+				$this->tr_attr[$k] = parent::replace_pattern($v, $data_row);
+			}
+			$this->tr_attr = rpd_html_helper::attributes($this->tr_attr);
+		}
 	}
 
 	/**
