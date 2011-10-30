@@ -50,6 +50,13 @@ class rpd_text_helper {
 			return $string;
 		}
 	}
+	
+
+	public static function filename_append($filename, $append)
+	{
+		$ext   = pathinfo($filename, PATHINFO_EXTENSION);
+		return basename($filename, ".$ext") . $append.'.' . $ext;
+	}
 
 }
 
