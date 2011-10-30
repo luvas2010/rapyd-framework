@@ -15,8 +15,8 @@ Completed features have a strike through them.
 
   *  new class datachart.. needed? or google chart api is a better choise?.
 
-  * build hooks system? pre-system / pre-controller / post-controller / post-system
-    (for example, i need a pre-system call to do modules-stuffs like attach sqllite-db)
+  ~~* build hooks system? pre-system / pre-controller / post-controller / post-system
+    (for example, i need a pre-system call to do modules-stuffs like attach sqllite-db)  ~~ not now
 
   * rewrite all class files, apply a clean indentation and add phpdoc comments to auto-generate an api
 
