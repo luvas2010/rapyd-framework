@@ -30,7 +30,9 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 .note hr { border: none 0; border-bottom: 1px solid #D9D900; height:1px;}
 
 #comments { width: 95%; }
-
+.lang { width: 380px; float:right;}
+.lang_item { padding-right: 15px; float:left;}
+.lang_item img { vertical-align: middle;}
 </style>
 
 <?php if(isset($head)) echo $head;?>
@@ -40,6 +42,21 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 <div id="wrap">
 
   <h1>Rapyd Demo</h1>
+  
+    <?php if(count(rpd::get_lang('array'))>1):?>
+    <div class="lang">
+        <?foreach(rpd::get_lang('array') as $lang):?>
+			<div class="lang_item">
+				<?php if(isset($lang["is_current"])):?>
+						<?php echo rpd::image('flags/'.$lang['locale'].'.gif')?> <?php echo $lang['name']?> 
+				<?php else:?>
+						<a href="<?php echo rpd::url(rpd_url_helper::get_uri(),$lang['segment'])?>"><?php echo rpd::image('flags/'.$lang['locale'].'.gif')?>  <?php echo $lang['name']?></a>
+				<?php endif;?>
+			</div>
+        <?php endforeach;?>
+    </div>
+    <?endif;?>
+  
   <div>
     <div style="float:left; width:230px">
       Rapyd <?php echo RAPYD_VERSION?>
