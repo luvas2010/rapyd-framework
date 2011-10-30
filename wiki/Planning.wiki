@@ -3,15 +3,15 @@
 
 Completed features have a strike through them.
 
-1.0 not in production, fouds needed  so i'll try to monetize making portals using the cms.
+~~1.0 not in production, fouds needed  so i'll try to monetize making portals using the cms.~~ webcamitalia make some bucks..
 
-  * cms on svn? (maybe yes) on trunk or not?
+~~* cms on svn? (maybe yes) on trunk or not?~~ not now, I hope it can be commercial (few bucks)
 
   * better and full orm (object-relational mapping) try to follow kohana
 
   * controller, router, view. must be stand alone classes, not rpd methods. and like CI/kohana each core class must have an extended empty class so (rapyd_ prefix must be reserved for core classes)
 
-  * test cache with new uri-architecture
+  ~~* test cache with new uri-architecture~~
 
   *  new class datachart.. needed? or google chart api is a better choise?.
 
