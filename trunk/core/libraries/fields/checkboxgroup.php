@@ -10,6 +10,12 @@ class checkboxgroup_field extends field_field {
   public $css_class = "checkbox";
   public $checked_value = 1;
   public $unchecked_value = 0;
+  public $option_groups = array();
+  public $format_group = '<div class="ceckbox_group">
+                            <div class="ceckbox_group_label">%s  %s</div>
+                            <div>%s</div>
+                            <div style="clear:left"></div>
+                          </div>';
 
   function get_value()
   {
@@ -60,6 +66,33 @@ class checkboxgroup_field extends field_field {
       case "modify":
 
         $i = 1;
+        if (count($this->option_groups))
+        {
+			rpd_html_helper::js('jquery/jquery.min.js');
+            $output = '';
+            foreach ($this->option_groups as $group_id => $group )
+            {
+                $group_output = '';
+                foreach ($group['options'] as $val => $label )
+                {
+                  $attributes = $this->attributes;
+                  $attributes['name'] = $this->name.'[]';
+                  $attributes['id'] = $this->name.'_'.$i++;
+                  $this->checked = in_array($val,$this->values);
+                  $group_output .= sprintf($this->format, rpd_form_helper::checkbox($attributes, $val , $this->checked).$label).$this->separator;
+                }
+
+                $output .= sprintf($this->format_group, $group['label'], rpd_html_helper::image('checked.png',array('class'=>'group_check')).' '.rpd_html_helper::image('unchecked.png',array('class'=>'group_uncheck')) ,$group_output). $this->extra_output();
+                $output .= rpd_html_helper::script("
+                    $('.group_check').click(function(){
+                          $(this).parent().parent().find(\"input[type='checkbox']\").attr('checked', true);
+                    });
+                    $('.group_uncheck').click(function(){
+                          $(this).parent().parent().find(\"input[type='checkbox']\").attr('checked', false);
+                    });
+                ");
+            }
+        } else {
         foreach ($this->options as $val => $label )
         {
           $attributes = $this->attributes;
@@ -69,6 +102,7 @@ class checkboxgroup_field extends field_field {
           $output .= sprintf($this->format, rpd_form_helper::checkbox($attributes, $val , $this->checked).$label).$this->separator;
         }
         $output .=  $this->extra_output();
+        }
         break;
 
       case "hidden":
