@@ -668,7 +668,7 @@ class rpd_database_ar_library extends rpd_database_library
 	 */
 	protected function _insert($table, $keys, $values)
 	{
-		return "INSERT INTO " . self::escape_table($table) . " (" . implode(', ', $keys) . ") VALUES (" . implode(', ', $values) . ")";
+		return "INSERT INTO ".self::escape_table($table)." (".implode(', ', $this->escape_field($keys)).") VALUES (".implode(', ', $values).")";
 	}
 
 	/**
