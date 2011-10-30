@@ -27,8 +27,8 @@ class date_field extends field_field {
     rpd_html_helper::css('jquery/smoothness.datepick.css');
     rpd_html_helper::js('jquery/jquery.min.js');
     rpd_html_helper::js('jquery/jquery.datepick.pack.js');
-    rpd_html_helper::js('jquery/jquery.datepick.'.rpd::get_lang('locale').'.js');
-	
+	if (!in_array(rpd::get_lang('locale'),array('en_US','en_GB')))
+		rpd_html_helper::js('jquery/jquery.datepick.'.rpd::get_lang('locale').'.js');
 
     if(!isset($this->size))
     {
@@ -65,7 +65,6 @@ class date_field extends field_field {
         }
         $this->attributes['type'] = 'input';
         $output  = rpd_form_helper::input($this->attributes, $value);
-        //$output .= html::image('jscalendar/calender_icon.gif', array('id'=>$this->name.'_button', 'border'=>0, 'style'=>'vertical-align:middle')).$this->extra_output;
         $output .= rpd_html_helper::script('
 			$(function() {
 				$("#'.$this->name.'").datepick();

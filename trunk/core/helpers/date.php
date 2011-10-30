@@ -3,19 +3,54 @@
 
 class rpd_date_helper {
 
-    public static function iso2human($date)
+	protected $iso_format = array('yyyy-mm-dd');
+	
+	//map for predefined date formats, http://php.net/manual/en/function.date.php
+
+	
+	
+	public static function iso2human($date)
     {
         if ((strpos($date,"0000-00-00")!==false) || ($date==""))
             return "";
-        return preg_replace('#^(\d{4})-(\d{2})-(\d{2})( \d{2}:\d{2}:\d{2})?#', '$3/$2/$1$4', $date);
+
+		return self::from_format_to_format($date, 'Y-m-d', rpd::get_lang('dateformat'));
+        //return preg_replace('#^(\d{4})-(\d{2})-(\d{2})( \d{2}:\d{2}:\d{2})?#', '$3/$2/$1$4', $date);
     }
 
     // --------------------------------------------------------------------
 
     public static function human2iso($date)
     {
-        return preg_replace('#^(\d{2})/(\d{2})/(\d{4})( \d{2}:\d{2}:\d{2})?#', '$3-$2-$1$4', $date);
+        //return preg_replace('#^(\d{2})/(\d{2})/(\d{4})( \d{2}:\d{2}:\d{2})?#', '$3-$2-$1$4', $date);
+		return self::from_format_to_format($date, rpd::get_lang('dateformat'), 'Y-m-d');
     }
+
+    public static function from_format_to_format($date, $from_dateformat, $to_dateformat)
+	{
+		$dt = array();
+		$stadard = array('Y', 'm', "d");
+		$semplified = array("yyyy", 'mm', "dd");
+		$from_dateformat = str_replace($stadard, $semplified, $from_dateformat);
+		$to_dateformat = str_replace($stadard, $semplified, $to_dateformat);
+
+		$mask = array(
+			'y'=>'yyyy',
+			'm'=>'mm',
+			'd'=>'dd'
+		);
+		$format = preg_split('//', $from_dateformat, -1, PREG_SPLIT_NO_EMPTY);  
+		$date = preg_split('//', $date, -1, PREG_SPLIT_NO_EMPTY);  
+		foreach ($date as $k => $v) {
+			if (isset($from_dateformat[$k], $mask[$from_dateformat[$k]]))
+				@$dt[$mask[$from_dateformat[$k]]] .= $v;
+		}
+		
+
+		$result = str_replace(array_keys($dt), array_values($dt), $to_dateformat);
+		return $result;
+	}
+	
 
     public static function ago($date,
                                $singular = array('year', 'month', 'day', 'hour', 'mitune', 'second'),
