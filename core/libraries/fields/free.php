@@ -4,6 +4,7 @@
 class free_field extends field_field {
 
   public $type = "free";
+  public $clause = "none";
 
   function get_value()
   {
