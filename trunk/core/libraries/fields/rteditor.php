@@ -50,7 +50,8 @@ class rteditor_field extends field_field {
         }
         else
         {
-          $output = '<div class="textarea_disabled">'.nl2br(htmlspecialchars($this->value)).'</div>';
+          //$output = '<div class="textarea_disabled">'.nl2br(htmlspecialchars($this->value)).'</div>';
+          $output = '<div class="textarea_disabled">'.nl2br(strip_tags($this->value)).'</div>';
         }
         break;
 
