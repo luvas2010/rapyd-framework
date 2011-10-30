@@ -15,7 +15,7 @@ class autocompleter_field extends field_field {
   public $oncomplete;
   public $must_match = false;
   public $auto_fill = false;
-
+  public $parent_id = '';
 
 
   function get_value()
@@ -52,7 +52,7 @@ class autocompleter_field extends field_field {
   {
     $output = "";
 
-    //rpd_html_helper::js('jquery/jquery.min.js');
+    rpd_html_helper::js('jquery/jquery.min.js');
     rpd_html_helper::js('jquery/jquery.autocomplete.min.js');
     rpd_html_helper::css('jquery/autocomplete.css');
 
@@ -100,17 +100,21 @@ class autocompleter_field extends field_field {
       case "create":
       case "modify":
 
-            $output = (!$this->is_multiple) ? rpd_form_helper::input($this->attributes, $this->value) :
+		    $output  = $this->before_output."\n";
+            $output .= (!$this->is_multiple) ? rpd_form_helper::input($this->attributes, $this->value) :
                                              rpd_form_helper::textarea($this->attributes, $this->value);
-
+		    $output .= $this->extra_output."\n";
+			
             $mustmatch = ($this->must_match) ? 'true' : 'false';
             $autofill = ($this->auto_fill) ? 'true' : 'false';
+            $extraParams = ($this->parent_id!='') ? "extraParams : { 'parent_id': function() { return $('#".$this->parent_id."').val(); } },"  : "";
 
         $script = <<<acp
 
                     jQuery("#{$this->name}").autocomplete("{$this->ajax_source}", {
                             limit: 10,
                             minChars: 2,
+                            {$extraParams}
                             mustMatch: {$mustmatch},
                             autoFill: {$autofill},
                             dataType: "json",
@@ -180,7 +184,7 @@ acp;
 
       default:;
     }
-    $this->output = "\n".$this->before_output."\n".$output."\n". $this->extra_output."\n";
+    $this->output = $output."\n";
   }
 
 }
