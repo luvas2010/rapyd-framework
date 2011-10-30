@@ -428,10 +428,12 @@ class dataedit_library extends dataform_library
 		$this->build_fields();
 		//sniff and perform action
 		$this->sniff_action();
-		//build back_url with persistence METTI UNA PEZZA
-		$back_url = RAPYD_PATH . 'index.php/' . rpd::uri($this->back_url);
-		if (isset($_SESSION['rapyd'][$back_url]))
-		{
+
+		//build back_url with persistence 
+        $back_url = $this->back_url;
+		$back_url = rpd::url(rpd::uri($this->back_url));
+		
+		if (isset($_SESSION['rapyd'][$back_url])) {
 			$persistence = $_SESSION['rapyd'][$back_url];
 			$this->back_url = $persistence["back_url"];
 		}
