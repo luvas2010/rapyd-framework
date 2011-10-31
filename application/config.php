@@ -28,7 +28,7 @@ $config['languages'] = array(
 	array('index'=>1, 'name'=>'english',  'locale'=>'en_US', 'dateformat'=>'m/d/Y', 'segment'=>''),
 	array('index'=>2, 'name'=>'italiano', 'locale'=>'it_IT', 'dateformat'=>'d/m/Y', 'segment'=>'it'),
 	array('index'=>3, 'name'=>'française',  'locale'=>'fr_FR', 'dateformat'=>'d/m/Y', 'segment'=>'fr' ),
-	array('index'=>4, 'name'=>'československé', 'locale'=>'cs_CZ', 'dateformat'=>'d.m.Y', 'segment'=>'cs'),
+	array('index'=>4, 'name'=>'česky', 'locale'=>'cs_CZ', 'dateformat'=>'d.m.Y', 'segment'=>'cs'),
 );
 
 
