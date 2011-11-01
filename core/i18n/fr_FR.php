@@ -69,8 +69,8 @@ $lang = array
 	'val.min_height'    => 'L\'image %s est trop petite. La hauteur mini. autorisée est %s pixels.',
 
 	// pagination
-	'pag.first'         => 'Prem.',
-	'pag.last'          => 'Dern.',
+	'pag.first'         => 'Première',
+	'pag.last'          => 'Dernière',
 
 
 );
