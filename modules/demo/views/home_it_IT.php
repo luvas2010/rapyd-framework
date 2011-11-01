@@ -2,7 +2,7 @@ Salve, questo è il modulo Demo di Rapyd
 
 Requisiti del server per questa demo:
 
-- php> = 5,1
+- php >= 5.1
 - driver pdo_sqlite abilitato *
 - la cartella e i file contenuti in /modules/demo/db/ devono essere scrivibili: rwx (777)
 
