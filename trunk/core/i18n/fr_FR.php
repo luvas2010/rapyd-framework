@@ -27,7 +27,7 @@ $lang = array
 
 	//buttons
 	'btn.add'	=> 'Ajouter',
-	'btn.reset'	=> 'r.à.z',
+	'btn.reset'	=> 'Réinitialiser',
 	'btn.search'=> 'Rechercher',
 	'btn.modify'=> 'Modifier',
 	'btn.delete'=> 'Supprimer',
