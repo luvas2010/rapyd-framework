@@ -22,7 +22,7 @@ class form_controller extends rpd {
 			->in('name');
 
 		$form->field('input','cod_fiscale','vat code')
-			->rule('required','exact_length[16]')
+			->rule('required|exact_length[16]')
 			->mask('aaaaaa99a99a999a')
 			->group('fiscal data')
 			->rule('required');
