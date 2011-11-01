@@ -30,7 +30,7 @@ a { color: #003399; background-color: transparent; font-weight: normal; }
 .note hr { border: none 0; border-bottom: 1px solid #D9D900; height:1px;}
 
 #comments { width: 95%; }
-.lang { width: 380px; float:right;}
+.lang { width: 340px; float:right;}
 .lang_item { padding-right: 15px; float:left;}
 .lang_item img { vertical-align: middle;}
 </style>
