@@ -644,7 +644,7 @@
 		if (count($segments)>0) //piu' di una lingua
 		{
 			$set = '('.implode('|',array_keys($segments)).')';
-			if (preg_match('@^'.$set.'/?@i', rpd_url_helper::get_uri() , $match))
+			if (preg_match('@^'.$set.'(\/.*)?$@i', rpd_url_helper::get_uri() , $match))
 			{
 				$current = $segments[$match[1]];
 			}
@@ -790,7 +790,7 @@
 						$uri = implode('/', $params);
 						$url = rpd_url_helper::remove_all(null, rpd_url_helper::url($uri));
 						if (rpd::get_lang('set')!='')
-							$uri = preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', rpd_url_helper::uri($url));
+							$uri = ltrim(preg_replace('@^'.rpd::get_lang('set').'(\/.*)?$@i', '$2', rpd_url_helper::uri($url)),'/');
 						else 
 							$uri = rpd_url_helper::uri($url);
 						$params = ($uri=='') ? array() : explode('/', $uri);
