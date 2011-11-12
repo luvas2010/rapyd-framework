@@ -256,7 +256,7 @@
 		self::$uri_string = rpd_url_helper::get_uri();
 		//remove if present language segment
 		if (rpd::get_lang('set')!='')
-			self::$uri_string =	preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', self::$uri_string);
+			self::$uri_string = ltrim(preg_replace('@^'.rpd::get_lang('set').'(\/.*)?$@i', '$2', self::$uri_string),'/');
 		self::$ruri_string = self::reroute(self::$uri_string, self::config('routes'));
 
 		if (!preg_match('/[^A-Za-z0-9\:\/\.\-\_\#]/i', self::$ruri_string) || empty(self::$ruri_string))
@@ -494,6 +494,7 @@
 
 			ob_clean();
 			self::error('500', "'$message' in $file($line)\n\nCall Stack:\n$trace");
+			echo "'$message' in $file($line)\n\nCall Stack:\n$trace";
 			exit;
 
 		} catch (Exception $e)
