@@ -37,7 +37,7 @@ class rpd_url_helper {
 			$uri_string = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : @getenv('PATH_INFO');
 			$uri_string = trim($uri_string,'/');
 		}
-		if (!$with_lang && rpd::get_lang('set')!='') $uri_string = preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', $uri_string);
+		if (!$with_lang && rpd::get_lang('set')!='') $uri_string = ltrim(preg_replace('@^'.rpd::get_lang('set').'(\/.*)?$@i', '$2', $uri_string),'/');
 		return $uri_string;
 	}
 
@@ -66,7 +66,7 @@ class rpd_url_helper {
 			$language_seg = rtrim($language_seg,'/').'/';
 
 		if (rpd::get_lang('set')!='')
-			$uri = preg_replace('@^'.rpd::get_lang('set').'/?(.*)@i', '$2', $uri);
+			$uri = ltrim(preg_replace('@^'.rpd::get_lang('set').'(\/.*)?$@i', '$2', $uri),'/');
 		if (defined('CI_VERSION')) {
 			$config = get_config();
 			$base_url = $config['base_url'];
