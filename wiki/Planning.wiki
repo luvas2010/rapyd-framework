@@ -1,7 +1,13 @@
-#summary Planning
 #labels Featured
 
+#summary Planning
+
 Completed features have a strike through them.
+
+2.0 
+
+  * ~~move to git-hub & rebuilt using  slim, eloquent and twig~~
+
 
 1.0 
 
